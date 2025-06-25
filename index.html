@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PortfolioEliseDesign</title>
+  <link rel="stylesheet" href="home.css" >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/
+font-awesome/6.1.2/css/all.min.css"/>
+</head>
+<body>
+  <div class="page-container">
+  <header>
+      <nav class="nav-bar">
+        <div class="logo">
+          <a href="index.html">
+          <img class="logo" src="assets/images/Logo.png"alt="">
+          </a>
+        </div>
+        <ul class="menu-items" id="navMenu">
+          <div class="search-box" id="searchBox" style="display: none;">
+            <input type="text" placeholder="Zoeken..." id="searchInput">
+            <button onclick="handleSearch()">Zoek</button>
+          </div>
+          <li><a href="about.html">ABOUT</a></li>
+          <li><a href="contact.html">CONTACT</a></li>
+          <li class="search"><a href="#"><i class="fa-solid fa-magnifying-glass"></i></a></li>
+          <li class="dropdown">
+              <a href="#" id="hamburgerBtn" class="dropbtn"><i class="fa-solid fa-bars"></i> <i class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-content">
+                <li><a href="interiordesign.html">INTERIOR DESIGN</a></li>
+                <li><a href="architecture.html">ARCHITECTURE</a></li>
+                <li><a href="illustration.html">ILLUSTRATIONS</a></li>
+                <li><a href="handcraft.html">HANDCRAFT</a></li>
+              </ul>
+            </li>
+        </ul>
+      </nav>
+  </header>
+
+  <section class="section-one">
+    <div class="scrolltrigger-wrapper">
+  <div class="scrolltrigger welcometo">Welcome to</div>
+  <div class="scrolltrigger my">my</div>
+  <div class="scrolltrigger website">website</div>
+  <div class="scrolltrigger a">"A</div>
+  <div class="scrolltrigger place">place</div>
+  <div class="scrolltrigger where">where</div>
+  <div class="scrolltrigger creativity">creativity</div>
+  <div class="scrolltrigger and">and</div>
+  <div class="scrolltrigger craftmanship">craftmanship</div>
+  <div class="scrolltrigger come">come</div>
+  <div class="scrolltrigger together">together"</div>
+  <div class="scrolltrigger takealook">Take a look...</div>
+</div>
+
+</section>  
+
+<section class="auto-gallery">
+  <div class="gallery-wrapper">
+    <div class="gallery-track">
+      <!-- Originele set -->
+      <a class="gallery-item" href="interiordesign.html" target="_blank">
+        <img src="assets/images/interiordesignportfoliostudent.jpg" alt="Afbeelding 1">
+        <div class="overlay">INTERIOR DESIGN PORTFOLIO <br/> STUDENT</div>
+      </a>
+      <a class="gallery-item" href="illustration.html" target="_blank">
+        <img src="assets/images/illustrations.png" alt="Afbeelding 2">
+        <div class="overlay">ILLUSTRATIONS</div>
+      </a>
+      <a class="gallery-item" href="handcraft.html" target="_blank">
+        <img src="assets/images/handcraft.jpg" alt="Afbeelding 3">
+        <div class="overlay">HANDCRAFT</div>
+      </a>
+      <a class="gallery-item" href="architecture.html" target="_blank">
+        <img src="assets/images/architecturalconcepts.jpg" alt="Afbeelding 4">
+        <div class="overlay">ARCHITECTURAL CONCEPTS</div>
+      </a>
+
+      <!-- Duplicaat set voor eindeloze scroll -->
+      <a class="gallery-item" href="interiordesign.html" target="_blank">
+        <img src="assets/images/interiordesignportfoliostudent.jpg" alt="Afbeelding 1">
+        <div class="overlay">INTERIOR DESIGN PORTFOLIO <br/> STUDENT</div>
+      </a>
+      <a class="gallery-item" href="illustration.html" target="_blank">
+        <img src="assets/images/illustrations.png" alt="Afbeelding 2">
+        <div class="overlay">ILLUSTRATIONS</div>
+      </a>
+      <a class="gallery-item" href="handcraft.html" target="_blank">
+        <img src="assets/images/handcraft.jpg" alt="Afbeelding 3">
+        <div class="overlay">HANDCRAFT</div>
+      </a>
+      <a class="gallery-item" href="architecture.html" target="_blank">
+        <img src="assets/images/architecturalconcepts.jpg" alt="Afbeelding 4">
+        <div class="overlay">ARCHITECTURAL CONCEPTS</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <p>Elise Philips</p>
+    <p>Amstelveen, Netherlands</p>
+    <p><a href="emailto:elisephilips8@gmail.com"> Elisephilips8@gmail.com</a></p>
+    <p><a href="/contact.html" class="contact-link">Contactformulier</a></p>
+  </div>
+</footer>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1/bundled/lenis.min.js"></script>
+  <script src="home.js"></script>
+  </div>
+</body>
+</html>

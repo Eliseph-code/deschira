@@ -1,0 +1,158 @@
+*
+.aboutme {
+  color: rgb(201, 203, 159);
+  font-size: 20px;
+  align-items: center;
+  padding-left: 10rem;
+}
+.aboutwrap {
+  color:  rgb(201, 203, 159);
+  font-family: "times new roman", times, serif;
+  font-style: oblique;
+  font-variant: normal;
+  padding-left: 0rem;
+}
+
+.froma {
+  padding-top: 5rem;
+}
+.panel {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.panel .content {
+  text-align: center;
+  color: rgba(39, 40, 51, 0.377);
+  max-width: 700px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.panel .content img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0);
+}
+
+.panel.active .content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* Tekst animatie */
+.content {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
+}
+
+/* Actieve tekst animatie wanneer in beeld */
+.panel.in-view .content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* animatie rondom invliegafbeeldingen */
+.content {
+  position: relative;
+  text-align: center;
+  color: white;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.panel.active .content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  z-index: 2;
+  position: relative;
+}
+
+/* Algemene stijl voor de afbeeldingen */
+.content .img {
+  position: absolute;
+  width: 150px;
+  height: auto;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 1s ease;
+  z-index: 1;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/*panel1*/
+/* Richting van binnenvliegen */
+.afly-sunray   { top: 50%; left: 0px; transform: translateY(-50%) scale(0.5); }
+.afly-clouds2 { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.afly-clouds3 { bottom: -150px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.afly-birds    { top: -150px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.afly-clouds  { top: 50%; right: -200px; transform: translateY(-50%) scale(0.5); }
+/* Wanneer actief: afbeeldingen vliegen in */
+.panel.active .img.afly-sunray   { left: 0; opacity: 1; transform: translateY(-50%) scale(30); padding-right: 1.2rem;opacity: 50%;}
+.panel.active .img.afly-clouds2 { bottom: 1px; right: -30px; opacity: 1; transform: translateX(-50%) scale(5);}
+.panel.active .img.afly-clouds3 { bottom: 190px; opacity: 50%; transform: translateX(-50%) scale(9); }
+.panel.active .img.afly-birds    { top: 5;  right: 60px; opacity: 1; transform: translateX(-70%) scale(5); }
+.panel.active .img.afly-clouds  { right: 0; opacity: 1; transform: translateY(-50%) scale(10); padding-left: 1rem;}
+
+/*panel2*/
+/* Richting van binnenvliegen */
+.bfly-sketchtiger   { top: 50%; left: 0px; transform: translateY(-50%) scale(0.5); }
+.bfly-potlood { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+/* Wanneer actief: afbeeldingen vliegen in */
+.panel.active .img.bfly-sketchtiger   { left: 210px; bottom: -300px; opacity: 1; transform: translateY(00%) scale(5); padding-right: 1.2rem;}
+.panel.active .img.bfly-potlood { bottom: 200px; right: -30px; opacity: 1; transform: translateX(-130%) scale(5);}
+
+/*panel4*/
+/* Richting van binnenvliegen */
+.dfly-emptyroom   { top: 50%; left: 0px; transform: translateY(-50%) scale(0.5); }
+.dfly-ray1 { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.dfly-ray2 { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.dfly-pendantlamp { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.dfly-plant { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.dfly-couch { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.dfly-salontable { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.img.dfly-fauteuil { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.img.dfly-perspective { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+/* Wanneer actief: afbeeldingen vliegen in */
+.panel.active .img.dfly-emptyroom   { left: 750px; bottom: 2px; opacity: 1; transform: translateY(280%) scale(5); padding-right: 1.2rem;}
+.panel.active .img.dfly-ray1 { bottom: -200px; right: -30px; opacity: 15%; transform: translateX(310%) scale(1);}
+.panel.active .img.dfly-ray2 { bottom: -200px; right: -30px; opacity: 15%; transform: translateX(250%) scale(1);}
+.panel.active .img.dfly-pendantlamp { bottom: -200px; right: -30px; opacity: 1; transform: translateX(280%) scale(1);}
+.panel.active .img.dfly-plant { bottom: -410px; right: -30px; opacity: 1; transform: translateX(390%) scale(0.5);}
+.panel.active .img.dfly-couch { bottom: -320px; right: -40px; opacity: 1; transform: translateX(285%) scale(2.5);}
+.panel.active .img.dfly-salontable { bottom: -420px; right: -30px; opacity: 1; transform: translateX(280%) scale(1);}
+.panel.active .img.dfly-fauteuil { bottom: -380px; right: -30px; opacity: 1; transform: translateX(130%) scale(1);}
+.panel.active .img.dfly-perspective { bottom: 100px; right: -30px; opacity: 1; transform: translateX(-350%) scale(3);}
+
+/*panel5*/
+/* Richting van binnenvliegen */
+.efly-rendering1 { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.efly-rendering3 { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.efly-maquette { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.efly-schetsbureau { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+.efly-potlood { bottom: -100px; left: 50%; transform: translateX(-50%) scale(0.5); }
+/* Wanneer actief: afbeeldingen vliegen in */
+.panel.active .img.efly-rendering1 { bottom: 200px; right: -30px; opacity: 1; transform: translateX(-230%) scale(3);}
+.panel.active .img.efly-rendering3 { bottom: -200px; right: -30px; opacity: 1; transform: translateX(-130%) scale(3);}
+.panel.active .img.efly-maquette { bottom: 100px; right: -30px; opacity: 1; transform: translateX(-390%) scale(2);}
+.panel.active .img.efly-schetsbureau { bottom: -150px; right: -30px; opacity: 0.8; transform: translateX(200%) scale(5);}
+.panel.active .img.efly-potlood { bottom: -200px; right: -30px; opacity: 0.9; transform: translateX(160%) scale(5);}
