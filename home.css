@@ -1,0 +1,227 @@
+.container {
+  width: 100%;
+}
+.slides {
+  height:100vh;
+  scroll-snap-align:start;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+h1, p {
+      margin: 0 0 1rem 0;}
+
+h1 {
+  
+  white-space: pre-line; /* zodat nieuwe regels zichtbaar zijn */
+  font-size: 4rem;
+  min-height: 150px; /* voorkom verschuiving */
+  background: linear-gradient(90deg, #bfa43a00, #e6c66591, #f0ead600, #bfa43a57);
+  -webkit-background-clip: text;
+   background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  
+  font-family: 'Roboto', sans-serif;
+  font-style: oblique;
+  font-variant: normal;
+  overflow: hidden;
+  background-size: 300%;
+  animation: gradientSlide 5s linear infinite;
+}
+
+@keyframes gradientSlide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+p {
+  white-space: pre-line; /* zodat nieuwe regels zichtbaar zijn */
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color:  rgba(214, 192, 118, 0.76);
+  font-family: "times new roman", times, serif;
+  font-style: oblique;
+  font-variant: normal;
+  overflow: hidden;
+}
+.textblok {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.typewriter-second-part {
+  margin-bottom: 500px;
+  
+  padding: 1rem;
+  font-size: 1.3rem;
+  
+  color: rgba(214, 192, 118, 0.76);
+  text-align: center;
+}
+
+
+/* Section One (aangepast zoals banner) */
+.slide1{
+  transform: translateY(50px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  height: 100vh;             /* volledige viewporthoogte */
+  text-align: center;
+  z-index: inherit;
+}
+
+/* … bestaande CSS … */
+header, footer, .slide1, .slide2 {
+  scroll-snap-align: start; /* activeer snap‑scrolling */
+
+}
+
+
+
+.line.fade-out {
+  animation: fadeLeftToRight 0.8s forwards;
+  -webkit-animation: fadeLeftToRight 0.8s forwards;
+  animation: fadeRightSmooth 0.8s ease forwards;
+}
+
+@keyframes fadeRightSmooth {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30px); /* schuift iets naar rechts */
+  }
+}
+
+
+
+
+/* Banner carousel */
+.banner {
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  overflow: visible;
+  position: relative;
+}
+
+.banner .slider {
+  position: absolute;
+  width: 200px;
+  height: 250px;
+  top: 60%;
+  left: calc(50% - 100px);
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  animation: autoRun 20s linear infinite;
+}
+
+.banner .item {
+  position: absolute;
+  inset: 0;
+  --translate-z: 350px; /* standaard */
+  transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(var(--translate-z));
+  transition: transform 0.3s ease;
+}
+
+
+.banner .item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+@keyframes autoRun {
+  from {
+    /* licht naar achteren kantelen + start-hoek */
+    transform: perspective(1000px)
+               rotateX(-10deg)
+               rotateY(-50deg)
+               rotateZ(-10deg);   /* ↖︎ kantel de schijf */
+  }
+  to {
+    transform: perspective(1000px)
+               rotateX(10deg)
+               rotateY(50deg)    /* standaard carousel-rondjes */
+               rotateZ(-10deg);   /* ↖︎ blijft scheef */
+  }
+}
+
+/*tekst*/
+.item {
+  position: absolute;
+  inset: 0;
+  
+  transition: transform 0.3s ease;
+}
+
+.item a {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.5s ease;
+}
+
+/* Overlay tekst */
+.overlay-text {
+  position: absolute;
+  font-family: "times new roman", times, serif;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(65, 61, 44, 0.836);
+  font-size: 1.2rem;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 2;
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 5px;
+}
+
+
+
+/* Hover-effect */
+.item:hover img {
+  opacity: 0.3;
+}
+
+.item:hover .overlay-text {
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 400px) {
+  .banner .item {
+    --translate-z: 150px; /* of 50px */
+  }
+  p {
+  font-size: 1.2rem;
+  
+}
+}
