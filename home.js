@@ -52,4 +52,15 @@ function handleSearch() {
 
 
 
+  window.addEventListener('scroll', function () {
+    const logo = document.querySelector('.logo-img');
+    if (window.scrollY > 50) {
+      logo.classList.add('hidden');
+    } else {
+      logo.classList.remove('hidden');
+    }
+  });
+
+
+
 
