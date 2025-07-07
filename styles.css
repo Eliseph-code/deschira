@@ -6,12 +6,10 @@
 
 html, body {
   font-family: 'Roboto', sans-serif;
-
- 
-  height:100%;          /* nodig voor 100 vh in .slides   */
-  scroll-snap-type:y mandatory;
-  scroll-behavior:smooth;
-  margin:0;
+  
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  margin: 0;
   padding: 0;
 }
 body {
@@ -20,12 +18,15 @@ body {
 header {
   
   top: 0;
-  width: 100%;
+  width: 100vw;
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   z-index: 1000;
-  position: relative; /* of helemaal weghalen */
-  height: 0vh;
+  position: fixed; /* of helemaal weghalen */
+
+
+  position: sticky;
+ 
   
   
  
@@ -33,16 +34,27 @@ header {
 }
 .nav-bar {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 2rem 5rem;
   background-color:#d198b50c;
+ 
 }
 
 .logo-img {
   width: 300px;
   object-fit: cover;
 }
+.logo-img {
+  transition: opacity 0.3s ease;
+}
+
+.logo-img.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 .menu-items {
   display: flex;
@@ -52,7 +64,7 @@ header {
 
 .menu-items a {
   text-decoration: none;
-  padding: 0 1.5rem;
+  padding: 0 5rem;
   font-size: 1rem;
   text-transform: uppercase;
   background: linear-gradient(90deg, #bfa43a, #d9cfad, #e6c565, #f0ead6, #bfa43a);
