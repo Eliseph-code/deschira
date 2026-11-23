@@ -3592,10 +3592,6 @@ requestAnimationFrame(frame);
 window.addEventListener("resize",()=>{ resize(); });
 
 window.__ep={nodes:()=>nodes,scrollToT,setT:(t)=>{curT=t;},setTime:(m)=>{timeMode=m;updateSky();},pose:()=>pose,goRoom};
-</script>
-</body>
-</html>
-
 
 /* ====================================================================
    ACCOUNTS (alleen op de eigen website): inloggen, account maken,
@@ -3684,3 +3680,7 @@ async function loadAdminRequests(box){ if(!SB||!SB_ADMIN){ box.innerHTML=`<p cla
   box.innerHTML=(data&&data.length)?data.map(r=>`<div class="adm-card acc-req" data-sec="${escAttr(r.name||r.email||"Aanvraag")}"><div class="row"><div><b>${escAttr(r.name||"")}</b> · <a href="mailto:${escAttr(r.email||"")}">${escAttr(r.email||"")}</a>${r.user_id?" · <small>klantaccount</small>":""}<br><small>${fmtDate(r.created_at)} · ${escAttr(K[r.kind]||r.kind||"")}${r.data&&r.data.item?" · "+escAttr(r.data.item):""}${r.data&&r.data.company?" · "+escAttr(r.data.company):""}</small></div>
     <div><label>Status</label><select data-reqst="${r.id}">${[["nieuw","Nieuw"],["bezig","In behandeling"],["klaar","Afgerond"]].map(([v,l])=>`<option value="${v}"${r.status===v?" selected":""}>${l}</option>`).join("")}</select></div></div><p class="acc-msg">${escAttr(r.message||"")}</p></div>`).join(""):`<p class="adm-hint">Nog geen aanvragen.</p>`;
   box.querySelectorAll("[data-reqst]").forEach(s=>s.addEventListener("change",async()=>{ const {error}=await SB.from("requests").update({status:s.value}).eq("id",s.dataset.reqst); document.getElementById("admNote").textContent=error?"Status opslaan mislukt.":"Status bijgewerkt."; })); }
+
+</script>
+</body>
+</html>
