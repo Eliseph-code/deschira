@@ -938,7 +938,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795521454"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795521593"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4428,9 +4428,14 @@ function nodeForSection(page,anchor){ let best=-1, sc=-1; const room=curRoomK;
 let syncT=null, lastSec="";
 swMain.addEventListener("scroll",()=>{ if(!siteOpen||MENU_OPTS.follow===false) return; clearTimeout(syncT); syncT=setTimeout(()=>{ if(performance.now()<syncLock) return;
   const top=swMain.getBoundingClientRect().top, H=swMain.clientHeight; let cur=null;
-  swMain.querySelectorAll("section.sw-sec[id^='w-']").forEach(el=>{ const r=el.getBoundingClientRect(); if(r.top-top<=H*.38) cur=el; });
+  swMain.querySelectorAll("section.sw-sec[id^='w-']").forEach(el=>{ const r=el.getBoundingClientRect(); if(r.top-top<=H*.22) cur=el; });
   const an=cur?cur.id.slice(2):""; if(an===lastSec) return; lastSec=an; const i=nodeForSection(sitePage,an==="top"&&!nodes.some(n=>!n.transit&&siteTarget(n)[1]==="top"&&siteTarget(n)[0]===sitePage)?"":an);
   if(i>=0&&i!==curIndex()) goStation(i); },260); },{passive:true});
+
+// ---- met het venster open: het beeld schuift op, zodat het item midden in het vrije deel van het scherm staat
+{ let vo=0; const loop=()=>{ const want=siteOpen&&!siteWide&&window.innerWidth>760?siteEl.offsetWidth/2:0;
+    if(Math.abs(want-vo)>.3){ vo+=(want-vo)*.12; if(Math.abs(want-vo)<=.3) vo=want; const W=scene.clientWidth, H=scene.clientHeight; if(vo<.3){ camera.clearViewOffset(); } else camera.setViewOffset(W,H,vo,0,W,H); }
+    requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
