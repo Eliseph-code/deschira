@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795558901"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795559053"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2472,7 +2472,7 @@ function updateSky(){
   hemi.color.setRGB(lerp(.3,.84,day),lerp(.38,.88,day),lerp(.62,.98,day)); hemi.groundColor.setRGB(lerp(.1,.6,day),lerp(.09,.52,day),lerp(.1,.4,day)); hemi.intensity=lerp(.26,.72,day);
   fill.intensity=lerp(.05,.14,day);
   lanternLights.forEach(L=>L.intensity=lerp(0,26,night*0.6+ (1-day)*0.4));
-  NIGHT=night; DAY=day; lampLights.forEach(L=>L.intensity=7*clamp(night*0.8+(1-day)*0.4,0,1)); coveMats.forEach(m=>m.color.setScalar(lerp(.35,1.25,clamp(night*0.8+(1-day)*0.5,0,1)))); hemiBase=hemi.intensity; hemiCol.copy(hemi.color); if(FURN.linen) FURN.linen.emissiveIntensity=.08+1.1*clamp(night*0.8+(1-day)*0.4,0,1); sunBase=sun.intensity; for(const k of Object.keys(ROOMLIGHTS)) (ROOMLIGHTS[k]||[]).forEach(o=>{ if(o.L.intensity>0) o.L.intensity=o.base*roomBoost(); });
+  NIGHT=night; DAY=day; lampLights.forEach(L=>L.intensity=7*clamp(night*0.8+(1-day)*0.4,0,1)); coveMats.forEach(m=>m.color.setRGB(1,.86,.66).multiplyScalar(lerp(.25,.85,clamp(night*0.8+(1-day)*0.5,0,1)))); hemiBase=hemi.intensity; hemiCol.copy(hemi.color); if(FURN.linen) FURN.linen.emissiveIntensity=.08+1.1*clamp(night*0.8+(1-day)*0.4,0,1); sunBase=sun.intensity; for(const k of Object.keys(ROOMLIGHTS)) (ROOMLIGHTS[k]||[]).forEach(o=>{ if(o.L.intensity>0) o.L.intensity=o.base*roomBoost(); });
   M.glass.emissiveIntensity=lerp(0,9,clamp(night*0.7+(1-day)*0.5,0,1));
   stars.material.opacity=clamp((-e-6)/8,0,1);
   moon.visible=e<-3; moon.position.copy(dirOf((s.az+180)%360,32)).multiplyScalar(4500);
@@ -4586,7 +4586,7 @@ function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
   const lab=penLabel("obj:"+o.id); return lab; }
 
 // ---- daglicht hoort buiten: binnen in de kamers komt de zon nauwelijks binnen (geen vreemde schuine lichtbanen)
-{ let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
+{ let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ if(!sun||!hemi){ requestAnimationFrame(loop); return; } const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
     // binnen 's avonds: warme, zachte avondverlichting zodat de kamer leesbaar blijft (2700K)
     const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?2.4:1; hemi.intensity=hemiBase+.75*g*dark; hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
