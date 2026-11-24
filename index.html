@@ -582,7 +582,7 @@
   .linkbtn{background:none;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
   @media (max-width:760px){ .st-years{grid-template-columns:repeat(2,1fr)} .st-ups img{width:80px;height:60px} }
   /* ===== websitevenster: de gewone website in het gebouw ===== */
-  .site-win{position:fixed;top:0;right:0;bottom:0;width:min(780px,54vw);z-index:56;transform:translateX(104%);transition:transform .55s cubic-bezier(.2,.8,.2,1),width .45s;pointer-events:none;
+  .site-win{position:fixed;top:0;right:0;bottom:0;width:min(780px,54vw);z-index:56;transform:translateX(100%);transition:transform .55s cubic-bezier(.2,.8,.2,1),width .45s;pointer-events:none;
     --sw-bg:#F0EDE5;--sw-ink:#2B1A14;--sw-brown:#52281C;--sw-gold:#C3A367;--sw-bord:#692719;--sw-navy:#15283E;--sw-trav:#D7C9B0}
   .site-win.open{transform:none;pointer-events:auto}
   .site-win.wide{width:100vw}
@@ -664,6 +664,34 @@
   @media (max-width:760px){ .site-win{width:100vw} .sw-head{padding:12px 16px} .sw-nav{display:none;order:5;flex-basis:100%;flex-direction:column} .site-win.menu .sw-nav{display:flex}
     .sw-burger{display:flex} .sw-tools .sw-wide{display:none} .sw-tools .sw-close span{display:none} .sw-sec{padding:32px 20px} .sw-hero{padding:48px 20px}
     .sw-steps,.sw-steps.four{grid-template-columns:1fr} .sw-main{font-size:17px} body.site-open .stepper,body.site-open .tabbar{display:none} }
+  /* ---- ronde 24-11 middag: oude pijlknoppen weg, schuifknop, hamburger, live zetten ---- */
+  .stepper{display:none!important}
+  .sw-handle{position:absolute;left:-40px;top:50%;transform:translateY(-50%);width:40px;padding:14px 0;background:var(--sw-brown);color:var(--sw-bg);border:0;border-radius:8px 0 0 8px;cursor:pointer;pointer-events:auto;
+    display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:-8px 0 20px rgba(0,0,0,.25)}
+  .sw-handle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;transition:transform .4s}
+  .sw-handle span{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+  .site-win.open .sw-handle svg{transform:rotate(180deg)}
+  .site-win.wide .sw-handle{display:none}
+  body.at-home .site-win:not(.open) .sw-handle{opacity:.85}
+  .sw-legal{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-top:16px!important}
+  .sw-legal button{background:none;border:0;color:var(--sw-bg);opacity:.8;font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .sw-legal button:hover{opacity:1;color:var(--sw-gold)}
+  .ham-btn{display:none;background:none;border:1px solid rgba(239,230,218,.45);flex-direction:column;gap:4px;padding:9px 8px;cursor:pointer}
+  .ham-btn i{display:block;width:20px;height:1.5px;background:var(--cream);transition:transform .3s,opacity .3s}
+  .ham-btn.on i:nth-child(1){transform:translateY(5.5px) rotate(45deg)}.ham-btn.on i:nth-child(2){opacity:0}.ham-btn.on i:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+  .ham-menu{position:fixed;top:58px;right:10px;left:10px;z-index:58;background:rgba(62,29,20,.97);backdrop-filter:blur(8px);padding:10px;display:none;flex-direction:column;border:1px solid rgba(196,164,106,.35);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+  .ham-menu.open{display:flex}
+  .ham-menu>button{background:none;border:0;border-bottom:1px solid rgba(239,230,218,.12);color:var(--cream);font-family:var(--sans);font-size:14px;letter-spacing:.18em;text-transform:uppercase;padding:15px 12px;text-align:left;cursor:pointer}
+  .ham-row{display:flex;gap:8px;padding:12px}.ham-row button{flex:1;background:none;border:1px solid rgba(239,230,218,.35);color:var(--cream);font-family:var(--sans);padding:10px;cursor:pointer}.ham-row button.on{background:var(--gold);color:#2b1a14;border-color:var(--gold)}
+  .pub-btn{display:flex!important;align-items:center;gap:7px}.pub-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8}
+  .pub-btn.dirty{background:var(--gold)!important;color:#2b1a14!important;border-color:var(--gold)!important;animation:pubPulse 2.4s ease-in-out infinite}
+  @keyframes pubPulse{0%,100%{box-shadow:0 0 0 0 rgba(196,164,106,.6)}50%{box-shadow:0 0 0 6px rgba(196,164,106,0)}}
+  .pub-pop{position:fixed;z-index:90;width:300px;background:#2b1a14;color:var(--cream);padding:18px;border:1px solid rgba(196,164,106,.5);box-shadow:0 20px 50px rgba(0,0,0,.45);display:none}
+  .pub-pop.open{display:block}.pub-pop b{font-family:var(--serif);font-size:21px;font-weight:500}.pub-pop p{font-size:15px;margin:6px 0 14px;opacity:.85}.pub-pop div{display:flex;gap:8px}.pub-pop .btn{padding:10px 14px;font-size:11px}
+  .adm-hide{display:flex!important;margin:0 0 10px;padding:8px 10px;background:rgba(105,39,25,.25);border:1px solid rgba(196,164,106,.3)}
+  .adm-off{opacity:.6}
+  @media (max-width:760px){ .ham-btn{display:flex} .tabbar{display:none!important} .site-win{width:calc(100vw - 40px)} .site-win.wide{width:calc(100vw - 40px)}
+    .nav-right .links,.nav-right .ov-btn{display:none!important} body{--tabbar-h:0px} }
   .gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
   .loading{position:absolute;inset:0;display:grid;place-items:end center;padding-bottom:18vh;background:radial-gradient(ellipse at 50% 40%,#5a3424,#2a160f);color:#EFE6DA;font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;transition:opacity 1s;z-index:3;pointer-events:none}
   .loading.done{opacity:0}
@@ -905,7 +933,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795518658"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795519744"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -932,12 +960,12 @@ if(!ON_CLAUDE){
     SB=createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
     SB.auth.onAuthStateChange((ev,session)=>{ if(ev==="PASSWORD_RECOVERY") { SB_RECOVERY=true; setTimeout(()=>window.openAccount&&window.openAccount("reset"),400); } });
     const {data:{session}}=await SB.auth.getSession(); SB_USER=session?session.user:null;
-    if(SB_USER){ const r=await SB.rpc("is_admin"); SB_ADMIN=!!(r&&r.data); }
+    if(SB_USER){ const r=await SB.rpc("is_admin"); SB_ADMIN=!!(r&&r.data); } window.__EP_ADMIN=SB_ADMIN;
   }catch(e){ console.warn("Supabase niet bereikbaar",e); }
   let seed=null; const loadSeed=async()=>{ if(seed===null){ try{ seed=await (await fetch("content.json",{cache:"no-cache"})).json(); }catch(e){ seed=false; } } return seed||null; };
   const docApi=path=>({
     async get(){ if(SB){ const {data,error}=await SB.from("site_content").select("data").eq("id",path).maybeSingle(); if(!error&&data&&data.data) return {exists:true,data:data.data}; }
-      const s=await loadSeed(); return s?{exists:true,data:s}:{exists:false}; },
+      if(path!=="site/content") return {exists:false}; const s=await loadSeed(); return s?{exists:true,data:s}:{exists:false}; },
     async set(d){ if(!SB) throw new Error("offline"); const {error}=await SB.from("site_content").upsert({id:path,data:d,updated_at:new Date().toISOString()}); if(error) throw error; return d; },
     async delete(){ if(!SB) throw new Error("offline"); const {error}=await SB.from("site_content").delete().eq("id",path); if(error) throw error; },
     onSnapshot(){ return ()=>{}; } });
@@ -1177,6 +1205,7 @@ Object.assign(T.nl,B3.nl); Object.assign(T.en,B3.en);
 const B4={nl:{"entry.tag":"Ambacht dat blijft","home.p":"Elizian is het lederlabel van Elise Philips: tijdloze tassen, volledig met de hand gestikt. Op pre-order en te personaliseren."},
   en:{"entry.tag":"Craft that lasts","home.p":"Elizian is the leather label of Elise Philips: timeless bags, stitched entirely by hand. Made to order and personalisable."}};
 Object.assign(T.nl,B4.nl); Object.assign(T.en,B4.en);
+const B5={nl:{"lg.order": "Bestellen bij Elizian\n\nElizian werkt op pre-order: er is geen voorraad. Elk stuk wordt pas na uw bestelling voor u gemaakt en volledig met de hand gestikt.\n\nZo werkt het\n1. U plaatst een pre-order via het formulier op deze website, eventueel met uw eigen kleuren en initialen.\n2. U ontvangt binnen enkele werkdagen een bevestiging met de prijs, de levertijd en de betaalinstructies.\n3. Na betaling (of aanbetaling, zoals in de bevestiging staat) begint de productie.\n4. Zodra uw stuk klaar is, hoort u hoe het wordt verzonden of opgehaald.\n\nPrijzen\nProducten hebben een vaste prijs of een prijs op aanvraag. Alle prijzen zijn in euro's. Verzendkosten worden vooraf vermeld.\n\nLevertijd\nOmdat elk stuk met de hand wordt gemaakt, verschilt de levertijd per product. U hoort de verwachte levertijd bij de bevestiging van uw bestelling.", "lg.return": "Herroepingsrecht en retour\n\nProducten uit de vaste collectie, zonder persoonlijke aanpassingen, mag u binnen 14 dagen na ontvangst zonder opgaaf van reden retourneren. Meld dit binnen die termijn per e-mail; daarna heeft u nog 14 dagen om het product terug te sturen. Het product moet onbeschadigd en ongebruikt zijn. U ontvangt het aankoopbedrag binnen 14 dagen na de melding terug; de kosten van het terugsturen zijn voor uzelf.\n\nUitzondering: gepersonaliseerde stukken\nStukken die volgens uw eigen specificaties worden gemaakt (bijvoorbeeld een eigen kleurcombinatie of initialen) zijn uitgesloten van het herroepingsrecht. Dat staat ook in de bevestiging van uw bestelling.\n\nKlachten en garantie\nIs er iets mis met uw stuk? Neem dan contact op. Elizian zoekt samen met u naar een passende oplossing, zoals herstel.", "lg.privacy": "Privacyverklaring\n\nElizian (Elise Philips) gaat zorgvuldig om met uw gegevens.\n\nWelke gegevens\nAls u het contactformulier gebruikt of een account aanmaakt, bewaren we uw naam, e-mailadres, de inhoud van uw bericht of aanvraag en, als u die opgeeft, uw bedrijfsnaam en uw opgeslagen ontwerpen.\n\nWaarvoor\nAlleen om uw vraag of bestelling af te handelen en contact met u te houden over uw aanvraag. We sturen geen nieuwsbrieven zonder uw toestemming en verkopen uw gegevens niet.\n\nWaar en hoe lang\nDe gegevens staan bij onze hostingpartij Supabase, op servers in de Europese Unie. We bewaren ze zolang nodig is voor uw aanvraag en de wettelijke bewaartermijnen (bijvoorbeeld 7 jaar voor facturen).\n\nUw rechten\nU mag uw gegevens inzien, laten aanpassen of laten verwijderen. Stuur daarvoor een e-mail. U kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens.\n\nCookies\nDeze website gebruikt alleen functionele opslag in uw browser (zoals uw taalkeuze en inlogsessie), geen trackingcookies.", "lg.terms": "Algemene voorwaarden (concept)\n\n1. Deze voorwaarden gelden voor alle aanbiedingen en pre-orders van Elizian, het label van Elise Philips.\n2. Een bestelling komt tot stand zodra u de bevestiging met prijs en levertijd per e-mail heeft ontvangen en geaccepteerd.\n3. Elk stuk wordt met de hand gemaakt. Kleine verschillen in kleur, nerf en stiksel zijn eigen aan natuurlijk leer en handwerk en zijn geen gebrek.\n4. Levertijden zijn een inschatting. Bij vertraging hoort u dat zo snel mogelijk; u mag de bestelling dan kosteloos annuleren als de vertraging aanzienlijk is.\n5. Voor retour en herroeping geldt de regeling op deze website. Gepersonaliseerde stukken zijn uitgesloten van herroeping.\n6. Op alle overeenkomsten is Nederlands recht van toepassing."},en:{"lg.order": "Ordering from Elizian\n\nElizian works by pre-order: there is no stock. Every piece is made for you only after you order, and stitched entirely by hand.\n\nHow it works\n1. Place a pre-order through the form on this website, optionally with your own colours and initials.\n2. Within a few working days you receive a confirmation with the price, lead time and payment instructions.\n3. Production starts after payment (or the deposit stated in the confirmation).\n4. Once your piece is ready, you hear how it will be shipped or collected.\n\nPrices\nProducts have a fixed price or a price on request. All prices are in euros. Shipping costs are stated in advance.\n\nLead time\nAs every piece is handmade, lead times vary per product. You receive the expected lead time with your order confirmation.", "lg.return": "Right of withdrawal and returns\n\nProducts from the standard collection, without personal changes, may be returned within 14 days of receipt without giving a reason. Let us know by e-mail within that period; you then have another 14 days to send the product back. It must be undamaged and unused. You receive the purchase amount back within 14 days of your notice; return shipping is at your own cost.\n\nException: personalised pieces\nPieces made to your own specifications (for example your own colour combination or initials) are excluded from the right of withdrawal. This is also stated in your order confirmation.\n\nComplaints and guarantee\nIs something wrong with your piece? Get in touch. Elizian will look for a suitable solution with you, such as repair.", "lg.privacy": "Privacy statement\n\nElizian (Elise Philips) handles your data with care.\n\nWhat data\nWhen you use the contact form or create an account, we store your name, e-mail address, the content of your message or request and, if you provide them, your company name and saved designs.\n\nWhat for\nOnly to handle your question or order and to stay in touch about your request. We never send newsletters without your consent and never sell your data.\n\nWhere and how long\nThe data is stored with our hosting provider Supabase, on servers in the European Union. We keep it as long as needed for your request and legal retention periods (for example 7 years for invoices).\n\nYour rights\nYou may view, correct or delete your data. Send us an e-mail. You can also file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).\n\nCookies\nThis website only uses functional storage in your browser (such as your language and login session), no tracking cookies.", "lg.terms": "General terms (draft)\n\n1. These terms apply to all offers and pre-orders of Elizian, the label of Elise Philips.\n2. An order is concluded once you have received and accepted the e-mail confirmation with price and lead time.\n3. Every piece is handmade. Small differences in colour, grain and stitching are inherent to natural leather and handcraft and are not defects.\n4. Lead times are estimates. If there is a delay you will be informed as soon as possible; you may cancel free of charge if the delay is substantial.\n5. Returns and withdrawal follow the policy on this website. Personalised pieces are excluded from withdrawal.\n6. Dutch law applies to all agreements."}}; Object.assign(T.nl,B5.nl); Object.assign(T.en,B5.en);
 const B2I={
   a1:{nl:{t:"Interieuradviseur · 2025",p:"Niveau 4, Hout- en Meubileringscollege Amsterdam. Mijn examenproject: een wijnzaak herontwikkeld tot wijnzaak met proeverij en kleine hapjes. Op de examenexpositie bekroond met de Flexa Kleurprijs."},
       en:{t:"Interior advisor · 2025",p:"Level 4, Hout- en Meubileringscollege Amsterdam. My graduation project: a wine shop redeveloped into a wine shop with tastings and small bites. Awarded the Flexa Kleurprijs colour award at the graduation exhibition."}},
@@ -1970,7 +1999,7 @@ const onC=(th,r)=>[ROT.x+r*Math.cos(ang(th)), ROT.z+r*Math.sin(ang(th))];
 const GATE_TH=68, ARCH_TH=[-45,-28,-11,6,23,40];
 // welke ruimtes er zijn en welke aanstaan lezen we vóór het bouwen, zodat de deuren gelijk over de wand verdeeld kunnen worden
 const EARLY=await (async()=>{ try{ if(!window.claude||!window.claude.use) return null; const to=ms=>new Promise(r=>setTimeout(()=>r(null),ms));
-  const db=await Promise.race([window.claude.use("db"),to(12000)]); if(!db) return null; const x=await Promise.race([db.doc("site/content").get(),to(12000)]); if(!x) return null;
+  const db=await Promise.race([window.claude.use("db"),to(12000)]); if(!db) return null; let x=null; if(window.__EP_ADMIN){ const dx=await Promise.race([db.doc("site/draft").get(),to(12000)]); if(dx&&dx.exists!==false) x=dx; } if(!x) x=await Promise.race([db.doc("site/content").get(),to(12000)]); if(!x) return null;
   if(typeof x.data==="function") return x.data(); if(x.exists===false) return null; if(x.data&&typeof x.data==="object"&&!Array.isArray(x.data)) return x.data; return x; }catch(e){ return null; } })();
 // ---- RUIMTES: een lijst die je in Instellingen zelf aanmaakt, aan- en uitzet; elke ruimte heeft een eigen deur in de rotonde
 const _c=o=>JSON.parse(JSON.stringify(o)), _s=(v,d="")=>typeof v==="string"?v:d;
@@ -2194,7 +2223,7 @@ function updateRooms(){
   for(const k of ROOMKEYS){ const reg=DOORREG[k]; if(!reg){ if(RG[k]&&RG[k].visible){ RG[k].visible=false; (ROOMLIGHTS[k]||[]).forEach(o=>o.L.intensity=0); } continue; } const dp=onC(DOOR_TH[k],ROT.R), near=Math.hypot(pose.x-dp[0],pose.z-dp[1])<3.4;
     const want=roomOn(k)&&(curRoomK===k||near)?1:0; reg.amt+=(want-reg.amt)*.09; if(Math.abs(want-reg.amt)<.003) reg.amt=want;
     reg.L.rotation.y=reg.amt*1.5; reg.Rr.rotation.y=-reg.amt*1.5;
-    const vis=curRoomK===k||reg.amt>.01; if(reg.glow) reg.glow.visible=!vis; RC_U.uROn.value[ROOMKEYS.indexOf(k)]=vis?1:0; if(RG[k]&&RG[k].visible!==vis){ RG[k].visible=vis; (ROOMLIGHTS[k]||[]).forEach(o=>o.L.intensity=vis?o.base:0); } }
+    const vis=roomOn(k)&&(curRoomK===k||curRoomK==="hall")||reg.amt>.01; if(reg.glow) reg.glow.visible=!vis; RC_U.uROn.value[ROOMKEYS.indexOf(k)]=vis?1:0; if(RG[k]&&RG[k].visible!==vis){ RG[k].visible=vis; (ROOMLIGHTS[k]||[]).forEach(o=>o.L.intensity=vis?o.base:0); } }
   const out=curRoomK==="hall"; if(out!==outdoorVis){ outdoorVis=out; OUTDOOR.forEach(o=>o.visible=out); }
 }
 /* ---- klassieke onderdelen: gecanneleerde zuil, baluster, blauweregen ---- */
@@ -2459,19 +2488,19 @@ const roomStations=k=>{ if(ROOM_ST[k]) return ROOM_ST[k]; const i=+k[1];
   return [{id:"w"+i+"0",eye:[-7.0,0],look:[-15,0],wing:i},{id:"w"+i+"1",eye:[-10,-1.8],look:[-10,4.5],wing:i,part:"text"},{id:"w"+i+"2",eye:[-10,1.8],look:[-10,-4.5],wing:i,part:"photo"}]; };
 const ART_LIST=[["h2",ART_TH[0]],["h9",ART_TH[1]]].filter(a=>a[1]!=null);
 let ST=[];
-const spaceRank=k=>k==="about"?1:k==="coll"?3:k==="contact"?4:2;
+const spaceRank=k=>{ const go=k==="about"||k==="coll"||k==="contact"?k:"collab", i=MENU.findIndex(m=>m.go===go); return i<0?9:i; };
 function makeRoute(){
   const out=[], C0=[ROT.x,ROT.z], R=ROT.R;
   // 1. de hal: start midden in de rotonde, dan alles wat er gepresenteerd staat, rondom
   out.push({id:"start",room:"hall",sec:"hall",eye:C0,look:P2(-2.5,R+40),cap:"hall"});
-  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant").map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o}; }).sort((p,q)=>p.a-q.a).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
+  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
   out.push({id:"vw",room:"hall",sec:"hall",eye:P2(-2.5,R-3.4),look:P2(-2.5,R+60),cap:"hall"});
   // 2. de ruimtes in vaste volgorde: over mij → samenwerkingen → collectie → contact (binnen een groep: volgorde uit Instellingen)
   OPEN0.map((k,i)=>({k,i})).sort((p,q)=>spaceRank(p.k)-spaceRank(q.k)||p.i-q.i).forEach(({k})=>{
     const th=DOOR_TH[k], X=XF[k], Lg=legOf(k), W=q=>X.toW(q[0],q[1]).map(v=>+v.toFixed(2)), cz=(Lg.zN+Lg.zS)/2;
     out.push({id:"d_"+k,room:"hall",sec:k,eye:P2(th,R-5.2),look:P2(th,R-.2),door:k},{id:"t_"+k+"1",room:"hall",sec:k,eye:P2(th,R-1.5),look:P2(th,R+6),transit:true});
     out.push({id:"e_"+k,room:k,sec:k,eye:W([-6.4,Lg.dz]),look:W([-15,Lg.dz]),space:k});
-    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant").map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a}; }).sort((p,q)=>p.a-q.a).forEach(p=>out.push({...objNode(p.o),sec:k}));
+    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).forEach(p=>out.push({...objNode(p.o),sec:k}));
     out.push({id:"t_"+k+"2",room:k,sec:k,eye:W([-6.4,Lg.dz]),look:C0,transit:true},{id:"t_"+k+"3",room:"hall",sec:k,eye:P2(th,R-1.7),look:C0,transit:true}); });
   // 3. via de bogen naar de tuin, eindigen bij de ingang met zicht op de rotonde
   // naar buiten lopen kan niet meer: de rondleiding eindigt weer midden in de rotonde
@@ -2666,7 +2695,9 @@ window.addEventListener("pointerup",e=>{
   if(e.target.closest(uiSel)) return;
   // enkele klik: werk of deur openen
   const h=pick(e.clientX,e.clientY,solids.concat(clickables))[0];
-  if(h){ const u=h.object.userData; if(siteFromHit(u)) return; if(u.item){ openInfo(u.item); return; } if(u.click){ u.click(); return; } }
+  if(h){ const u=h.object.userData; if(siteFromHit(u)) return; }
+  if(siteOpen) closeSite();
+  if(h){ const u=h.object.userData; if(u.item){ openInfo(u.item); return; } if(u.click){ u.click(); return; } }
   if(e.pointerType==="touch"){ const now=performance.now();
     if(now-lastTap<320 && Math.hypot(e.clientX-lastTapXY[0],e.clientY-lastTapXY[1])<40){ jumpToScreen(e.clientX,e.clientY); lastTap=0; } else { lastTap=now; lastTapXY=[e.clientX,e.clientY]; } }
 });
@@ -2713,7 +2744,7 @@ const COLL_DEFAULT=[
   {id:"b4",img:"assets/bag_wallet.webp",w:.21,price:"",nl:{t:"De Continental portemonnee",p:"Lange portemonnee in crème leer met bordeaux band en parelknoop, met ruimte voor kaarten en biljetten."},en:{t:"The Continental Wallet",p:"A long wallet in cream leather with a burgundy band and pearl button, with room for cards and notes."}},
   {id:"b5",img:"assets/bag_weekender.webp",w:.52,price:"",nl:{t:"De Weekender",p:"Weekendtas met bordeaux banden, gouden rits en een leren label met het EL-monogram."},en:{t:"The Weekender",p:"A weekend bag with burgundy straps, a gold zip and a leather tag with the EL monogram."}}
 ];
-let COLL=JSON.parse(JSON.stringify(COLL_DEFAULT));
+let COLL=JSON.parse(JSON.stringify(COLL_DEFAULT)), COLL_ALL=COLL;
 let PLINTH=["b1","b2","b3","b4","b5"];
 // catalogus: collecties (onbeperkt), partners (onbeperkt) en per zuil in de rotonde welk product erop staat
 const COLLS_DEF=[{id:"c1",type:"bag",nl:{t:"Timeless",p:""},en:{t:"Timeless",p:""}},{id:"c2",type:"art",nl:{t:"Aarde & Licht",p:""},en:{t:"Earth & Light",p:""}}];
@@ -3168,12 +3199,13 @@ window.addEventListener("keydown",e=>{ if(document.querySelector(".modal.open")|
    BEHEER: inhoud uit de database, alleen Elise (eigenaar) mag schrijven
    ==================================================================== */
 let admColFilter="";
-const DOC="site/content"; let dbH=null, assetsH=null, isOwner=false, content=null, draft=null, admTab="ruimtes";
+const LIVE_DOC="site/content", DRAFT_DOC="site/draft"; let DOC=LIVE_DOC, liveUpdated=0; let dbH=null, assetsH=null, isOwner=false, content=null, draft=null, admTab="ruimtes";
 const clone=o=>JSON.parse(JSON.stringify(o));
 const DEF={T:{nl:{...T.nl},en:{...T.en}}, ITEMS:{}, ROOMS:clone(ROOMDATA)};
 const WALL_IDS=["h1","h2","h3","h4","h5","h6","h7","h8","h9","h10","a1","a2","a3","a4","a5","a6"];
 WALL_IDS.forEach(id=>{ if(ITEMS[id]) DEF.ITEMS[id]={nl:{...ITEMS[id].nl},en:{...ITEMS[id].en},svg:ITEMS[id].svg}; });
 const TEXT_GROUPS=[
+  ["Juridisch (concept — laat nakijken)",[["lg.order","Bestellen & levering",1],["lg.return","Herroeping & retour",1],["lg.privacy","Privacyverklaring",1],["lg.terms","Algemene voorwaarden",1]]],
   ["Welkom",[["entry.tag","Ondertitel onder je naam"]]],
   ["Hal",[["end.t","Bord productie: titel"],["end.p","Bord productie: tekst"]]],
   ["Over mij",[["ab.t","Verhaal: titel"],["ab.p","Verhaal: tekst"],["vis.t","Visie: titel"],["s1.t","Stap 1: titel"],["s1.p","Stap 1: tekst"],["s2.t","Stap 2: titel"],["s2.p","Stap 2: tekst"],["s3.t","Stap 3: titel"],["s3.p","Stap 3: tekst"]]],
@@ -3186,7 +3218,7 @@ const splitPath=path=>{ const a=path.split("."); return a[0]==="texts"?[a[0],a[1
 const getPath=(o,path)=>splitPath(path).reduce((a,k)=>a==null?a:a[k],o);
 const setPath=(o,path,v)=>{ const ks=splitPath(path); let a=o; ks.slice(0,-1).forEach(k=>{ if(a[k]==null) a[k]={}; a=a[k]; }); a[ks[ks.length-1]]=v; };
 function currentContent(){ return { brand2:true, decor1:true, brand3:true, brand4:true, study1:true, study:clone(STUDY), swatches:clone(SWLIB),
-  coll:COLL.map(b=>({...clone(b),dims:{...(b.dims||{})}})), show:clone(SHOW), plinth:PLINTH.filter(Boolean),
+  coll:COLL_ALL.map(b=>({...clone(b),dims:{...(b.dims||{})}})), show:clone(SHOW), plinth:PLINTH.filter(Boolean),
   items:Object.fromEntries(WALL_IDS.filter(id=>ITEMS[id]).map(id=>[id,{nl:{...ITEMS[id].nl},en:{...ITEMS[id].en},img:ITEMS[id].img||"",dims:{...(ITEMS[id].dims||{})},modelImg:ITEMS[id].modelImg||""}])),
   texts:{nl:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.nl[k]||""])),en:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.en[k]||""]))},
   rooms:clone(ROOMDATA), doorsOn:{...DOOR_ON}, spaces:clone(SPACES), objects:clone(OBJS), menu:clone(MENU), collections:clone(COLLS), partners:clone(PARTNERS), pillars:{...PILLAR}, collNames:{nl:{bag:(COLLS.find(c=>c.type==="bag")||{nl:{}}).nl.t||"",art:(COLLS.find(c=>c.type==="art")||{nl:{}}).nl.t||""},en:{bag:(COLLS.find(c=>c.type==="bag")||{en:{}}).en.t||"",art:(COLLS.find(c=>c.type==="art")||{en:{}}).en.t||""}}, layout:clone(LAYOUT_DATA), phone:SITE.phone, email:SITE.email, wa:SITE.wa, insta:SITE.insta, linkedin:SITE.linkedin, address:SITE.address, kvk:SITE.kvk, vat:SITE.vat, menuOpts:clone(MENU_OPTS), decor1:true }; }
@@ -3210,7 +3242,8 @@ function applyContent(d){
   if(false) for(const l of ["nl","en"]) for(const k of ["bag","art"]){ const v=d.collNames[l]&&d.collNames[l][k]; COLLNAMES[l][k]=(typeof v==="string"&&v.trim())?v:COLLNAMES_DEF[l][k]; }
   const coll=Array.isArray(d.coll)?d.coll:Array.isArray(d.bags)?d.bags.map(b=>({...COLL_DEFAULT.find(x=>x.id===b.id),...b})):null;
   if(coll){ COLL=coll.filter(b=>b&&typeof b.id==="string").map(b=>{ const def=COLL_DEFAULT.find(x=>x.id===b.id)||{};
-      const dims=normDims(b.dims); return {id:b.id,col:str(b.col),partner:str(b.partner),kind:["bag","painting","poster","small"].includes(b.kind)?b.kind:"bag",img:str(b.img,def.img||""),w:dims.w?dims.w/100:(+b.w||def.w||.35),dims,modelImg:str(b.modelImg),price:str(b.price),media:Array.isArray(b.media)?b.media.filter(m=>m&&["img","video","yt","vimeo","link"].includes(m.t)&&str(m.src)).map(m=>({t:m.t,src:str(m.src)})):[],specs:{nl:str(b.specs&&b.specs.nl),en:str(b.specs&&b.specs.en)},custom:(()=>{ const c=b.custom||{}, arr=a=>Array.isArray(a)?a.filter(x=>typeof x==="string"):[], ph={}; if(c.photos&&typeof c.photos==="object") Object.keys(c.photos).forEach(k=>{ if(str(c.photos[k])) ph[k]=str(c.photos[k]); }); return {on:!!c.on,mode:c.mode==="foto"?"foto":"kleur",body:arr(c.body),acc:arr(c.acc),hw:arr(c.hw),photos:ph}; })(),nl:{t:str(b.nl&&b.nl.t,def.nl?def.nl.t:""),p:str(b.nl&&b.nl.p,def.nl?def.nl.p:"")},en:{t:str(b.en&&b.en.t,def.en?def.en.t:""),p:str(b.en&&b.en.p,def.en?def.en.p:"")}}; }); }
+      const dims=normDims(b.dims); return {id:b.id,off:!!b.off,col:str(b.col),partner:str(b.partner),kind:["bag","painting","poster","small"].includes(b.kind)?b.kind:"bag",img:str(b.img,def.img||""),w:dims.w?dims.w/100:(+b.w||def.w||.35),dims,modelImg:str(b.modelImg),price:str(b.price),media:Array.isArray(b.media)?b.media.filter(m=>m&&["img","video","yt","vimeo","link"].includes(m.t)&&str(m.src)).map(m=>({t:m.t,src:str(m.src)})):[],specs:{nl:str(b.specs&&b.specs.nl),en:str(b.specs&&b.specs.en)},custom:(()=>{ const c=b.custom||{}, arr=a=>Array.isArray(a)?a.filter(x=>typeof x==="string"):[], ph={}; if(c.photos&&typeof c.photos==="object") Object.keys(c.photos).forEach(k=>{ if(str(c.photos[k])) ph[k]=str(c.photos[k]); }); return {on:!!c.on,mode:c.mode==="foto"?"foto":"kleur",body:arr(c.body),acc:arr(c.acc),hw:arr(c.hw),photos:ph}; })(),nl:{t:str(b.nl&&b.nl.t,def.nl?def.nl.t:""),p:str(b.nl&&b.nl.p,def.nl?def.nl.p:"")},en:{t:str(b.en&&b.en.t,def.en?def.en.t:""),p:str(b.en&&b.en.p,def.en?def.en.p:"")}}; }); }
+  if(coll){ COLL_ALL=COLL; COLL=COLL.filter(b=>!b.off); }
   if(d.show&&typeof d.show==='object') SHOW_KEYS.forEach(k=>{ const a=d.show[k]; if(Array.isArray(a)) SHOW[k]=[...new Set(a.map(v=>str(v)).filter(Boolean))].slice(0,SHOW_MAX); });
   if(Array.isArray(d.collections)&&d.collections.length) COLLS=d.collections.filter(c=>c&&typeof c.id==="string").map(c=>({id:c.id,type:["bag","art","other"].includes(c.type)?c.type:"other",nl:{t:str(c.nl&&c.nl.t)||"Collectie",p:str(c.nl&&c.nl.p)},en:{t:str(c.en&&c.en.t)||str(c.nl&&c.nl.t)||"Collection",p:str(c.en&&c.en.p)}}));
   else if(d.collNames&&typeof d.collNames==="object"){ COLLS=JSON.parse(JSON.stringify(COLLS_DEF)); for(const l of ["nl","en"]){ const n=d.collNames[l]||{}; if(str(n.bag)) COLLS[0][l].t=n.bag; if(str(n.art)) COLLS[1][l].t=n.art; } }
@@ -3281,7 +3314,7 @@ function mediaAdm(i){ const b=draft.coll[i], P="coll."+i, M=b.media||[], lab={vi
       <div><label>Of plak een YouTube- of Vimeo-link</label><div class="adm-linkrow"><input data-medlink="${i}" placeholder="https://youtu.be/…"><button type="button" class="adm-del" data-medadd="${i}">Toevoegen</button></div></div></div>
     ${two(P+".specs.$","Specificaties (één per regel, bijv. Materiaal: kalfsleer)",1)}</div>`; }
 function productCard(i,del){ const b=draft.coll[i];
-  return `<div class="adm-bag" id="prod-${escAttr(b.id)}" data-sec="${escAttr((b.nl&&b.nl.t)||"Product")}" data-sub="1">${upl("coll."+i+".img")}<div>${two("coll."+i+".$.t","Naam")}${two("coll."+i+".$.p","Beschrijving",1)}<div class="row">${kindSel(i)}${colSel(i)}</div><div class="row">${partSel("coll."+i+".partner",b.partner||"")}${fld("coll."+i+".price","Prijs (leeg = op aanvraag)")}</div><div class="row adm-dims"><div><label>Breedte (cm)</label><input data-p="coll.${i}.dims.w" data-cm="1" value="${(b.dims&&b.dims.w)||""}"></div><div><label>Hoogte (cm)</label><input data-p="coll.${i}.dims.h" data-cm="1" value="${(b.dims&&b.dims.h)||""}"></div><div><label>Diepte (cm)</label><input data-p="coll.${i}.dims.d" data-cm="1" value="${(b.dims&&b.dims.d)||""}"></div></div><div class="adm-model"><span>Foto met model (optioneel)</span>${upl("coll."+i+".modelImg")}</div>${mediaAdm(i)}${custAdm(i)}${del?`<button type="button" class="adm-del" data-delbag="${i}">Product verwijderen</button>`:""}</div></div>`; }
+  return `<div class="adm-bag${b.off?" adm-off":""}" id="prod-${escAttr(b.id)}" data-sec="${escAttr((b.nl&&b.nl.t)||"Product")}${b.off?" (verborgen)":""}" data-sub="1">${upl("coll."+i+".img")}<div><label class="adm-check adm-hide"><input type="checkbox" data-chk="coll.${i}.off"${b.off?" checked":""}> Verbergen voor bezoekers (product staat nergens op de website)</label>${two("coll."+i+".$.t","Naam")}${two("coll."+i+".$.p","Beschrijving",1)}<div class="row">${kindSel(i)}${colSel(i)}</div><div class="row">${partSel("coll."+i+".partner",b.partner||"")}${fld("coll."+i+".price","Prijs (leeg = op aanvraag)")}</div><div class="row adm-dims"><div><label>Breedte (cm)</label><input data-p="coll.${i}.dims.w" data-cm="1" value="${(b.dims&&b.dims.w)||""}"></div><div><label>Hoogte (cm)</label><input data-p="coll.${i}.dims.h" data-cm="1" value="${(b.dims&&b.dims.h)||""}"></div><div><label>Diepte (cm)</label><input data-p="coll.${i}.dims.d" data-cm="1" value="${(b.dims&&b.dims.d)||""}"></div></div><div class="adm-model"><span>Foto met model (optioneel)</span>${upl("coll."+i+".modelImg")}</div>${mediaAdm(i)}${custAdm(i)}${del?`<button type="button" class="adm-del" data-delbag="${i}">Product verwijderen</button>`:""}</div></div>`; }
 // aanvinklijst: alle producten per collectie, met 'hele collectie'; radio=true voor één keuze (zuil)
 function pickHTML(path,sel,{max=SHOW_MAX,radio=false,none=""}={}){ const S2=new Set(sel), groups=draft.collections.map(c=>[c,draft.coll.filter(b=>draftCollOf(b)===c.id)]); const loose=draft.coll.filter(b=>!draftCollOf(b));
   if(loose.length) groups.push([{id:"",nl:{t:"Zonder collectie"}},loose]);
@@ -3300,7 +3333,7 @@ function spaceCard(i){ const sp=draft.spaces[i], P="spaces."+i, pid=sp.partner||
     ${two(P+".$.t","Naam")}${two(P+".$.p","Beschrijving",1)}<div class="row"><div><label>Sfeer van de ruimte</label><select data-p="${P}.theme"><option value="">Standaard (${escAttr(THEMES[THEME_DEF[sp.id]||"travertijn"].l)})</option>${Object.entries(THEMES).map(([k,t])=>`<option value="${k}"${sp.theme===k?" selected":""}>${escAttr(t.l)}</option>`).join("")}</select></div><div></div></div><div class="row">${partSel(P+".partner",pid,"Samenwerking in deze ruimte")}<div><label>Volgorde</label><div class="adm-ord"><button type="button" class="adm-del" data-spmove="${i}" data-d="-1">↑ eerder</button><button type="button" class="adm-del" data-spmove="${i}" data-d="1">↓ later</button></div></div></div>
     <button type="button" class="adm-del" data-delspace="${i}">Ruimte verwijderen</button></div></div>`; }
 function colChecks(path,sel){ const S2=new Set(sel||[]); return `<div class="pk" data-max="99"><div class="pk-group"><div class="pk-head"><b>Hele collecties</b></div><div class="pk-list">${draft.collections.map(c=>`<label class="pk-item${S2.has(c.id)?" on":""}"><input type="checkbox" data-pick="${path}" data-id="${escAttr(c.id)}"${S2.has(c.id)?" checked":""}><span>${escAttr(c.nl.t)}<small>${draft.coll.filter(b=>draftCollOf(b)===c.id).length} producten</small></span></label>`).join("")||`<p class="adm-hint">Nog geen collecties.</p>`}</div></div></div>`; }
-function objHTML(id){ const i=draft.objects.findIndex(o=>o.id===id); if(i<0) return `<p class="adm-hint">Dit item bestaat niet meer.</p>`; const o=draft.objects[i], P="objects."+i, T2=OBJ_TYPES[o.type]; let h=`<p class="adm-hint">${T2.d}</p>`;
+function objHTML(id){ const i=draft.objects.findIndex(o=>o.id===id); if(i<0) return `<p class="adm-hint">Dit item bestaat niet meer.</p>`; const o=draft.objects[i], P="objects."+i, T2=OBJ_TYPES[o.type]; let h=`<p class="adm-hint">${T2.d}</p><label class="adm-check adm-hide"><input type="checkbox" data-chk="${P}.off"${o.off?" checked":""}> Verbergen voor bezoekers (jij ziet het als beheerder nog wel)</label>`;
   const num=(f,lab,v)=>`<div><label>${lab}</label><input data-p="${P}.${f}" data-num="2" value="${v??""}"></div>`;
   if(o.type==="etalage"){ h+=`<div class="adm-objacts" style="margin-top:0;border:0;padding-top:0"><button type="button" class="btn gold" data-objact="arrange" data-id="${escAttr(id)}">Tassen in de etalage verschuiven</button><span class="adm-hint" style="margin:0">Daarna sleep je elke tas naar een andere plek of plank.</span></div><h5 class="adm-h5">Wat staat erin</h5><p class="adm-hint">Vink een hele collectie aan en/of losse producten (samen maximaal ${T2.max}).</p>`+colChecks(P+".cols",o.cols)+pickHTML(P+".picks",o.picks||[],{max:T2.max});
     h+=`<h5 class="adm-h5">Uiterlijk</h5><div class="row">${num("w","Breedte (m)",o.w||2.6)}${num("h","Hoogte (m)",o.h||2.1)}</div>`+two(P+".$.t","Bordje onder de etalage (optioneel)"); }
@@ -3517,15 +3550,19 @@ function openAdmin(scope){ draft=currentContent();
   if(Array.isArray(scope)){ admScope=scope; admScopeTitle="Bewerken · "+penLabel(scope[0]); }
   else { admScope=null; if(!["ruimtes","partners","cols","items","texts","info"].includes(admTab)) admTab="ruimtes"; }
   renderAdmin(); document.getElementById("admNote").textContent=dbH?"":"Opslaan is hier niet beschikbaar."; document.getElementById("adminModal").classList.add("open"); }
-async function saveDraft(){ if(!dbH||!isOwner) return false; const d={...clone(draft),updated:Date.now()}; try{ await dbH.doc(DOC).set(d); applyContent(d); return true; }catch(e){ return false; } }
+async function saveDraft(){ if(!dbH||!isOwner) return false; const d={...clone(draft),updated:Date.now()}; try{ await dbH.doc(DOC).set(d); applyContent(d); markDirty(); return true; }catch(e){ return false; } }
 document.getElementById("admSave").addEventListener("click",async()=>{ const note=document.getElementById("admNote"); if(!dbH||!isOwner){ note.textContent="Alleen de eigenaar kan opslaan."; return; }
-  const d={...clone(draft),updated:Date.now()}; note.textContent="Opslaan…"; try{ await dbH.doc(DOC).set(d); applyContent(d); PENS.forEach(a=>{ if(a.el) a.el._lang=null; }); note.textContent="Opgeslagen. De website is bijgewerkt.";
+  const d={...clone(draft),updated:Date.now()}; note.textContent="Opslaan…"; try{ await dbH.doc(DOC).set(d); applyContent(d); PENS.forEach(a=>{ if(a.el) a.el._lang=null; }); note.textContent=DOC===DRAFT_DOC?"Opgeslagen in je concept. Klik bovenin op Live zetten om het voor bezoekers zichtbaar te maken.":"Opgeslagen. De website is bijgewerkt."; markDirty();
     if(spacesChanged()){ note.textContent="Opgeslagen. De zaal wordt opnieuw ingedeeld…"; setTimeout(()=>location.reload(),900); } }catch(e){ note.textContent="Opslaan mislukt: alleen de eigenaar kan wijzigen."; } });
 document.getElementById("admReset").addEventListener("click",async(e)=>{ const note=document.getElementById("admNote"); if(!dbH||!isOwner) return; const bt=e.currentTarget; if(!bt.dataset.sure){ bt.dataset.sure="1"; bt.textContent="Zeker? Klik nogmaals"; return; }
-  try{ await dbH.doc(DOC).delete(); location.reload(); }catch(err){ note.textContent="Terugzetten mislukt."; } });
+  try{ if(DOC===DRAFT_DOC){ const lv=unwrap(await dbH.doc(LIVE_DOC).get()); if(lv) await dbH.doc(DRAFT_DOC).set(lv); else await dbH.doc(DRAFT_DOC).delete(); } else await dbH.doc(DOC).delete(); location.reload(); }catch(err){ note.textContent="Terugzetten mislukt."; } });
 (async()=>{ try{ if(!window.claude||!window.claude.use) return;
   const user=await window.claude.use("user"); isOwner=!!(user&&(await user.isOwner()));
   dbH=await window.claude.use("db");
+  // beheerder werkt in een concept; bezoekers zien alleen wat live is gezet
+  if(dbH&&isOwner){ DOC=DRAFT_DOC; try{ const lv=unwrap(await dbH.doc(LIVE_DOC).get()); liveUpdated=(lv&&lv.updated)||0; }catch(e){}
+    try{ const dr=unwrap(await dbH.doc(DRAFT_DOC).get()); if(!dr){ const lv=unwrap(await dbH.doc(LIVE_DOC).get()); if(lv) await dbH.doc(DRAFT_DOC).set(lv); } }catch(e){} }
+  if(isOwner) OBJS.filter(o=>o.off).forEach(o=>{ disposeObj(o.id); }), syncObjects();
   if(dbH){ const ref=dbH.doc(DOC);
     try{ const first=unwrap(await ref.get()); if(first){ applyContent(first);
       // kwam de inhoud te laat voor de indeling van de zaal? dan één keer opnieuw laden met de juiste deuren
@@ -3536,7 +3573,7 @@ document.getElementById("admReset").addEventListener("click",async(e)=>{ const n
   if(isOwner){ assetsH=await window.claude.use("assets"); initPens();
     const b1=document.createElement("button"); b1.className="adm-btn"; b1.type="button"; b1.textContent="+ Item"; b1.title="Zet een nieuw item in deze ruimte"; b1.addEventListener("click",()=>addBox.classList.add("open"));
     const b2=document.createElement("button"); b2.className="adm-btn"; b2.type="button"; b2.textContent="⚙ Instellingen"; b2.title="Ruimtes, samenwerkingen, collecties en producten"; b2.addEventListener("click",()=>openAdmin());
-    document.querySelector(".nav-right").append(b1,b2); }
+    document.querySelector(".nav-right").append(b1,b2); addPublishBtn(); }
 }catch(e){} })();
 const mapBox=document.getElementById("map"), mapToggle=document.getElementById("mapToggle");
 mapToggle.addEventListener("click",()=>{ if(window.innerWidth<760) mapBox.classList.toggle("open"); else { mapBox.style.display=""; mapToggle.style.display=""; } });
@@ -3857,7 +3894,7 @@ function disposeObj(id){ const r=OBJ_REG[id]; if(!r) return; r.G.parent&&r.G.par
   for(let i=panels.length-1;i>=0;i--){ let own=false; for(let q=panels[i].mesh;q;q=q.parent) if(q===r.G){ own=true; break; } if(own) panels.splice(i,1); }
   r.G.traverse(m=>{ if(m.geometry) m.geometry.dispose(); }); if(r.pen){ const k=PENS.indexOf(r.pen); if(k>=0) PENS.splice(k,1); if(r.pen.el) r.pen.el.remove(); } delete OBJ_REG[id]; }
 let objBusy=Promise.resolve();
-async function buildObj(o){ disposeObj(o.id); const par=objParent(o); if(!par||!OB[o.type]) return; const G=new THREE.Group(); G.userData.objId=o.id; placeObj(o,G); par.add(G);
+async function buildObj(o){ disposeObj(o.id); const par=objParent(o); if(!par||!OB[o.type]||(o.off&&!isOwner)) return; const G=new THREE.Group(); G.userData.objId=o.id; placeObj(o,G); par.add(G);
   const pb=BP, px=BPXF; BP=G; BPXF=null; let info={top:2,size:1}; try{ info=(await OB[o.type](o,G))||info; }catch(e){ console.warn("item",o.id,e); } BP=pb; BPXF=px;
   G.traverse(m=>{ if(m.isMesh){ m.userData.objId=o.id; if(!m.userData.root) m.userData.root=G; } });
   const reg={G,sig:objSig(o),top:info.top,size:info.size}; OBJ_REG[o.id]=reg; reg.pen={key:"obj:"+o.id,p:new THREE.Vector3(),room:o.space==="hall"?"hall":o.space,el:null}; PENS.push(reg.pen); posPen(o); }
@@ -3904,7 +3941,7 @@ function hitSpot(cx,cy,mount,space,half=.6){ const rr=screenRay(cx,cy);
   if(!best) return null; const W=best.W; let u=clamp(best.sv,W.lo+half,W.hi-half); if(W.gap&&u>W.gap[0]-half&&u<W.gap[1]+half) u=u<(W.gap[0]+W.gap[1])/2?W.gap[0]-half:W.gap[1]+half;
   return {wall:best.i,u:+u.toFixed(3),y:+clamp(best.p.y,.6,5.2).toFixed(2)}; }
 function applySpot(o,h){ if(!h) return; if(o.mount==="wall"){ if(o.space==="hall"){ o.th=h.th; } else { o.wall=h.wall; o.u=h.u; } if(o.type!=="tekst"||!o.board) o.y=clamp(h.y,o.type==="etalage"?((o.h||2.1)/2+.35):1,5.2-((o.h||1.2)/2)); } else { o.x=h.x; o.z=h.z; } }
-async function saveNow(msg){ if(!dbH||!isOwner) return false; const d={...currentContent(),updated:Date.now()}; try{ await dbH.doc(DOC).set(d); content=d; if(msg) toast(msg); return true; }catch(e){ toast("Opslaan mislukt."); return false; } }
+async function saveNow(msg){ if(!dbH||!isOwner) return false; const d={...currentContent(),updated:Date.now()}; try{ await dbH.doc(DOC).set(d); content=d; markDirty(); if(msg) toast(msg); return true; }catch(e){ toast("Opslaan mislukt."); return false; } }
 function toast(t){ let el=document.getElementById("epToast"); if(!el){ el=document.createElement("div"); el.id="epToast"; el.className="ep-toast"; document.body.appendChild(el); } el.textContent=t; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),2600); }
 function refreshRoute(){ const keepT=curT; makeRoute(); computeNodes(); buildTimeline(); buildMap(); lastSt=-2; lastCI=-9; if(mode==="route"&&!jump) curT=Math.min(keepT,totalT); }
 function endObjMode(save){ const m=objMode; objMode=null; objDrag=null; setBar(""); scene.style.cursor=""; if(!m) return;
@@ -3966,10 +4003,21 @@ function buildArrows(ci){ arrowFrom=ci; arrowNext=-1; while(arrowG.children.leng
     m.position.set(x,y,z); m.rotation.y=Math.atan2(-dx,-dz); m.scale.setScalar(1.35); m.renderOrder=20; m.userData.dist=d; arrowG.add(m); } }
 // richtingwijzer onderin beeld: wijst naar het volgende punt en zegt wat er komt
 const hint=document.createElement("button"); hint.type="button"; hint.className="route-hint"; hint.innerHTML=`<span class="rh-arrow"><svg viewBox="0 0 24 24"><path d="M12 3l7 9h-4.5v9h-5v-9H5z"/></svg></span><span class="rh-txt"><small></small><b></b></span>`; (document.getElementById("scene")||document.body).appendChild(hint);
-hint.addEventListener("click",()=>{ const j=arrowNext; if(j>=0) goStation(j); });
+hint.addEventListener("click",()=>{ const j=mode==="free"&&rjIdx>=0?rjIdx:arrowNext; if(j>=0) goStation(j); });
+// los van de route: zachte pijlen naar het dichtstbijzijnde routepunt, zodat je de route weer oppakt
+const rejoinG=new THREE.Group(); S.add(rejoinG); let rjIdx=-1, rjAt=[1e9,1e9], rjFade=0;
+function buildRejoin(){ while(rejoinG.children.length){ const c=rejoinG.children.pop(); c.material.dispose(); } rjAt=[pose.x,pose.z]; rjIdx=-1;
+  const ns=nearestStation(); if(ns.i<0||ns.d<1.4||ns.d>14) return; rjIdx=ns.i; const n=nodes[ns.i], dx=n.x-pose.x, dz=n.z-pose.z, L=ns.d, inR=roomOf(pose.x,pose.z)!=="hall";
+  for(let d=.9; d<L-.45; d+=.5){ const x=pose.x+dx*d/L, z=pose.z+dz*d/L, m=new THREE.Mesh(arrowGeo,new THREE.MeshBasicMaterial({color:0xf3e6c8,transparent:true,opacity:0,depthWrite:false,toneMapped:false}));
+    m.position.set(x,(inR?0:groundAt(x,z))+.04,z); m.rotation.y=Math.atan2(-dx,-dz); m.scale.setScalar(1.15); m.renderOrder=20; m.userData.dist=d; rejoinG.add(m); } }
 function animArrows(now){ const still=!jump&&mode==="route"&&pose.st!=null&&pose.st>=0; arrowFade+=((still?1:0)-arrowFade)*.08;
   arrowG.visible=arrowFade>.02; const t=now/1000;
   if(arrowG.visible) arrowG.children.forEach(m=>{ const w=.5+.5*Math.sin(m.userData.dist*2.2-t*4.2); m.material.opacity=arrowFade*(.3+.6*w*w)*Math.min(1,m.userData.dist/1.6); });
+  const free=!jump&&mode==="free"; if(free&&Math.hypot(pose.x-rjAt[0],pose.z-rjAt[1])>.5) buildRejoin(); if(!free&&rjAt[0]<1e8){ rjAt=[1e9,1e9]; }
+  rjFade+=((free&&rjIdx>=0?1:0)-rjFade)*.08; rejoinG.visible=rjFade>.02; if(rejoinG.visible) rejoinG.children.forEach(m=>{ const w=.5+.5*Math.sin(m.userData.dist*2.2-t*4.2); m.material.opacity=rjFade*(.25+.55*w*w); });
+  if(free&&rjIdx>=0&&!document.body.classList.contains("at-home")){ const n2=nodes[rjIdx]; hint.classList.add("show"); const tx=n2.x, tz=n2.z, ty=deg(Math.atan2(tx-pose.x,-(tz-pose.z))), rel=((ty-(pose.yaw+lookYaw))%360+540)%360-180;
+    hint.querySelector(".rh-arrow").style.transform=`rotate(${rel.toFixed(1)}deg)`; const s1=hint.querySelector("small"), s2=hint.querySelector("b"), a1=lang==="nl"?"Terug naar de route":"Back to the route", l2=nodeLab(n2)||(n2.space?spaceTitle(n2.space):"");
+    if(s1.textContent!==a1) s1.textContent=a1; if(s2.textContent!==l2) s2.textContent=l2; return; }
   const j=arrowNext, n=j>=0&&nodes[j], show=still&&!!n&&!document.body.classList.contains("at-home")&&!capEl.classList.contains("show");
   hint.classList.toggle("show",!!show); if(!show) return;
   const tx=n.look?n.look[0]:n.x, tz=n.look?n.look[1]:n.z, ty=deg(Math.atan2(tx-pose.x,-(tz-pose.z))), rel=((ty-(pose.yaw+lookYaw))%360+540)%360-180;
@@ -4195,7 +4243,7 @@ const siteEl=document.createElement("div"); siteEl.className="site-win"; siteEl.
 siteEl.innerHTML=`<div class="sw-shell"><header class="sw-head"><button type="button" class="sw-brand" data-sgo="hall"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#mono"/></svg><span>Elizian</span></button>
   <nav class="sw-nav" aria-label="Website"></nav><div class="sw-tools"><button type="button" class="sw-lang"></button><button type="button" class="sw-wide" aria-label="Groter"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 15v5h-5M4 4l6 6M20 20l-6-6"/></svg></button>
   <button type="button" class="sw-close"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg><span></span></button></div><button type="button" class="sw-burger" aria-label="Menu"><i></i><i></i><i></i></button></header>
-  <main class="sw-main" tabindex="-1"></main></div>`;
+  <main class="sw-main" tabindex="-1"></main></div><button type="button" class="sw-handle" aria-label="Website"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span>Website</span></button>`;
 document.body.appendChild(siteEl);
 const swMain=siteEl.querySelector(".sw-main"); let sitePage="hall", siteOpen=false, siteWide=false;
 const siteOn=()=>MENU_OPTS.site!==false;
@@ -4240,7 +4288,7 @@ function productHTML(id){ const b=bagById(id), it=ITEMS[id]; if(!it) return ""; 
     <div class="sw-pinfo">${eyeb(tr(kindKey[it.kind]||"k.sale"))}<h2>${E(c.t)}</h2>${paras(c.p)}
     ${sp.length?`<dl class="sw-specs">${sp.map(([k,v])=>`<dt>${E(k)}</dt><dd>${E(v)}</dd>`).join("")}</dl>`:""}
     <div class="sw-acts">${btnS(tr("m.buy"),`data-sform="buy" data-sitem="${E(c.t)}"`,"gold")}${cu?btnS(nlL()?"Personaliseer":"Personalise",`data-scfg="${E(id)}"`):""}${btnS(tr("m.quote"),`data-sform="custom" data-sitem="${E(c.t)}"`,"ghost")}</div>
-    <div class="sw-small">${inBuilding(`data-sprod="${E(id)}"`)}<button type="button" class="sw-link" data-ssheet="${E(id)}">${nlL()?"Productblad":"Product sheet"}</button></div></div>`); }
+    <div class="sw-small">${inBuilding(`data-sprod="${E(id)}"`)}<button type="button" class="sw-link" data-sgo="legal" data-sa="bestellen">${nlL()?"Bestellen & levering":"Ordering & delivery"}</button><button type="button" class="sw-link" data-ssheet="${E(id)}">${nlL()?"Productblad":"Product sheet"}</button></div></div>`); }
 function itemHTML(id,cls){ const it=ITEMS[id]; if(!it) return ""; const c=L(it), img=itemImg(id);
   return sec("item-"+id,"sw-split "+(cls||""),`${img?`<figure class="sw-fig"><img src="${E(img)}" alt="${E(c.t)}" loading="lazy" data-zoom="${E(img)}"></figure>`:`<figure class="sw-fig sw-svg">${it.svg?it.svg():""}</figure>`}<div>${eyeb(it.kind==="about"?"":tr(kindKey[it.kind]||""))}<h2>${E(c.t)}</h2>${paras(c.p)}
     ${it.kind==="sale"||it.kind==="art"?`<div class="sw-acts">${btnS(tr("m.buy"),`data-sform="buy" data-sitem="${E(c.t)}"`,"gold")}</div>`:""}${inBuilding(`data-sprod="${E(id)}"`)}</div>`); }
@@ -4288,15 +4336,18 @@ const PAGES={
       +sec("gezocht","",`${eyeb(tr("sv.ey"))}<h2>${E(tr("sv.t"))}</h2><div class="sw-cols">${[1,2,3].map(k=>`<div><h3>${E(tr(`sv${k}.t`))}</h3><p>${E(tr(`sv${k}.p`))}</p>${k===1?btnS(nl?"Neem contact op":"Get in touch",'data-sform="atelier" data-sctx="contact"',"ghost"):k===2?btnS(nl?"Naar leveranciers":"To suppliers",'data-sgo="coll" data-sa="leveranciers"',"ghost"):btnS(tr("study.btn"),'data-sgo="about" data-sa="studie"',"ghost")}</div>`).join("")}</div>`)
       +sec("werkwijze","sw-dark",`${eyeb(tr("wk.ey"))}<h2>${E(tr("wk.t"))}</h2><ol class="sw-steps four">${[1,2,3,4].map(k=>`<li><small>0${k}</small><b>${E(tr(`w${k}.t`))}</b><p>${E(tr(`w${k}.p`))}</p></li>`).join("")}</ol>`)
       +sec("producent","",`${eyeb(tr("end.ey"))}<h2>${E(tr("end.t"))}</h2>${paras(tr("end.p"))}`)+customHTML("contact"); } };
+PAGES.legal=()=>{ const nl=nlL(), blk=(id,k)=>{ const lines=(tr(k)||"").split("\n"), t=lines.shift(); return sec(id,id==="bestellen"?"sw-first":"",`${eyeb(nl?"Klantenservice":"Customer service")}<h2>${E(t)}</h2>${paras(lines.join("\n").trim())}`); };
+  return blk("bestellen","lg.order")+blk("retour","lg.return")+blk("privacy","lg.privacy")+blk("voorwaarden","lg.terms"); };
 function siteNav(){ const nav=siteEl.querySelector(".sw-nav"); nav.innerHTML=MENU.filter(m=>m.on!==false).map(m=>`<button type="button" data-sgo="${m.go}"${m.go===sitePage?' class="on" aria-current="page"':""}>${E(menuLabel(m.go))}</button>`).join("");
   siteEl.querySelector(".sw-lang").textContent=lang==="nl"?"EN":"NL"; siteEl.querySelector(".sw-close span").textContent=lang==="nl"?"Terug naar het gebouw":"Back to the building"; }
-function renderSite(){ siteNav(); swMain.innerHTML=(PAGES[sitePage]||PAGES.hall)()+`<footer class="sw-foot"><svg viewBox="0 0 100 100"><use href="#mono"/></svg><p>Elizian · Elise Philips</p>${contactLines().slice(0,2).map(([k,v])=>`<p>${E(v)}</p>`).join("")}<p class="sw-ft">${E(tr("entry.tag"))}</p></footer>`; }
+function renderSite(){ siteNav(); swMain.innerHTML=(PAGES[sitePage]||PAGES.hall)()+`<footer class="sw-foot"><svg viewBox="0 0 100 100"><use href="#mono"/></svg><p>Elizian · Elise Philips</p>${contactLines().slice(0,2).map(([k,v])=>`<p>${E(v)}</p>`).join("")}<p class="sw-legal">${[["bestellen",nlL()?"Bestellen & levering":"Ordering & delivery"],["retour",nlL()?"Retour":"Returns"],["privacy","Privacy"],["voorwaarden",nlL()?"Voorwaarden":"Terms"]].map(([a,t])=>`<button type="button" data-sgo="legal" data-sa="${a}">${E(t)}</button>`).join("")}</p><p class="sw-ft">${E(tr("entry.tag"))}</p></footer>`; }
 function openSite(page,anchor){ page=PAGES[page]?page:"hall"; const same=siteOpen&&page===sitePage; sitePage=page; if(!same) renderSite(); else siteNav();
   closeCap(); siteEl.classList.add("open"); document.body.classList.add("site-open"); siteOpen=true; siteEl.classList.toggle("wide",siteWide);
   try{ history.replaceState(null,"","#w/"+page+(anchor?"/"+anchor:"")); }catch(e){}
   requestAnimationFrame(()=>{ const el=anchor&&swMain.querySelector("#w-"+CSS.escape(anchor)); if(el){ swMain.scrollTo({top:el.getBoundingClientRect().top-swMain.getBoundingClientRect().top+swMain.scrollTop-10,behavior:same?"smooth":"auto"}); el.classList.remove("sw-hit"); void el.offsetWidth; el.classList.add("sw-hit"); } else if(!same) swMain.scrollTop=0; }); }
 function closeSite(){ siteEl.classList.remove("open"); document.body.classList.remove("site-open"); siteOpen=false; try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
 siteEl.addEventListener("click",e=>{ const t=e.target.closest("button,[data-zoom]"); if(!t) return; const d=t.dataset;
+  if(t.classList.contains("sw-handle")) return siteOpen?closeSite():openSite(pageOf(curRoomK),"");
   if(t.classList.contains("sw-close")||d.sclose!==undefined) return closeSite();
   if(t.classList.contains("sw-lang")) return setLang(lang==="nl"?"en":"nl");
   if(t.classList.contains("sw-wide")){ siteWide=!siteWide; siteEl.classList.toggle("wide",siteWide); return; }
@@ -4323,7 +4374,39 @@ function zoomImg(u){ zoomEl.querySelector("img").src=u; zoomEl.classList.add("op
 // bestaande vensters doorsturen naar de website
 openOverview=()=>openSite("coll","producten");
 openStudy=()=>openSite("about","studie");
-if(/^#w\//.test(location.hash)){ const [,p,a]=location.hash.slice(1).split("/"); setTimeout(()=>openSite(p,a||""),1500); }
+if(/^#w\//.test(location.hash)){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
+
+// ---- route volgt de volgorde van de website: rang = positie van het bijbehorende onderdeel op de pagina
+const _pgHTML={};
+function pageHTML(pg){ const c=_pgHTML[pg], now=performance.now(); if(c&&now-c.t<1500) return c.h; let h=""; try{ h=PAGES[pg](); }catch(e){} _pgHTML[pg]={h,t:now}; return h; }
+function routeRank(o){ try{ const pg=pageOf(o.space); let [tp,an]=objTargetSite(o)||[pg,""];
+    if(tp!==pg){ if(pg==="hall"&&tp==="coll") an="uitgelicht"; else return 5e5; } if(!an) return 0;
+    const i=pageHTML(pg).indexOf('id="w-'+an+'"'); return i<0?4e5:i; }catch(e){ return 0; } }
+// ---- buiten het venster klikken = venster dicht (klikken in de 3D-ruimte zelf regelt de klik-handler)
+document.addEventListener("pointerdown",e=>{ if(!siteOpen) return; const t=e.target; if(!(t instanceof Element)) return;
+  if(siteEl.contains(t)||t.closest(".modal,.sw-zoom,.ep-toast,.pub-pop,.ov-btn,.tab-ov,.ham-btn")||t.tagName==="CANVAS") return; closeSite(); },true);
+// ---- telefoon: menu als hamburger bovenin
+{ const nr=document.querySelector(".nav-right"), hb=document.createElement("button"); hb.type="button"; hb.className="ham-btn"; hb.setAttribute("aria-label","Menu"); hb.innerHTML="<i></i><i></i><i></i>";
+  const hm=document.createElement("div"); hm.className="ham-menu"; document.body.appendChild(hm); nr.appendChild(hb);
+  const fill=()=>{ hm.innerHTML=MENU.filter(m=>m.on!==false).map(m=>`<button type="button" data-hgo="${m.go}">${E(menuLabel(m.go))}</button>`).join("")+`<button type="button" data-hsite>Website</button><div class="ham-row"><button type="button" data-hlang="nl"${lang==="nl"?' class="on"':""}>NL</button><button type="button" data-hlang="en"${lang==="en"?' class="on"':""}>EN</button></div>`; };
+  hb.addEventListener("click",e=>{ e.stopPropagation(); fill(); hm.classList.toggle("open"); hb.classList.toggle("on",hm.classList.contains("open")); });
+  hm.addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; const d=b.dataset; hm.classList.remove("open"); hb.classList.remove("on");
+    if(d.hgo){ closeSite(); goRoom(d.hgo); } else if(d.hsite!==undefined) openSite(pageOf(curRoomK),""); else if(d.hlang) setLang(d.hlang); });
+  document.addEventListener("pointerdown",e=>{ if(hm.classList.contains("open")&&!hm.contains(e.target)&&!hb.contains(e.target)){ hm.classList.remove("open"); hb.classList.remove("on"); } }); }
+// ---- beheerder: concept → in één klik live
+let pubBtn=null;
+function addPublishBtn(){ if(DOC!==DRAFT_DOC||pubBtn) return; pubBtn=document.createElement("button"); pubBtn.type="button"; pubBtn.className="adm-btn pub-btn";
+  pubBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg><span></span>`; document.querySelector(".nav-right").prepend(pubBtn); pubBtn.addEventListener("click",pubAsk); markDirty(); }
+function markDirty(){ if(!pubBtn) return; const d=((content&&content.updated)||0)>liveUpdated; pubBtn.classList.toggle("dirty",d); pubBtn.querySelector("span").textContent=d?"Live zetten":"Alles is live";
+  pubBtn.title=d?"Je hebt wijzigingen die bezoekers nog niet zien. Klik om alles in één keer live te zetten.":"Bezoekers zien precies wat jij ziet."; }
+const pubPop=document.createElement("div"); pubPop.className="pub-pop"; document.body.appendChild(pubPop);
+function pubAsk(){ const d=((content&&content.updated)||0)>liveUpdated; pubPop.innerHTML=d?`<b>Alles live zetten?</b><p>Alle wijzigingen uit je concept worden in één keer zichtbaar voor bezoekers.</p><div><button type="button" class="btn gold" data-pub>Zet live</button><button type="button" class="btn ghost-light" data-pubx>Annuleren</button></div>`:`<b>Alles is live</b><p>Er zijn geen wijzigingen die bezoekers nog niet zien.</p><div><button type="button" class="btn ghost-light" data-pubx>Sluiten</button></div>`;
+  const r=pubBtn.getBoundingClientRect(); pubPop.style.top=(r.bottom+10)+"px"; pubPop.style.right=Math.max(10,window.innerWidth-r.right)+"px"; pubPop.classList.add("open"); }
+pubPop.addEventListener("click",async e=>{ if(e.target.closest("[data-pubx]")){ pubPop.classList.remove("open"); return; } if(!e.target.closest("[data-pub]")) return;
+  const b=e.target.closest("[data-pub]"); b.disabled=true; b.textContent="Bezig…";
+  try{ const cur=unwrap(await dbH.doc(DRAFT_DOC).get())||currentContent(); const d={...cur,updated:Date.now()}; await dbH.doc(LIVE_DOC).set(d); await dbH.doc(DRAFT_DOC).set(d); liveUpdated=d.updated; content=d; markDirty(); pubPop.classList.remove("open"); toast("Alles staat live."); }
+  catch(err){ b.disabled=false; b.textContent="Zet live"; toast("Live zetten mislukt: "+(err&&err.message||err)); } });
+document.addEventListener("pointerdown",e=>{ if(pubPop.classList.contains("open")&&!pubPop.contains(e.target)&&!(pubBtn&&pubBtn.contains(e.target))) pubPop.classList.remove("open"); });
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
