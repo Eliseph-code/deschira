@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795560607"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795560713"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4588,7 +4588,7 @@ function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
 // ---- daglicht hoort buiten: binnen in de kamers komt de zon nauwelijks binnen (geen vreemde schuine lichtbanen)
 { let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ if(!sun||!hemi){ requestAnimationFrame(loop); return; } const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
     // binnen 's avonds: warme, zachte avondverlichting zodat de kamer leesbaar blijft (2700K)
-    const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?2.4:1; hemi.intensity=hemiBase+.75*g*dark; hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+    const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?2.4:1; hemi.intensity=hemiBase+.75*g*dark+(inR?.28*(1-NIGHT)*(1-f)/.88*(dark>1?1.6:1):0); hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
 
 // =====================================================================================
@@ -4694,7 +4694,7 @@ function qLeather(hex,{clear=.16}={}){ const L=qLeatherMaps(), c=new THREE.Color
 // thema-materialen van de kamers vervangen door de nieuwe recepten
 { const _tm=themeMats; themeMats=function(t){ if(TMATS[t]&&TMATS[t].q) return TMATS[t]; const m=_tm(t)||{}; m.q=1;
     if(t==="walnoot"){ const w=qWalnut(5,{w:1024,h:1024,panels:2}); [w.map,w.normalMap,w.roughnessMap].forEach(x=>x.repeat.set(1/1.5,1/2.4));
-      m.wall=new THREE.MeshPhysicalMaterial({...w,color:0xc8a890,roughness:1,clearcoat:.18,clearcoatRoughness:.36,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.35});
+      m.wall=new THREE.MeshPhysicalMaterial({...w,color:0xf0d8c2,roughness:1,clearcoat:.18,clearcoatRoughness:.36,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.35});
       const f=qOak(29,{base:"#8a6a50",light:"#9c7a5c",dark:"#5e4434",grey:"#7a6656",smoked:.15}); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.12,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.3}); }
     if(t==="nachtblauw"){ const p=qPlaster(37,{base:"#1D3350",light:"#2A466B",dark:"#13243B",accent:"#35567B",contrast:.5}); m.wall=new THREE.MeshPhysicalMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.5,.5),sheen:.02});
       const f=qOak(19); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.12,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.3}); }
