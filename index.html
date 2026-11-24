@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795560713"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795560837"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4677,7 +4677,7 @@ function qBuildMaterials(){ if(QM.ok) return QM; QM.ok=1;
   const wn=qWalnut(3,{w:512,h:512,panels:1,seams:false}); [wn.map,wn.normalMap,wn.roughnessMap].forEach(t=>t.repeat.set(1,1));
   QM.walnutFurn=new THREE.MeshPhysicalMaterial({...wn,color:0xffe9d6,roughness:1,clearcoat:.12,clearcoatRoughness:.38,normalScale:new THREE.Vector2(.5,.5),envMapIntensity:.45});
   const ln=qLinenMaps(); QM.linen=new THREE.MeshPhysicalMaterial({...ln,roughness:1,sheen:.35,sheenColor:new THREE.Color(0xf4ecdd),side:THREE.DoubleSide,emissive:0xffd9a8,emissiveIntensity:0});
-  QM.glass=new THREE.MeshPhysicalMaterial({color:0xdce9e8,transmission:.96,roughness:.03,metalness:0,ior:1.5,thickness:.01,clearcoat:.1,transparent:true,opacity:1,envMapIntensity:1.2,side:THREE.DoubleSide});
+  QM.glass=new THREE.MeshPhysicalMaterial({color:0xe6f0ee,roughness:.04,metalness:0,clearcoat:1,clearcoatRoughness:.04,transparent:true,opacity:.1,envMapIntensity:1.6,side:THREE.DoubleSide,depthWrite:false,specularIntensity:1});
   QM.ceramic=new THREE.MeshPhysicalMaterial({color:0xd8d1c7,roughness:.78,clearcoat:.05,normalMap:QM.stand.normalMap,normalScale:new THREE.Vector2(.25,.25)});
   return QM; }
 // leer: elke kleur deelt dezelfde nerf, maar wel met eigen kleur en sheen
@@ -4694,7 +4694,7 @@ function qLeather(hex,{clear=.16}={}){ const L=qLeatherMaps(), c=new THREE.Color
 // thema-materialen van de kamers vervangen door de nieuwe recepten
 { const _tm=themeMats; themeMats=function(t){ if(TMATS[t]&&TMATS[t].q) return TMATS[t]; const m=_tm(t)||{}; m.q=1;
     if(t==="walnoot"){ const w=qWalnut(5,{w:1024,h:1024,panels:2}); [w.map,w.normalMap,w.roughnessMap].forEach(x=>x.repeat.set(1/1.5,1/2.4));
-      m.wall=new THREE.MeshPhysicalMaterial({...w,color:0xf0d8c2,roughness:1,clearcoat:.18,clearcoatRoughness:.36,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.35});
+      m.wall=new THREE.MeshPhysicalMaterial({...w,roughness:1,clearcoat:.18,clearcoatRoughness:.36,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.35});
       const f=qOak(29,{base:"#8a6a50",light:"#9c7a5c",dark:"#5e4434",grey:"#7a6656",smoked:.15}); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.12,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.3}); }
     if(t==="nachtblauw"){ const p=qPlaster(37,{base:"#1D3350",light:"#2A466B",dark:"#13243B",accent:"#35567B",contrast:.5}); m.wall=new THREE.MeshPhysicalMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.5,.5),sheen:.02});
       const f=qOak(19); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.12,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.3}); }
