@@ -968,7 +968,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795563812"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795564142"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4822,16 +4822,6 @@ accent=function(G,from,to){ if(isMobile()||PSPOTS.size>=11) return; const L=new 
 { const dome=qPlaster(91,{base:"#E6DCCB",light:"#EFE7DA",dark:"#D6CAB6",contrast:.35,size:1024}); [dome.map,dome.normalMap,dome.roughnessMap].forEach(t=>t.repeat.set(4,4));
   const apply=()=>{ if(!M.dome){ setTimeout(apply,400); return; } Object.assign(M.dome,{map:dome.map,normalMap:dome.normalMap,roughnessMap:dome.roughnessMap,bumpMap:null,roughness:1}); M.dome.normalScale=new THREE.Vector2(.25,.25); M.dome.color.set(0xffffff); M.dome.needsUpdate=true; }; apply(); }
 
-// ---- rotondevloer: scherp, 2048 px, grote gezoete tegels met dunne voegen
-{ try{ const w=2048,h=2048, big=qFbm(w,h,512,512,3,101), band=qFbm(w,h,1024,40,2,103), pore=qNoise(w,h,5,3,105), pore2=qNoise(w,h,11,4,107), B=qHex("#D2C3AC"), Lt=qHex("#DFD3BF"), D=qHex("#B9A88E");
-    const H=new Float32Array(w*h), R=new Float32Array(w*h), K=new Float32Array(w*h);
-    for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const i=y*w+x, jx=(x%1024), jy=(y%1024), joint=(jx<3||jy<3)?1:0, p=(pore[i]>.88?(pore[i]-.88)*6:0)+(pore2[i]>.92?(pore2[i]-.92)*5:0);
-      K[i]=joint?-1:p; H[i]=.5+(band[i]-.5)*.12-p*.7-joint*.9; R[i]=qCl(.56+p*.4+joint*.25+(big[i]-.5)*.06); }
-    const set=qSet(w,h,{col:i=>{ if(K[i]<0) return [150,134,112]; let c=qMix(B,Lt,qCl((big[i]-.4)*.8)); c=qMix(c,D,qCl((band[i]-.6)*1.2)*.3); if(K[i]>0) c=qMix(c,[165,146,120],qCl(K[i]*1.4)); return c; },height:H,rough:R,str:2.5});
-    const rep=[tFloor.repeat.x,tFloor.repeat.y]; [set.map,set.normalMap,set.roughnessMap].forEach(t=>{ t.repeat.set(rep[0],rep[1]); t.anisotropy=maxAniso; t.generateMipmaps=true; t.minFilter=THREE.LinearMipmapLinearFilter; });
-    for(const m of [M.floor,M.hallFloor].filter(Boolean)){ Object.assign(m,{map:set.map,normalMap:set.normalMap,roughnessMap:set.roughnessMap,roughness:1,clearcoat:.02}); m.normalScale=new THREE.Vector2(.18,.18); m.color.set(0xffffff); m.needsUpdate=true; }
-    const late=()=>{ if(!M.hallFloor){ setTimeout(late,400); return; } Object.assign(M.hallFloor,{map:set.map,normalMap:set.normalMap,roughnessMap:set.roughnessMap,roughness:1,clearcoat:.02}); M.hallFloor.normalScale=new THREE.Vector2(.18,.18); M.hallFloor.color.set(0xffffff); M.hallFloor.needsUpdate=true; }; late(); }catch(e){ console.warn(e); } }
-
 // ---- Contact: gerookt eiken in Hongaarse punt (visgraat), Over mij: rustiger walnoot en natuurlijk eiken
 function qChevron(seed=131,{size=1024,metres=2.0,base="#6b5040",light="#7d604c",dark="#4d382c"}={}){ const w=size,h=size, pxm=size/metres, pw=Math.round(.09*pxm/Math.SQRT1_2), colW=Math.round(.5*pxm), r=qRng(seed);
   const grain=qNoise(w,h,2,60,seed+1), cloud=qFbm(w,h,200,200,3,seed+2), B=qHex(base), Lt=qHex(light), D=qHex(dark), H=new Float32Array(w*h), R=new Float32Array(w*h), T=new Float32Array(w*h), J=new Uint8Array(w*h), tone={};
@@ -4857,33 +4847,7 @@ OB.fauteuil=(o,G)=>{ const Q=qBuildMaterials(), lea=qLeather(o.color?new THREE.C
   qAdd(back,rb(W,.6,.13,.05,6),lea,0,.3,0); const bc=qAdd(back,rb(W-.17,.34,.1,.05,7),lea,0,.43,.1);
   G.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); return {top:1.1,size:.8}; };
 
-// ---- B: etalage IN de muur: de wand krijgt (via de stencilbuffer) een gat in de vorm van de nis,
-//      daarachter een echte nis van D diep met binnenwanden, planken en producten. Niets steekt uit.
-const NICHE_RO=3;
-const nicheMaskMat=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false,depthTest:true,stencilWrite:true,stencilRef:1,stencilFunc:THREE.AlwaysStencilFunc,stencilZPass:THREE.ReplaceStencilOp});
-const nicheClearMat=new THREE.ShaderMaterial({vertexShader:"void main(){ gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }",fragmentShader:"void main(){ gl_FragDepth=1.0; gl_FragColor=vec4(0.0); }",
-  colorWrite:false,depthWrite:true,depthTest:true,depthFunc:THREE.AlwaysDepth,stencilWrite:true,stencilRef:1,stencilFunc:THREE.EqualStencilFunc,stencilZPass:THREE.KeepStencilOp,stencilFail:THREE.KeepStencilOp,stencilZFail:THREE.KeepStencilOp});
-{ const _et=OB.etalage; OB.etalage=(o,G)=>{ const info=_et(o,G), ids=objProducts(o), Lg=etalageLayout(o,ids), {W,Hh,y0}=Lg, D=.42, hall=o.space==="hall";
-  const shp=(w,h,yy)=>{ const s=new THREE.Shape(); nicheOutline(w,h,yy).forEach(([x,y],i)=>i?s.lineTo(x,y):s.moveTo(x,y)); s.closePath(); return s; };
-  const lab=G.children.find(c=>Math.abs(c.position.z-.08)<.001&&!c.isMesh||Math.abs(c.position.z-.08)<.001);
-  // alles van de oude etalage (behalve label en gloed op de wand) naar achter de wandlijn
-  const inner=[]; G.children.slice().forEach(c=>{ if(c===lab) return; if(c.isMesh&&c.geometry&&c.geometry.type==="ExtrudeGeometry"){ G.remove(c); const i=solids.indexOf(c); if(i>=0) solids.splice(i,1); return; }
-    if(c.isMesh&&c.geometry&&c.geometry.type==="PlaneGeometry"&&c.material&&c.material.blending===THREE.AdditiveBlending){ c.position.z=.006; return; }
-    c.position.z-=D; inner.push(c); });
-  // binnenwanden van de nis (alleen de zijkanten van een extrusie, van binnen gezien)
-  const wallMat=hall?M.stone:(themeMats(themeOf(o.space)).wall||M.stone), sideMat=wallMat.clone(); sideMat.side=THREE.BackSide;
-  const tube=new THREE.Mesh(new THREE.ExtrudeGeometry(shp(W,Hh,y0),{depth:D+.02,bevelEnabled:false,curveSegments:64}),[new THREE.MeshBasicMaterial({visible:false}),sideMat]); tube.position.z=-D-.01; G.add(tube); inner.push(tube);
-  // gat in de wand: masker (stencil) en diepte wissen, net vóór het wandvlak (rotonde is hol: iets verder naar voren)
-  const zf=hall?.17:.015, hole=new THREE.ShapeGeometry(shp(W,Hh,y0),64);
-  const mk=new THREE.Mesh(hole,nicheMaskMat); mk.position.z=zf; mk.renderOrder=1; const cl=new THREE.Mesh(hole,nicheClearMat); cl.position.z=zf; cl.renderOrder=2; G.add(mk,cl);
-  [mk,cl].forEach(m=>{ m.castShadow=false; m.receiveShadow=false; m.frustumCulled=false; });
-  inner.forEach(c=>c.traverse(m=>{ m.renderOrder=NICHE_RO; if(m.isMesh){ m.receiveShadow=false; m.castShadow=false; } }));
-  // smalle bronzen negge in het wandvlak
-  const fr=shp(W+.06,Hh+.06,y0-.03), fh=new THREE.Path(); nicheOutline(W,Hh,y0).forEach(([x,y],i)=>i?fh.lineTo(x,y):fh.moveTo(x,y)); fh.closePath(); fr.holes.push(fh);
-  const frm=new THREE.Mesh(new THREE.ShapeGeometry(fr,64),qBuildMaterials().darkBronze); frm.position.z=hall?.012:.004; G.add(frm);
-  // een zacht licht in de nis zelf (de wand houdt het daglicht tegen)
-  if(!isMobile()){ const pl=new THREE.PointLight(0xffe9cf,1.6,D*6,2); pl.position.set(0,y0+Hh*.85,-D*.45); G.add(pl); }
-  return {top:y0+Hh+.4,size:W}; }; }
+// (etalage: teruggezet naar de oorspronkelijke versie op verzoek van Elise)
 
 // ---- B5: materiaalladenkast — vier laden die echt open schuiven (leer, details, garen, beslag)
 const THREADS=[["ivoor","Ivoor","Ivory","#efe6d4"],["cognac","Cognac","Cognac","#a8652f"],["bordeaux","Bordeaux","Burgundy","#6b2026"],["zwart","Zwart","Black","#1c1b1b"],["goud","Goud","Gold","#c3a367"],["grijs","Steengrijs","Stone grey","#8c8781"]];
