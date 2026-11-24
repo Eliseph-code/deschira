@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795561400"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795561534"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4088,7 +4088,7 @@ function buildArrows(ci){ arrowFrom=ci; arrowNext=-1; while(arrowG.children.leng
   const pts=nodes.slice(ci,(j2>j?j2:j)+1).map(n=>[n.x,n.z,n.room]); let total=0; const seg=[];
   for(let k=0;k<pts.length-1;k++){ const a=pts[k], b=pts[k+1], L=Math.hypot(b[0]-a[0],b[1]-a[1]); seg.push({a,b,L,s0:total}); total+=L; }
   if(total<1.2) return; const step=.55, start=.7, end=total-.6; let idx=0;
-  for(let d=start; d<end&&idx<90; d+=step,idx++){ const sg=seg.find(s=>d<=s.s0+s.L)||seg[seg.length-1], k=(d-sg.s0)/(sg.L||1), x=sg.a[0]+(sg.b[0]-sg.a[0])*k, z=sg.a[1]+(sg.b[1]-sg.a[1])*k;
+  for(let d=start; d<end&&idx<6; d+=step,idx++){ const sg=seg.find(s=>d<=s.s0+s.L)||seg[seg.length-1], k=(d-sg.s0)/(sg.L||1), x=sg.a[0]+(sg.b[0]-sg.a[0])*k, z=sg.a[1]+(sg.b[1]-sg.a[1])*k;
     const inRoom=(sg.a[2]!=="hall"&&sg.b[2]!=="hall"), y=(inRoom?0:groundAt(x,z))+.035, dx=sg.b[0]-sg.a[0], dz=sg.b[1]-sg.a[1];
     const m=new THREE.Mesh(arrowGeo,new THREE.MeshBasicMaterial({color:0xc9aa6e,transparent:true,opacity:0,depthWrite:false,toneMapped:false}));
     m.position.set(x,y,z); m.rotation.y=Math.atan2(-dx,-dz); m.scale.setScalar(.95); m.renderOrder=20; m.userData.dist=d; arrowG.add(m); } }
@@ -4588,7 +4588,7 @@ function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
 // ---- daglicht hoort buiten: binnen in de kamers komt de zon nauwelijks binnen (geen vreemde schuine lichtbanen)
 { let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ if(!sun||!hemi){ requestAnimationFrame(loop); return; } const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
     // binnen 's avonds: warme, zachte avondverlichting zodat de kamer leesbaar blijft (2700K)
-    const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?3.2:1; hemi.intensity=hemiBase+.55*g*dark+(inR?.28*(1-NIGHT)*(1-f)/.88*(dark>1?1.6:1):0); hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+    const g=(1-f)/.88*NIGHT, dark=inR?(themeOf(curRoomK)==="walnoot"?3.2:themeOf(curRoomK)==="nachtblauw"?2.2:1):1; hemi.intensity=hemiBase+.55*g*dark+(inR?.28*(1-NIGHT)*(1-f)/.88*(dark>1?1.6:1):0); hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
 
 // =====================================================================================
@@ -4784,7 +4784,7 @@ function swMatQ(x){ const m=qLeather(new THREE.Color(x.hex).getHex(),{clear:.1})
 const PSPOTS=new Set();
 function productLight(G,top,o){ if(isMobile()||o&&o.space!=="hall") return; if(PSPOTS.size>=11) return;
   const L=new THREE.SpotLight(0xffe0bc,0,2.8,.24,.65,2); L.position.set(-.2,top+1.2,.95); const t=new THREE.Object3D(); t.position.set(0,top+.25,0); G.add(L,t); L.target=t; L.castShadow=false;
-  L.userData.ps=1; PSPOTS.add(L); L.intensity=lerp(60,14,DAY); return L; }
+  L.userData.ps=1; PSPOTS.add(L); L.intensity=lerp(32,8,DAY); return L; }
 accent=function(G,from,to){ const top=Math.max(.6,(to&&to.y||1.2)-.15); productLight(G,top,{space:"hall"}); };
 { const _d=disposeObj; disposeObj=function(id){ const r=OBJ_REG[id]; if(r) r.G.traverse(x=>{ if(x.userData&&x.userData.ps) PSPOTS.delete(x); }); return _d(id); }; }
 // rotondevloer: reliëf in de voegen en een rustige glansvariatie uit de bestaande tegeltekening
@@ -4793,7 +4793,7 @@ accent=function(G,from,to){ const top=Math.max(.6,(to&&to.y||1.2)-.15); productL
 
 // productfoto's dimmen mee met het licht (overdag volledig, 's avonds iets warmer en zachter)
 function qProductTone(){ try{ qProductTone0(); }catch(e){} }
-function qProductTone0(){ billboards.forEach(b=>{ if(b.material&&b.material.isMeshBasicMaterial&&b.material.map) b.material.color.setRGB(lerp(.9,1,DAY),lerp(.86,1,DAY),lerp(.8,1,DAY)); }); PSPOTS.forEach(L=>L.intensity=lerp(60,14,DAY)); }
+function qProductTone0(){ billboards.forEach(b=>{ if(b.material&&b.material.isMeshBasicMaterial&&b.material.map) b.material.color.setRGB(lerp(.9,1,DAY),lerp(.86,1,DAY),lerp(.8,1,DAY)); }); PSPOTS.forEach(L=>L.intensity=lerp(32,8,DAY)); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
