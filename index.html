@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795560973"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795561151"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4588,7 +4588,7 @@ function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
 // ---- daglicht hoort buiten: binnen in de kamers komt de zon nauwelijks binnen (geen vreemde schuine lichtbanen)
 { let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ if(!sun||!hemi){ requestAnimationFrame(loop); return; } const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
     // binnen 's avonds: warme, zachte avondverlichting zodat de kamer leesbaar blijft (2700K)
-    const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?2.4:1; hemi.intensity=hemiBase+.75*g*dark+(inR?.28*(1-NIGHT)*(1-f)/.88*(dark>1?1.6:1):0); hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+    const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?3.2:1; hemi.intensity=hemiBase+.75*g*dark+(inR?.28*(1-NIGHT)*(1-f)/.88*(dark>1?1.6:1):0); hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
 
 // =====================================================================================
