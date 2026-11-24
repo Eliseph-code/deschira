@@ -590,7 +590,8 @@
   .sw-head{display:flex;align-items:center;gap:18px;padding:14px 26px;background:var(--sw-brown);color:var(--sw-bg);position:relative;flex-wrap:wrap}
   .sw-brand{display:flex;align-items:center;gap:10px;background:none;border:0;color:inherit;cursor:pointer;padding:0}
   .sw-brand svg{width:30px;height:30px;fill:currentColor}.sw-brand span{font-family:var(--serif);font-size:20px;letter-spacing:.32em;text-transform:uppercase}
-  .sw-nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+  .sw-nav{display:flex;gap:2px;flex-wrap:wrap;order:3;flex-basis:100%;margin:2px -10px -6px}
+  .sw-tools{margin-left:auto}
   .sw-nav button{background:none;border:0;color:inherit;font-family:var(--sans);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;padding:8px 10px;cursor:pointer;opacity:.82;border-bottom:1px solid transparent}
   .sw-nav button:hover,.sw-nav button.on{opacity:1;border-bottom-color:var(--sw-gold);color:#fff8ec}
   .sw-tools{display:flex;gap:8px;align-items:center}
@@ -904,7 +905,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795518405"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795518537"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4058,8 +4059,8 @@ window.addEventListener("hashchange",()=>{ if(!hashBusy) openFromHash(); });
 // ---- directe route voor wie niet wil wandelen: collectie bekijken en contact, in de startcirkel en in de onderbalk
 { const hb=document.querySelector(".hero"), row=document.createElement("div"); row.className="hero-cta";
   row.innerHTML=`<button type="button" data-cta="ov"></button><button type="button" data-cta="form"></button>`; hb.appendChild(row);
-  const setT=()=>{ row.querySelector('[data-cta="ov"]').textContent=lang==="nl"?"Bekijk alle stukken":"View all pieces"; row.querySelector('[data-cta="form"]').textContent=lang==="nl"?"Vraag een offerte aan":"Request a quote"; }; setT(); window.addEventListener("ep-lang",setT);
-  row.addEventListener("click",e=>{ const b=e.target.closest("[data-cta]"); if(!b) return; if(b.dataset.cta==="ov") openOverview(); else openForm("custom",""); });
+  const setT=()=>{ row.querySelector('[data-cta="ov"]').textContent=lang==="nl"?"Bekijk alle stukken":"View all pieces"; row.querySelector('[data-cta="form"]').textContent=lang==="nl"?"Neem contact op":"Get in touch"; }; setT(); window.addEventListener("ep-lang",setT);
+  row.addEventListener("click",e=>{ const b=e.target.closest("[data-cta]"); if(!b) return; if(b.dataset.cta==="ov") openOverview(); else openSite("contact","contact"); });
   const tb=document.querySelector(".tabbar"); if(tb){ const ob=document.createElement("button"); ob.type="button"; ob.className="tab-ov"; ob.innerHTML=`<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg><span></span>`;
     const st=()=>{ ob.querySelector("span").textContent=lang==="nl"?"Alles":"All"; }; st(); window.addEventListener("ep-lang",st); ob.addEventListener("click",openOverview); tb.appendChild(ob);
     const fix=()=>{ const n=[...tb.children].filter(c=>getComputedStyle(c).display!=="none").length; tb.style.gridTemplateColumns=`repeat(${n},1fr)`; }; setTimeout(fix,50); window.addEventListener("resize",fix); window.addEventListener("ep-lang",()=>setTimeout(fix,30)); } }
@@ -4293,7 +4294,7 @@ function renderSite(){ siteNav(); swMain.innerHTML=(PAGES[sitePage]||PAGES.hall)
 function openSite(page,anchor){ page=PAGES[page]?page:"hall"; const same=siteOpen&&page===sitePage; sitePage=page; if(!same) renderSite(); else siteNav();
   closeCap(); siteEl.classList.add("open"); document.body.classList.add("site-open"); siteOpen=true; siteEl.classList.toggle("wide",siteWide);
   try{ history.replaceState(null,"","#w/"+page+(anchor?"/"+anchor:"")); }catch(e){}
-  requestAnimationFrame(()=>{ const el=anchor&&swMain.querySelector("#w-"+CSS.escape(anchor)); if(el){ swMain.scrollTo({top:el.offsetTop-14,behavior:same?"smooth":"auto"}); el.classList.remove("sw-hit"); void el.offsetWidth; el.classList.add("sw-hit"); } else if(!same) swMain.scrollTop=0; }); }
+  requestAnimationFrame(()=>{ const el=anchor&&swMain.querySelector("#w-"+CSS.escape(anchor)); if(el){ swMain.scrollTo({top:el.getBoundingClientRect().top-swMain.getBoundingClientRect().top+swMain.scrollTop-10,behavior:same?"smooth":"auto"}); el.classList.remove("sw-hit"); void el.offsetWidth; el.classList.add("sw-hit"); } else if(!same) swMain.scrollTop=0; }); }
 function closeSite(){ siteEl.classList.remove("open"); document.body.classList.remove("site-open"); siteOpen=false; try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
 siteEl.addEventListener("click",e=>{ const t=e.target.closest("button,[data-zoom]"); if(!t) return; const d=t.dataset;
   if(t.classList.contains("sw-close")||d.sclose!==undefined) return closeSite();
