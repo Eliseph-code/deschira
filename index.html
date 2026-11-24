@@ -3521,6 +3521,8 @@ function objStation0(o,dist){ const R=ROT.R;
   const X=XF[o.space], A=AREAS[o.space]||AREAS.r, Lg=legOf(o.space); let lx,lz,nx,nz;
   if(o.mount==="wall"){ const W=WALLS_L(o.space)[o.wall|0]; lx=W.ax==="z"?W.x:o.u; lz=W.ax==="z"?o.u:W.z; nx=Math.sin(W.ry); nz=Math.cos(W.ry); } else { lx=o.x; lz=o.z; nx=Math.sin(o.ry||0); nz=Math.cos(o.ry||0); }
   const d2=o.mount==="wall"?dist:(o.type==="podium"?3.2:o.type==="atelier"?3.6:2.4); let ex=clamp(lx+nx*d2,A.x[0],A.x[1]), ez=clamp(lz+nz*d2,A.z[0],A.z[1]);
+  // staat het item met zijn voorkant dicht tegen een wand, kijk dan vanuit het midden van de kamer
+  if(o.mount!=="wall"&&Math.hypot(ex-lx,ez-lz)<d2*.75){ const cx=(A.x[0]+A.x[1])/2, cz=(A.z[0]+A.z[1])/2, vx=cx-lx, vz=cz-lz, vl=Math.hypot(vx,vz)||1; ex=clamp(lx+vx/vl*d2,A.x[0],A.x[1]); ez=clamp(lz+vz/vl*d2,A.z[0],A.z[1]); }
   return {eye:X.toW(ex,ez).map(v=>+v.toFixed(2)),look:X.toW(lx,lz).map(v=>+v.toFixed(2))}; }
 const normA=a=>((a+60)%360+360)%360-60;
 function objNode(o){ const st=objStation(o), n={id:"o_"+o.id,room:o.space,eye:st.eye,look:st.look,obj:o.id,pitch:st.pitch}; const t=objTarget(o); if(t) n.item=t;
