@@ -933,7 +933,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795519744"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795519883"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2789,7 +2789,7 @@ const COL_H=[1.22,.9,.7,1.04,.82,1.12];
 M.nicheGlow=(()=>{ const c=document.createElement("canvas"); c.width=64; c.height=256; const g=c.getContext("2d"), gr=g.createLinearGradient(0,0,0,256); gr.addColorStop(0,"#f3e9da"); gr.addColorStop(.18,"#e7d9c4"); gr.addColorStop(1,"#b9a588"); g.fillStyle=gr; g.fillRect(0,0,64,256);
   const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return new THREE.MeshBasicMaterial({map:t,color:new THREE.Color(.95,.93,.9)}); })();
 M.shelf=new THREE.MeshPhysicalMaterial({color:0xefe6d8,roughness:.32,clearcoat:.2,clearcoatRoughness:.25,specularIntensity:.9});
-M.glassPane=new THREE.MeshPhysicalMaterial({color:0xf4f1ea,roughness:.04,metalness:0,transparent:true,opacity:.16,side:THREE.DoubleSide,depthWrite:false,clearcoat:1,clearcoatRoughness:.05});
+M.glassPane=new THREE.MeshPhysicalMaterial({color:0xf4f1ea,roughness:.04,metalness:0,transparent:true,opacity:.06,side:THREE.DoubleSide,depthWrite:false,clearcoat:1,clearcoatRoughness:.05});
 // zachte, licht scheve ovaal (superellips), onderkant iets platter
 function nicheOutline(W,Hh,y0){ const pts=[], n=72, a=W/2, b=Hh/2, cy=y0+b; for(let i=0;i<n;i++){ const t=i/n*Math.PI*2, c=Math.cos(t), s2=Math.sin(t), e=s2<0?3.2:2.3;
     pts.push([a*Math.sign(c)*Math.pow(Math.abs(c),2/e)*(1+.04*Math.sin(t*2+.6)), cy+b*Math.sign(s2)*Math.pow(Math.abs(s2),2/e)]); } return pts; }
