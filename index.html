@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795558315"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795558450"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2151,7 +2151,7 @@ function themeMats(t){ if(TMATS[t]) return TMATS[t]; let m;
     const wall=canvasTex(1024,1024,(g,w,h)=>{ const r=rng(31), n=8, bw=w/n; for(let b=0;b<n;b++){ const hue=24+r()*6, l=19+r()*6; g.fillStyle=`hsl(${hue},38%,${l}%)`; g.fillRect(b*bw,0,bw,h);
         for(let i=0;i<70;i++){ const x=b*bw+r()*bw; g.strokeStyle=`hsla(${hue},40%,${l+(r()<.5?-6:7)}%,${.25+r()*.35})`; g.lineWidth=.6+r()*2; g.beginPath(); g.moveTo(x,0); for(let y=0;y<=h;y+=32) g.lineTo(x+Math.sin(y*.012+i)*(2+r()*5),y); g.stroke(); }
         g.fillStyle="rgba(0,0,0,.45)"; g.fillRect(b*bw,0,2,h); g.fillStyle="rgba(255,220,180,.08)"; g.fillRect(b*bw+2,0,2,h); } },{rep:[1/2.4,1/2.4]});
-    const floor=canvasTex(1024,1024,(g,w,h)=>{ const r=rng(77), n=6, pw=w/n; for(let i=0;i<n;i++){ let y=-r()*h; while(y<h){ const L=h*(.35+r()*.5), l=30+r()*8;
+    const floor=canvasTex(1024,1024,(g,w,h)=>{ const r=rng(77), n=6, pw=w/n; for(let i=0;i<n;i++){ let y=-r()*h; while(y<h){ const L=h*(.55+r()*.6), l=33+r()*4;
           g.fillStyle=`hsl(${27+r()*5},${40+r()*8}%,${l}%)`; g.fillRect(i*pw,y,pw,L); for(let k=0;k<22;k++){ g.strokeStyle=`hsla(26,40%,${l+(r()<.5?-7:6)}%,${.2+r()*.3})`; g.lineWidth=.6+r()*1.6; const x=i*pw+r()*pw; g.beginPath(); g.moveTo(x,y); g.bezierCurveTo(x+(r()-.5)*8,y+L*.33,x+(r()-.5)*8,y+L*.66,x+(r()-.5)*6,y+L); g.stroke(); }
           g.fillStyle="rgba(0,0,0,.4)"; g.fillRect(i*pw,y,pw,2); y+=L; } g.fillStyle="rgba(0,0,0,.45)"; g.fillRect(i*pw,0,2,h); } },{rep:[1/1.8,1/1.8]});
     m={wall:new THREE.MeshPhysicalMaterial({map:wall,roughness:.55,clearcoat:.18,clearcoatRoughness:.4,specularIntensity:.8}),floor:new THREE.MeshPhysicalMaterial({map:floor,roughness:.55,clearcoat:.12,clearcoatRoughness:.45,envMapIntensity:.25}),
@@ -2340,8 +2340,8 @@ async function build(){
       const cg=new THREE.ExtrudeGeometry(s2,{depth:.42,bevelEnabled:true,bevelThickness:.03,bevelSize:.03,bevelSegments:2,curveSegments:16}); cg.translate(0,0,-.21);
       const c=addMesh(cg,M.stoneTrim); const p=onC(a,R+T-.6); c.position.set(p[0],-.98,p[1]); c.rotation.y=-ang(a); } }
   if(!isMobile()){ try{ const w=Math.round(window.innerWidth*.6), h=Math.round(window.innerHeight*.6);
-    mirror=new Reflector(new THREE.CircleGeometry(R,128),{textureWidth:w,textureHeight:h,color:0x777777,clipBias:.003}); mirror.rotation.x=-Math.PI/2; mirror.position.set(CX,-.004,CZ); S.add(mirror);
-    M.hallFloor.transparent=true; M.hallFloor.opacity=.9; }catch(e){ mirror=null; } }
+    mirror=new Reflector(new THREE.CircleGeometry(R,128),{textureWidth:w,textureHeight:h,color:0x5a5a5a,clipBias:.003}); mirror.rotation.x=-Math.PI/2; mirror.position.set(CX,-.004,CZ); S.add(mirror);
+    M.hallFloor.transparent=true; M.hallFloor.opacity=.94; }catch(e){ mirror=null; } }
   // ronde muur: open bogen naar het dal, de maanpoort, zeven deuren; daartussen gesloten muurvlakken
   const feats=[]; ARCH_TH.forEach(th=>feats.push({th,h:8.5,type:"arch"})); [[GATE_TH-12.5,4.5],[GATE_TH,8],[GATE_TH+12.5,4.5]].forEach(([th,h])=>feats.push({th,h,type:"arch",gate:true,open:th===GATE_TH})); OPEN0.forEach(k=>{ feats.push({th:DOOR_TH[k],h:9*DOOR_S[k],type:"door",k}); });
   feats.sort((a,b)=>a.th-b.th);
@@ -2456,7 +2456,7 @@ function currentDate(){ if(timeMode==="now") return new Date();
   // gouden uur: zoek het moment waarop de zon ~5° boven de horizon staat (namiddag), passend bij de huidige datum
   if(timeMode==="golden"){ const d=new Date(); d.setHours(12,0,0,0); for(let m=0;m<600;m+=5){ const x=new Date(d.getTime()+m*60000); if(sunPosition(x).el<5) return x; } return d; } const d=new Date(), h=parseFloat(timeMode); d.setHours(Math.floor(h),Math.round((h%1)*60),0,0); return d; }
 const sstep=(a,b,v)=>{ const t=clamp((v-a)/(b-a),0,1); return t*t*(3-2*t); };
-const roomBoost=()=>1+.9*NIGHT;
+const roomBoost=()=>1+2.2*NIGHT;
 function updateSky(){
   const date=currentDate(), s=sunPosition(date); sunState=s; const e=s.el;
   const sd=dirOf(s.az,Math.max(e,-8));
