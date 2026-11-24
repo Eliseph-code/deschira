@@ -642,7 +642,7 @@
   .sw-box{background:#E9E2D6}
   .po-bar{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:18px 0 6px}.po-bar button{font:500 11px/1 var(--sans,'Jost',sans-serif);letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;border:1px solid #cdbf9f;background:transparent;color:#6b5a48;border-radius:20px;cursor:pointer}.po-bar .now button{background:#15283E;color:#F0EDE5;border-color:#15283E}.po-bar .done button{border-color:#C3A367;color:#692719}.po-bar button:disabled{opacity:.45;cursor:default}
   .po-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px;margin:10px 0}.po-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #d9cfbd;background:#fbf9f5;border-radius:6px;cursor:pointer;text-align:left;font:400 14px/1.2 inherit;color:#2E1D12}.po-chip i{width:26px;height:26px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}.po-chip.on{border-color:#692719;box-shadow:0 0 0 2px #C3A367}
-  .sw-card.on{outline:2px solid #C3A367}.po-card canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(21,40,62,.18);margin:12px 0}
+  .sw-card.on{outline:2px solid #C3A367}.po-prev canvas{width:100%;max-width:520px;height:auto;display:block;margin:8px auto 4px;background:radial-gradient(ellipse at 50% 60%,#fbf8f2,#ece5d8 70%);border-radius:8px}.po-card canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(21,40,62,.18);margin:12px 0}
   .sw-study .sw-years{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:22px 0 6px}
   .sw-years div{display:flex;flex-direction:column;gap:2px}.sw-years i{height:4px;background:rgba(82,40,28,.15);margin-bottom:8px}.sw-years .done i{background:var(--sw-gold)}
   .sw-years .now i{background:linear-gradient(90deg,var(--sw-gold) 45%,rgba(82,40,28,.15) 45%)}.sw-years b{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase}.sw-years .now b{color:var(--sw-bord)}.sw-years small{font-size:15px;opacity:.8}
@@ -968,7 +968,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795562732"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795563625"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2507,7 +2507,7 @@ setInterval(()=>{ if(timeMode==="now") updateSky(); },30000);
    ==================================================================== */
 let composer, bloom, ao, outline;
 function setupPost(){
-  const rt=new THREE.WebGLRenderTarget(1,1,{type:THREE.HalfFloatType,samples:4});
+  const rt=new THREE.WebGLRenderTarget(1,1,{type:THREE.HalfFloatType,samples:4,stencilBuffer:true});
   composer=new EffectComposer(renderer,rt);
   composer.addPass(new RenderPass(S,camera));
   if(!isMobile()){ try{ ao=new GTAOPass(S,camera,1,1); ao.output=GTAOPass.OUTPUT.Default; ao.blendIntensity=.85; ao.updateGtaoMaterial({radius:.9,distanceExponent:1.4,thickness:1,scale:1}); composer.addPass(ao);
@@ -4857,22 +4857,33 @@ OB.fauteuil=(o,G)=>{ const Q=qBuildMaterials(), lea=qLeather(o.color?new THREE.C
   qAdd(back,rb(W,.6,.13,.05,6),lea,0,.3,0); const bc=qAdd(back,rb(W-.17,.34,.1,.05,7),lea,0,.43,.1);
   G.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); return {top:1.1,size:.8}; };
 
-// ---- B: ingebouwde etalage: een verdikte wand (zelfde materiaal) met de nis erin, smalle omlijsting
-{ const _et=OB.etalage; OB.etalage=(o,G)=>{ const info=_et(o,G), ids=objProducts(o), Lg=etalageLayout(o,ids), {W,Hh,y0}=Lg, D=.36;
-  // de oude dikke ring wordt een smalle negge: verberg de ring en zet er een verdikte wand omheen
-  G.children.forEach(c=>{ if(c.isMesh&&c.geometry&&c.geometry.type==="ExtrudeGeometry") c.visible=false; });
-  const wallMat=o.space==="hall"?M.stone:(themeMats(themeOf(o.space)).wall||M.stone);
-  const ow=W+1.1, top=y0+Hh+.55, s=new THREE.Shape(); s.moveTo(-ow/2,0); s.lineTo(ow/2,0); s.lineTo(ow/2,top); s.lineTo(-ow/2,top); s.closePath();
-  const hole=new THREE.Path(); nicheOutline(W+.04,Hh+.04,y0-.02).forEach(([x,y],i)=>i?hole.lineTo(x,y):hole.moveTo(x,y)); hole.closePath(); s.holes.push(hole);
-  const geo=new THREE.ExtrudeGeometry(s,{depth:D+.12,bevelEnabled:true,bevelThickness:.012,bevelSize:.012,bevelSegments:2,curveSegments:48}); geo.translate(0,0,-.12);
-  const blk=new THREE.Mesh(geo,wallMat); blk.castShadow=blk.receiveShadow=true; G.add(blk); solids.push(blk);
-  // smalle bronzen omlijsting van 2 cm in de negge
-  const fr=new THREE.Shape(); nicheOutline(W+.1,Hh+.1,y0-.05).forEach(([x,y],i)=>i?fr.lineTo(x,y):fr.moveTo(x,y)); fr.closePath(); const fh=new THREE.Path(); nicheOutline(W+.04,Hh+.04,y0-.02).forEach(([x,y],i)=>i?fh.lineTo(x,y):fh.moveTo(x,y)); fh.closePath(); fr.holes.push(fh);
-  const frm=new THREE.Mesh(new THREE.ExtrudeGeometry(fr,{depth:.012,bevelEnabled:false,curveSegments:48}),qBuildMaterials().darkBronze); frm.position.z=D+.014;
-  G.children.forEach(c=>{ if(c!==blk&&c!==frm&&Math.abs(c.position.z-.08)<.001) c.position.z=D+.06; });
-  qAdd(G,new THREE.BoxGeometry(ow+.02,.1,.02),qBuildMaterials().darkBronze,0,.05,D+.01); G.add(frm);
-  // binnenkant van de nis: zachte schaduw van boven
-  return info; }; }
+// ---- B: etalage IN de muur: de wand krijgt (via de stencilbuffer) een gat in de vorm van de nis,
+//      daarachter een echte nis van D diep met binnenwanden, planken en producten. Niets steekt uit.
+const NICHE_RO=3;
+const nicheMaskMat=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false,depthTest:true,stencilWrite:true,stencilRef:1,stencilFunc:THREE.AlwaysStencilFunc,stencilZPass:THREE.ReplaceStencilOp});
+const nicheClearMat=new THREE.ShaderMaterial({vertexShader:"void main(){ gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }",fragmentShader:"void main(){ gl_FragDepth=1.0; gl_FragColor=vec4(0.0); }",
+  colorWrite:false,depthWrite:true,depthTest:true,depthFunc:THREE.AlwaysDepth,stencilWrite:true,stencilRef:1,stencilFunc:THREE.EqualStencilFunc,stencilZPass:THREE.KeepStencilOp,stencilFail:THREE.KeepStencilOp,stencilZFail:THREE.KeepStencilOp});
+{ const _et=OB.etalage; OB.etalage=(o,G)=>{ const info=_et(o,G), ids=objProducts(o), Lg=etalageLayout(o,ids), {W,Hh,y0}=Lg, D=.42, hall=o.space==="hall";
+  const shp=(w,h,yy)=>{ const s=new THREE.Shape(); nicheOutline(w,h,yy).forEach(([x,y],i)=>i?s.lineTo(x,y):s.moveTo(x,y)); s.closePath(); return s; };
+  const lab=G.children.find(c=>Math.abs(c.position.z-.08)<.001&&!c.isMesh||Math.abs(c.position.z-.08)<.001);
+  // alles van de oude etalage (behalve label en gloed op de wand) naar achter de wandlijn
+  const inner=[]; G.children.slice().forEach(c=>{ if(c===lab) return; if(c.isMesh&&c.geometry&&c.geometry.type==="ExtrudeGeometry"){ G.remove(c); const i=solids.indexOf(c); if(i>=0) solids.splice(i,1); return; }
+    if(c.isMesh&&c.geometry&&c.geometry.type==="PlaneGeometry"&&c.material&&c.material.blending===THREE.AdditiveBlending){ c.position.z=.006; return; }
+    c.position.z-=D; inner.push(c); });
+  // binnenwanden van de nis (alleen de zijkanten van een extrusie, van binnen gezien)
+  const wallMat=hall?M.stone:(themeMats(themeOf(o.space)).wall||M.stone), sideMat=wallMat.clone(); sideMat.side=THREE.BackSide;
+  const tube=new THREE.Mesh(new THREE.ExtrudeGeometry(shp(W,Hh,y0),{depth:D+.02,bevelEnabled:false,curveSegments:64}),[new THREE.MeshBasicMaterial({visible:false}),sideMat]); tube.position.z=-D-.01; G.add(tube); inner.push(tube);
+  // gat in de wand: masker (stencil) en diepte wissen, net vóór het wandvlak (rotonde is hol: iets verder naar voren)
+  const zf=hall?.17:.015, hole=new THREE.ShapeGeometry(shp(W,Hh,y0),64);
+  const mk=new THREE.Mesh(hole,nicheMaskMat); mk.position.z=zf; mk.renderOrder=1; const cl=new THREE.Mesh(hole,nicheClearMat); cl.position.z=zf; cl.renderOrder=2; G.add(mk,cl);
+  [mk,cl].forEach(m=>{ m.castShadow=false; m.receiveShadow=false; m.frustumCulled=false; });
+  inner.forEach(c=>c.traverse(m=>{ m.renderOrder=NICHE_RO; if(m.isMesh){ m.receiveShadow=false; m.castShadow=false; } }));
+  // smalle bronzen negge in het wandvlak
+  const fr=shp(W+.06,Hh+.06,y0-.03), fh=new THREE.Path(); nicheOutline(W,Hh,y0).forEach(([x,y],i)=>i?fh.lineTo(x,y):fh.moveTo(x,y)); fh.closePath(); fr.holes.push(fh);
+  const frm=new THREE.Mesh(new THREE.ShapeGeometry(fr,64),qBuildMaterials().darkBronze); frm.position.z=hall?.012:.004; G.add(frm);
+  // een zacht licht in de nis zelf (de wand houdt het daglicht tegen)
+  if(!isMobile()){ const pl=new THREE.PointLight(0xffe9cf,1.6,D*6,2); pl.position.set(0,y0+Hh*.85,-D*.45); G.add(pl); }
+  return {top:y0+Hh+.4,size:W}; }; }
 
 // ---- B5: materiaalladenkast — vier laden die echt open schuiven (leer, details, garen, beslag)
 const THREADS=[["ivoor","Ivoor","Ivory","#efe6d4"],["cognac","Cognac","Cognac","#a8652f"],["bordeaux","Bordeaux","Burgundy","#6b2026"],["zwart","Zwart","Black","#1c1b1b"],["goud","Goud","Gold","#c3a367"],["grijs","Steengrijs","Stone grey","#8c8781"]];
@@ -4919,7 +4930,7 @@ PAGES.preorder=()=>{ const nl=nlL(), models=poModels(), s=PO_STEPS[PO.step], g=s
   if(g==="model") body=models.length?`<div class="sw-grid">${models.map(m=>`<button type="button" class="sw-card${PO.model===m.id?" on":""}" data-pom="${E(m.id)}"><span class="sw-cimg">${m.img?`<img src="${E(m.img)}" alt="" loading="lazy">`:""}</span><b>${E(L(ITEMS[m.id]||m).t)}</b><small>${E(m.price||tr("m.price"))}</small></button>`).join("")}</div>`
       :`<p class="sw-note">${nl?"Er zijn op dit moment geen modellen die je kunt personaliseren.":"There are no models to personalise right now."}</p>`;
   else if(g!=="card"){ const list=poAllowed(b,g);
-    body=`<div class="po-chips">${list.map(x=>`<button type="button" class="po-chip${PO[g]===x[0]?" on":""}" data-pok="${E(x[0])}"><i style="background:${E(x[3])}"></i><span>${E(lang==="en"?x[2]:x[1])}</span></button>`).join("")}</div>`
+    body=`<div class="po-prev"><canvas id="poPrev" width="900" height="560"></canvas></div>`+`<div class="po-chips">${list.map(x=>`<button type="button" class="po-chip${PO[g]===x[0]?" on":""}" data-pok="${E(x[0])}"><i style="background:${E(x[3])}"></i><span>${E(lang==="en"?x[2]:x[1])}</span></button>`).join("")}</div>`
       +(g==="body"?`<p class="sw-note">${nl?"Odessa shrunken kalfsleer van Weinheimer Leder: zichtbare nerf, heel zacht en krasbestendig. Kleuren op een scherm wijken altijd iets af; bij de afspraak zie en voel je de echte stalen.":"Odessa shrunken calfskin by Weinheimer Leder: visible grain, very soft and scratch-resistant. Colours on screen always differ slightly; at the appointment you see and feel the real swatches."}</p>`:"")
       +(g==="thread"?`<p class="sw-note">${nl?"Alles wordt met de hand gestikt, met gewaxt garen.":"Everything is hand-stitched with waxed thread."}</p>`:""); }
   else body=`<div class="po-card"><canvas id="poCanvas" width="1200" height="760"></canvas></div><p class="sw-note">${nl?"Dit is geen bestelling. Elise neemt contact met je op om je keuze te bespreken en de stalen samen te bekijken.":"This is not an order. Elise will contact you to discuss your choice and look at the swatches together."}</p>
@@ -4937,7 +4948,16 @@ function poDraw(){ const c=document.getElementById("poCanvas"); if(!c) return; c
   rows.forEach(([k,v],i)=>{ const y=340+i*68; g.fillStyle="#8a7a66"; g.font="500 22px 'Jost',sans-serif"; g.fillText(k.toUpperCase(),90,y); g.fillStyle="#2E1D12"; g.font="400 38px 'Cormorant Garamond',serif"; g.fillText(v||"—",300,y+2);
     if(keys[i]){ g.fillStyle=poHex(keys[i][0],keys[i][1]); g.beginPath(); g.arc(W-130,y-10,22,0,Math.PI*2); g.fill(); g.strokeStyle="rgba(0,0,0,.25)"; g.stroke(); } });
   g.fillStyle="#8a7a66"; g.font="400 22px 'Jost',sans-serif"; const d=new Date(); g.fillText((nl?"Samengesteld op ":"Composed on ")+d.toLocaleDateString(nl?"nl-NL":"en-GB",{day:"numeric",month:"long",year:"numeric"})+(nl?" · met de hand gestikt":" · hand-stitched"),90,H-80);
-  if(b&&b.img) loadImg(b.img).then(im=>{ const s=Math.min(300/im.width,300/im.height); g.drawImage(im,W-140-im.width*s,60,im.width*s,im.height*s); }).catch(()=>{}); }
+  const tok=++poTok; poImage().then(im=>{ if(!im||tok!==poTok) return; const iw=im.width||im.naturalWidth, ih=im.height||im.naturalHeight, s=Math.min(330/iw,300/ih); g.save(); g.shadowColor="rgba(60,30,15,.28)"; g.shadowBlur=24; g.shadowOffsetY=12; g.drawImage(im,W-120-iw*s,58,iw*s,ih*s); g.restore(); }).catch(()=>{}); }
+// de tas in de gekozen kleuren (zelfde techniek als de configurator; bij foto-modus de echte foto van dat leer)
+async function poImage(){ const b=bagById(PO.model); if(!b||!b.img) return null; const cu=cuOf(b);
+  if(!PO.body&&!PO.acc&&!PO.hw) return loadImg(b.img).catch(()=>null);
+  if(cu&&cu.mode==="foto"&&cu.photos&&cu.photos[PO.body]) return loadImg(cu.photos[PO.body]).catch(()=>null);
+  const pick=(g)=>PO[g]||(cu&&Array.isArray(cu[g])&&cu[g][0])||"";
+  return recolor(PO.model,pick("body"),pick("acc"),pick("hw")); }
+let poTok=0;
+async function poPreview(){ const c=document.getElementById("poPrev"); if(!c) return; const tok=++poTok, im=await poImage(); if(tok!==poTok||!im) return; const g=c.getContext("2d"), W=c.width, H=c.height; g.clearRect(0,0,W,H);
+  const iw=im.width||im.naturalWidth, ih=im.height||im.naturalHeight, s=Math.min(W*.86/iw,H*.86/ih); g.save(); g.shadowColor="rgba(60,30,15,.3)"; g.shadowBlur=28; g.shadowOffsetY=16; g.drawImage(im,(W-iw*s)/2,(H-ih*s)/2,iw*s,ih*s); g.restore(); }
 function poMsg(){ const nl=nlL(); return (nl?"Ik wil graag deze tas laten maken (pre-order):\n":"I would like this bag made (pre-order):\n")+poLines().map(([k,v])=>k+": "+v).join("\n")+(nl?"\n\nGraag hoor ik wanneer we een afspraak kunnen maken.":"\n\nPlease let me know when we can make an appointment."); }
 function openPreorder(model){ PO.step=0; if(model&&bagById(model)&&cuOf(bagById(model))){ PO.model=model; PO.step=1; } openSite("preorder",""); }
 siteEl.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t||!siteEl.contains(t)) return; const d=t.dataset; let hit=true;
@@ -4948,7 +4968,7 @@ siteEl.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t||
   else if(d.podl!==undefined){ const c=document.getElementById("poCanvas"); if(c){ const a=document.createElement("a"); a.download="elizian-afspraakkaart.png"; try{ a.href=c.toDataURL("image/png"); a.click(); }catch(err){ console.warn(err); } } }
   else if(d.posend!==undefined){ openForm("custom",PO.model,"coll"); setTimeout(()=>{ const m=document.getElementById("f-msg"); if(m) m.value=poMsg(); },60); }
   else hit=false;
-  if(hit){ e.stopPropagation(); if(sitePage==="preorder") requestAnimationFrame(()=>{ poDraw(); swMain.scrollTop=0; }); } },true);
+  if(hit){ e.stopPropagation(); if(sitePage==="preorder") requestAnimationFrame(()=>{ poDraw(); poPreview(); if(d.pok===undefined) swMain.scrollTop=0; }); } },true);
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
