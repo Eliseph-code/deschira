@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795558579"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795558718"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2454,7 +2454,7 @@ let sunBase=3.4, hemiBase=.7, hemiCol=new THREE.Color(1,1,1), NIGHT=0, DAY=1, ti
 const pmrem=new THREE.PMREMGenerator(renderer);
 function currentDate(){ if(timeMode==="now") return new Date();
   // gouden uur: zoek het moment waarop de zon ~5° boven de horizon staat (namiddag), passend bij de huidige datum
-  if(timeMode==="golden"){ const d=new Date(); d.setHours(12,0,0,0); for(let m=0;m<600;m+=5){ const x=new Date(d.getTime()+m*60000); if(sunPosition(x).el<5) return x; } return d; } const d=new Date(), h=parseFloat(timeMode); d.setHours(Math.floor(h),Math.round((h%1)*60),0,0); return d; }
+  if(timeMode==="golden"){ const d=new Date(); d.setHours(12,0,0,0); for(let m=0;m<600;m+=5){ const x=new Date(d.getTime()+m*60000); if(sunPosition(x).el<3) return x; } return d; } const d=new Date(), h=parseFloat(timeMode); d.setHours(Math.floor(h),Math.round((h%1)*60),0,0); return d; }
 const sstep=(a,b,v)=>{ const t=clamp((v-a)/(b-a),0,1); return t*t*(3-2*t); };
 const roomBoost=()=>1+2.2*NIGHT;
 function updateSky(){
@@ -4582,7 +4582,7 @@ function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
 // ---- daglicht hoort buiten: binnen in de kamers komt de zon nauwelijks binnen (geen vreemde schuine lichtbanen)
 { let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
     // binnen 's avonds: warme, zachte avondverlichting zodat de kamer leesbaar blijft (2700K)
-    const g=(1-f)/.88*NIGHT; hemi.intensity=hemiBase+.75*g; hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+    const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?2.4:1; hemi.intensity=hemiBase+.75*g*dark; hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
