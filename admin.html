@@ -1,0 +1,28 @@
+<div class="modal" id="adminModal" role="dialog" aria-modal="true">
+  <div class="form-box admin-box">
+    <button class="x" data-close aria-label="Sluiten">×</button>
+    <h3 id="admTitle">Beheer</h3>
+    <p class="lead">Alleen jij kunt dit zien en opslaan. Wijzig wat je wilt en klik op Opslaan.</p>
+    <div class="adm-head">
+    <div class="adm-tabs" id="admTabs">
+      <button type="button" data-tab="ruimtes" class="on">Ruimtes</button>
+      <button type="button" data-tab="partners">Samenwerkingen</button>
+      <button type="button" data-tab="cols">Collecties &amp; producten</button>
+      <button type="button" data-tab="items">Werken</button>
+      <button type="button" data-tab="menu">Menu</button>
+      <button type="button" data-tab="texts">Teksten</button>
+      <button type="button" data-tab="info">Gegevens</button>
+      <button type="button" data-tab="aanvragen">Aanvragen</button>
+    </div>
+    <div class="adm-jump" id="admJump"></div>
+    </div>
+    <div id="admBody"></div>
+    <button type="button" class="adm-all" id="admAll">Alle instellingen tonen</button>
+    <div class="adm-foot">
+    <div class="adm-acts"><button class="btn" type="button" id="admSave">Opslaan</button><button class="btn ghost-light" type="button" id="admReset">Alles terugzetten naar standaard</button><button class="btn ghost-light adm-top" type="button" onclick="this.closest('.form-box').scrollTo({top:0,behavior:'smooth'})">↑ Naar boven</button></div>
+    <p class="form-note" id="admNote" role="status"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Atelier: ontwerp je eigen tas -->
