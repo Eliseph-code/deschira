@@ -3703,7 +3703,7 @@ function buildArrows(ci){ arrowFrom=ci; arrowNext=-1; while(arrowG.children.leng
     const m=new THREE.Mesh(arrowGeo,new THREE.MeshBasicMaterial({color:0xe2bf72,transparent:true,opacity:0,depthWrite:false,toneMapped:false}));
     m.position.set(x,y,z); m.rotation.y=Math.atan2(-dx,-dz); m.scale.setScalar(1.35); m.renderOrder=20; m.userData.dist=d; arrowG.add(m); } }
 // richtingwijzer onderin beeld: wijst naar het volgende punt en zegt wat er komt
-const hint=document.createElement("button"); hint.type="button"; hint.className="route-hint"; hint.innerHTML=`<span class="rh-arrow"><svg viewBox="0 0 24 24"><path d="M12 3l7 9h-4.5v9h-5v-9H5z"/></svg></span><span class="rh-txt"><small></small><b></b></span>`; document.body.appendChild(hint);
+const hint=document.createElement("button"); hint.type="button"; hint.className="route-hint"; hint.innerHTML=`<span class="rh-arrow"><svg viewBox="0 0 24 24"><path d="M12 3l7 9h-4.5v9h-5v-9H5z"/></svg></span><span class="rh-txt"><small></small><b></b></span>`; (document.getElementById("scene")||document.body).appendChild(hint);
 hint.addEventListener("click",()=>{ const j=arrowNext; if(j>=0) goStation(j); });
 function animArrows(now){ const still=!jump&&mode==="route"&&pose.st!=null&&pose.st>=0; arrowFade+=((still?1:0)-arrowFade)*.08;
   arrowG.visible=arrowFade>.02; const t=now/1000;
