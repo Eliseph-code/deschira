@@ -581,6 +581,88 @@
   .adm-mini{background:none;border:1px solid rgba(239,230,218,.3);color:var(--cream);font-family:var(--sans);font-size:11px;padding:6px 10px;cursor:pointer;margin:6px 6px 0 0}
   .linkbtn{background:none;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
   @media (max-width:760px){ .st-years{grid-template-columns:repeat(2,1fr)} .st-ups img{width:80px;height:60px} }
+  /* ===== websitevenster: de gewone website in het gebouw ===== */
+  .site-win{position:fixed;top:0;right:0;bottom:0;width:min(780px,54vw);z-index:56;transform:translateX(104%);transition:transform .55s cubic-bezier(.2,.8,.2,1),width .45s;pointer-events:none;
+    --sw-bg:#F0EDE5;--sw-ink:#2B1A14;--sw-brown:#52281C;--sw-gold:#C3A367;--sw-bord:#692719;--sw-navy:#15283E;--sw-trav:#D7C9B0}
+  .site-win.open{transform:none;pointer-events:auto}
+  .site-win.wide{width:100vw}
+  .sw-shell{height:100%;display:flex;flex-direction:column;background:var(--sw-bg);color:var(--sw-ink);box-shadow:-30px 0 60px rgba(0,0,0,.35)}
+  .sw-head{display:flex;align-items:center;gap:18px;padding:14px 26px;background:var(--sw-brown);color:var(--sw-bg);position:relative;flex-wrap:wrap}
+  .sw-brand{display:flex;align-items:center;gap:10px;background:none;border:0;color:inherit;cursor:pointer;padding:0}
+  .sw-brand svg{width:30px;height:30px;fill:currentColor}.sw-brand span{font-family:var(--serif);font-size:20px;letter-spacing:.32em;text-transform:uppercase}
+  .sw-nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+  .sw-nav button{background:none;border:0;color:inherit;font-family:var(--sans);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;padding:8px 10px;cursor:pointer;opacity:.82;border-bottom:1px solid transparent}
+  .sw-nav button:hover,.sw-nav button.on{opacity:1;border-bottom-color:var(--sw-gold);color:#fff8ec}
+  .sw-tools{display:flex;gap:8px;align-items:center}
+  .sw-tools button{background:none;border:1px solid rgba(240,237,229,.4);color:inherit;font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .sw-tools button:hover{border-color:var(--sw-gold);color:var(--sw-gold)}
+  .sw-tools svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7}
+  .sw-burger{display:none;background:none;border:0;flex-direction:column;gap:5px;padding:8px;cursor:pointer;margin-left:auto}.sw-burger i{display:block;width:22px;height:1.5px;background:var(--sw-bg)}
+  .sw-main{flex:1;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;font-size:18px;line-height:1.65}
+  .sw-sec{padding:44px 52px;border-bottom:1px solid rgba(82,40,28,.1);scroll-margin-top:14px}
+  .sw-sec.sw-hit{animation:swHit 1.8s ease}
+  @keyframes swHit{0%{background:rgba(195,163,103,.28)}100%{background:transparent}}
+  .sw-sec h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,3.4vw,46px);line-height:1.15;color:var(--sw-brown);margin-bottom:14px}
+  .sw-sec h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,2.6vw,36px);line-height:1.2;color:var(--sw-brown);margin-bottom:12px}
+  .sw-sec h3{font-family:var(--serif);font-weight:500;font-size:25px;color:var(--sw-brown);margin-bottom:8px}
+  .sw-sec p{margin-bottom:12px;max-width:62ch}
+  .sw-ey{font-family:var(--sans);font-size:11.5px!important;letter-spacing:.26em;text-transform:uppercase;color:#9C7E47;margin-bottom:10px!important}
+  .sw-h3{margin-top:26px}.sw-note{opacity:.72;font-style:italic}.sw-lead{font-size:20px}
+  .sw-btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;padding:13px 22px;border:1px solid var(--sw-brown);background:var(--sw-brown);color:var(--sw-bg);cursor:pointer;text-decoration:none;transition:.25s}
+  .sw-btn:hover{background:var(--sw-bord);border-color:var(--sw-bord)}
+  .sw-btn.gold{background:var(--sw-gold);border-color:var(--sw-gold);color:#2B1A14}.sw-btn.gold:hover{background:#b5934f}
+  .sw-btn.ghost{background:none;color:var(--sw-brown)}.sw-btn.ghost:hover{background:var(--sw-brown);color:var(--sw-bg)}
+  .sw-acts{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px}.sw-acts.center{justify-content:center}
+  .sw-link{background:none;border:0;padding:0;color:#8a6a35;font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;margin-top:10px;text-decoration:none;display:inline-block}
+  .sw-link:hover{color:var(--sw-bord)}
+  .sw-small{display:flex;gap:22px;flex-wrap:wrap}
+  .sw-hero{text-align:center;padding:72px 40px 60px;background:var(--sw-brown);color:var(--sw-bg)}
+  .sw-hero h1{color:var(--sw-bg);font-size:clamp(40px,4.2vw,60px);letter-spacing:.3em;text-transform:uppercase;margin:14px 0 6px}
+  .sw-hero .sw-mono{width:86px;height:86px;fill:var(--sw-bg);margin:0 auto}
+  .sw-hero .sw-tag{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--sw-gold);margin:0 auto 18px}
+  .sw-hero .sw-lead{margin:0 auto;opacity:.9}
+  .sw-hero .sw-btn.ghost{color:var(--sw-bg);border-color:rgba(240,237,229,.6)}.sw-hero .sw-btn.ghost:hover{background:var(--sw-bg);color:var(--sw-brown)}
+  .sw-split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:start}
+  .sw-fig{margin:0;background:var(--sw-trav);aspect-ratio:4/5;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .sw-fig img,.sw-fig video{width:100%;height:100%;object-fit:cover;cursor:zoom-in}.sw-fig.sw-svg svg{width:100%;height:100%}
+  .sw-ph{font-family:var(--serif);font-size:90px;color:rgba(82,40,28,.35);width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--sw-trav)}
+  .sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px;margin-top:16px}
+  .sw-card{background:none;border:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px;padding:0;color:inherit;font-family:inherit}
+  .sw-cimg{aspect-ratio:1;background:#E7DFD2;display:flex;align-items:center;justify-content:center;padding:14px}.sw-cimg img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .45s}
+  .sw-card:hover .sw-cimg img{transform:scale(1.05)}.sw-card b{font-weight:500;font-size:18px;margin-top:6px}.sw-card small{font-family:var(--sans);font-size:11.5px;letter-spacing:.08em;opacity:.7}
+  .sw-prod{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
+  .sw-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sw-gal img{width:100%;aspect-ratio:1;object-fit:contain;background:#E7DFD2;padding:8px;cursor:zoom-in}
+  .sw-gal img.main{grid-column:1/-1;padding:24px}
+  .sw-specs{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:16px 0;font-size:16px}.sw-specs dt{font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.65;padding-top:3px}
+  .sw-tl .sw-steps,.sw-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:20px;border-top:1px solid rgba(195,163,103,.6);padding-top:20px}
+  .sw-steps.four{grid-template-columns:repeat(4,1fr)}
+  .sw-steps small{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#9C7E47}.sw-steps b{display:block;font-family:var(--serif);font-weight:500;font-size:21px;color:var(--sw-brown);margin:4px 0}.sw-steps p{font-size:16px}
+  .sw-dark{background:var(--sw-navy);color:var(--sw-bg)}.sw-dark h2,.sw-dark .sw-steps b{color:var(--sw-bg)}.sw-dark .sw-steps small,.sw-dark .sw-ey{color:var(--sw-gold)}
+  .sw-box{background:#E9E2D6}
+  .sw-study .sw-years{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:22px 0 6px}
+  .sw-years div{display:flex;flex-direction:column;gap:2px}.sw-years i{height:4px;background:rgba(82,40,28,.15);margin-bottom:8px}.sw-years .done i{background:var(--sw-gold)}
+  .sw-years .now i{background:linear-gradient(90deg,var(--sw-gold) 45%,rgba(82,40,28,.15) 45%)}.sw-years b{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase}.sw-years .now b{color:var(--sw-bord)}.sw-years small{font-size:15px;opacity:.8}
+  .sw-ups{list-style:none;border-left:1px solid var(--sw-gold);padding-left:18px;display:flex;flex-direction:column;gap:16px;margin-top:10px}
+  .sw-ups li{display:flex;gap:14px}.sw-ups img{width:120px;height:90px;object-fit:cover;cursor:zoom-in}.sw-ups small{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9C7E47}.sw-ups b{display:block;font-weight:500;font-size:19px}.sw-ups p{font-size:16px;margin:0}
+  .sw-proj{padding-top:30px}.sw-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}.sw-thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;cursor:zoom-in}
+  .sw-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:18px}.sw-cols p{font-size:16px}
+  .sw-contact{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;margin:14px 0}.sw-contact dt{font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.65;padding-top:4px}
+  .sw-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:18px;margin-top:12px}
+  .sw-swatch{scroll-margin-top:14px;padding:6px;transition:background .4s}.sw-swatch.sw-hit{animation:swHit 1.8s ease}
+  .sw-sw{display:block;width:100%;aspect-ratio:1;border:0;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08),0 6px 14px rgba(43,26,20,.15);cursor:zoom-in;background-blend-mode:multiply}
+  .sw-swatch b{display:block;font-weight:500;font-size:17px;margin-top:8px}.sw-swatch p{font-size:14.5px;opacity:.8;margin:2px 0 0}
+  .sw-foot{padding:40px 52px 60px;text-align:center;background:var(--sw-brown);color:var(--sw-bg);font-family:var(--sans);font-size:13px;letter-spacing:.12em}
+  .sw-foot svg{width:38px;height:38px;fill:var(--sw-bg);margin:0 auto 12px}.sw-foot p{margin:4px 0}.sw-foot .sw-ft{font-family:var(--serif);font-style:italic;font-size:19px;letter-spacing:0;color:var(--sw-gold);margin-top:12px}
+  .sw-zoom{position:fixed;inset:0;z-index:95;background:rgba(20,12,9,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;cursor:zoom-out}
+  .sw-zoom.open{opacity:1;pointer-events:auto}.sw-zoom img{max-width:94vw;max-height:92vh;object-fit:contain}.sw-zoom button{position:absolute;top:14px;right:20px;background:none;border:0;color:#fff;font-size:36px;cursor:pointer}
+  .sw-dot{width:30px;height:30px;border-radius:4px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+  body.site-open .caption,body.site-open .info-pill,body.site-open .route-hint{opacity:0;pointer-events:none}
+  body.site-open .stepper{right:calc(min(780px,54vw) + 22px)}
+  body.site-open .site-win.wide~.stepper{display:none}
+  @media (max-width:1100px){ .sw-split,.sw-prod{grid-template-columns:1fr} .sw-fig{aspect-ratio:16/11} .sw-cols{grid-template-columns:1fr} }
+  @media (max-width:760px){ .site-win{width:100vw} .sw-head{padding:12px 16px} .sw-nav{display:none;order:5;flex-basis:100%;flex-direction:column} .site-win.menu .sw-nav{display:flex}
+    .sw-burger{display:flex} .sw-tools .sw-wide{display:none} .sw-tools .sw-close span{display:none} .sw-sec{padding:32px 20px} .sw-hero{padding:48px 20px}
+    .sw-steps,.sw-steps.four{grid-template-columns:1fr} .sw-main{font-size:17px} body.site-open .stepper,body.site-open .tabbar{display:none} }
   .gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
   .loading{position:absolute;inset:0;display:grid;place-items:end center;padding-bottom:18vh;background:radial-gradient(ellipse at 50% 40%,#5a3424,#2a160f);color:#EFE6DA;font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;transition:opacity 1s;z-index:3;pointer-events:none}
   .loading.done{opacity:0}
@@ -822,7 +904,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795516379"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795518405"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -1091,6 +1173,9 @@ const B3={nl:{"sv1.p":"Een werkplaats om te huren of een atelier om mee samen te
   "end.p":"In time, Elizian also aims to produce for existing brands.","f.lead":"A pre-order, a question about the collection or something else? I'd love to hear from you.",
   "study.btn":"Studies & portfolio","study.intern":"Offer an internship"}};
 Object.assign(T.nl,B3.nl); Object.assign(T.en,B3.en);
+const B4={nl:{"entry.tag":"Ambacht dat blijft","home.p":"Elizian is het lederlabel van Elise Philips: tijdloze tassen, volledig met de hand gestikt. Op pre-order en te personaliseren."},
+  en:{"entry.tag":"Craft that lasts","home.p":"Elizian is the leather label of Elise Philips: timeless bags, stitched entirely by hand. Made to order and personalisable."}};
+Object.assign(T.nl,B4.nl); Object.assign(T.en,B4.en);
 const B2I={
   a1:{nl:{t:"Interieuradviseur · 2025",p:"Niveau 4, Hout- en Meubileringscollege Amsterdam. Mijn examenproject: een wijnzaak herontwikkeld tot wijnzaak met proeverij en kleine hapjes. Op de examenexpositie bekroond met de Flexa Kleurprijs."},
       en:{t:"Interior advisor · 2025",p:"Level 4, Hout- en Meubileringscollege Amsterdam. My graduation project: a wine shop redeveloped into a wine shop with tastings and small bites. Awarded the Flexa Kleurprijs colour award at the graduation exhibition."}},
@@ -1103,7 +1188,8 @@ const B2I={
   h10:{nl:{t:"Elizian als producent",p:B2.nl["end.p"]},en:{t:"Elizian as a manufacturer",p:B2.en["end.p"]}}};
 for(const [id,v] of Object.entries(B2I)) if(ITEMS[id]){ ITEMS[id].nl={...ITEMS[id].nl,...v.nl}; ITEMS[id].en={...ITEMS[id].en,...v.en}; }
 // bestaande opgeslagen inhoud: de oude teksten voor deze onderdelen één keer vervangen (bij de eerstvolgende keer opslaan wordt brand2 bewaard)
-function brand2(d){ if(d&&!d.brand3&&d.texts){ d=JSON.parse(JSON.stringify(d)); for(const l of ["nl","en"]) if(d.texts[l]) for(const k of Object.keys(B3[l])) delete d.texts[l][k]; }
+function brand2(d){ if(d&&!d.brand4&&d.texts){ d=JSON.parse(JSON.stringify(d)); for(const l of ["nl","en"]) if(d.texts[l]) for(const k of Object.keys(B4[l])) delete d.texts[l][k]; }
+  if(d&&!d.brand3&&d.texts){ d=JSON.parse(JSON.stringify(d)); for(const l of ["nl","en"]) if(d.texts[l]) for(const k of Object.keys(B3[l])) delete d.texts[l][k]; }
   if(!d||d.brand2) return d; d=JSON.parse(JSON.stringify(d));
   if(d.texts) for(const l of ["nl","en"]) if(d.texts[l]) for(const k of Object.keys(B2[l])) delete d.texts[l][k];
   if(d.items) for(const id of Object.keys(B2I)) if(d.items[id]){ delete d.items[id].nl; delete d.items[id].en; }
@@ -2387,8 +2473,8 @@ function makeRoute(){
     OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant").map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a}; }).sort((p,q)=>p.a-q.a).forEach(p=>out.push({...objNode(p.o),sec:k}));
     out.push({id:"t_"+k+"2",room:k,sec:k,eye:W([-6.4,Lg.dz]),look:C0,transit:true},{id:"t_"+k+"3",room:"hall",sec:k,eye:P2(th,R-1.7),look:C0,transit:true}); });
   // 3. via de bogen naar de tuin, eindigen bij de ingang met zicht op de rotonde
-  out.push({id:"g1",room:"hall",sec:"garden",eye:P2(GATE_TH,R-2.6),look:P2(GATE_TH,R+20),transit:true},{id:"g0",room:"hall",sec:"garden",eye:[.8,20],look:GATE_IN,transit:true},
-    {id:"end",room:"hall",sec:"garden",eye:[-.9,39.6],look:GATE_IN,cap:"end"});
+  // naar buiten lopen kan niet meer: de rondleiding eindigt weer midden in de rotonde
+  out.push({id:"end",room:"hall",sec:"hall",eye:C0,look:P2(-2.5,R+40),cap:"hall"});
   ST=out;
 }
 const CAPS={
@@ -2445,7 +2531,7 @@ function scrollToT(t){ const span=tour.offsetHeight-window.innerHeight; window.s
 function roomOf(x,z){ return (curRoomK!=="hall"&&inRoomL(curRoomK,x,z))?curRoomK:"hall"; }
 function clampArea(x,z){ const r=roomOf(x,z);
   if(r!=="hall"){ const [lx,lz]=XF[r].toL(x,z), A=AREAS[r]||AREAS.r, [X,Z]=XF[r].toW(clamp(lx,A.x[0],A.x[1]),clamp(lz,A.z[0],A.z[1])); return {x:X,z:Z,room:r}; }
-  if(!isOut(x,z)){ const dx=x-ROT.x, dz=z-ROT.z, d=Math.hypot(dx,dz), m=ROT.R-1; if(d>m){ x=ROT.x+dx/d*m; z=ROT.z+dz/d*m; } return {x,z,room:r}; }
+  if(true){ const dx=x-ROT.x, dz=z-ROT.z, d=Math.hypot(dx,dz), m=ROT.R-1; if(d>m){ x=ROT.x+dx/d*m; z=ROT.z+dz/d*m; } return {x,z,room:r}; }
   const A=AREAS.garden; return {x:clamp(x,A.x[0],A.x[1]), z:clamp(z,A.z[0],A.z[1]), room:r}; }
 function buildPath(tx,tz,troom){
   const pts=[[pose.x,pose.z]], last=()=>pts[pts.length-1];
@@ -2579,7 +2665,7 @@ window.addEventListener("pointerup",e=>{
   if(e.target.closest(uiSel)) return;
   // enkele klik: werk of deur openen
   const h=pick(e.clientX,e.clientY,solids.concat(clickables))[0];
-  if(h){ const u=h.object.userData; if(u.item){ openInfo(u.item); return; } if(u.click){ u.click(); return; } }
+  if(h){ const u=h.object.userData; if(siteFromHit(u)) return; if(u.item){ openInfo(u.item); return; } if(u.click){ u.click(); return; } }
   if(e.pointerType==="touch"){ const now=performance.now();
     if(now-lastTap<320 && Math.hypot(e.clientX-lastTapXY[0],e.clientY-lastTapXY[1])<40){ jumpToScreen(e.clientX,e.clientY); lastTap=0; } else { lastTap=now; lastTapXY=[e.clientX,e.clientY]; } }
 });
@@ -2932,13 +3018,14 @@ function capGo(j){ capPg=Math.max(0,Math.min(capPages.length-1,j)); const pg=cap
 function posStepper(){ if(window.innerWidth>=760){ stepperEl.style.bottom=""; return; }
   if(capEl.classList.contains("show")){ const par=capEl.offsetParent||document.body; stepperEl.style.bottom=(par.clientHeight-capEl.offsetTop+10)+"px"; } else stepperEl.style.bottom=""; }
 function syncPill(){ pillEl.classList.toggle("show",!!capCur&&!capEl.classList.contains("show")); }
-function openCap(){ if(!capCur) return; capEl.classList.add("show"); syncPill(); requestAnimationFrame(posStepper); }
+function openCap(){ if(!capCur) return; if(siteOn()){ const t=siteTarget(capNode); return openSite(t[0],t[1]); } capEl.classList.add("show"); syncPill(); requestAnimationFrame(posStepper); }
 function closeCap(){ capEl.classList.remove("show"); capEl.querySelectorAll("video").forEach(v=>{ try{v.pause();}catch(e){} }); capEl.style.transform=""; syncPill(); posStepper(); }
-function showCaption(i){ const keep=i===capSt&&capEl.classList.contains("show"); capSt=i; const n=nodes[i]; capAnchor=anchorFor(n); if(i>0&&n&&!n.transit) setHash(i);
+let capNode=null;
+function showCaption(i){ const keep=i===capSt&&capEl.classList.contains("show"); capSt=i; const n=nodes[i]; capNode=n; capAnchor=anchorFor(n); if(i>0&&n&&!n.transit) setHash(i);
   const dat=i>0?capData(n):null; if(!keep) closeCap(); capCur=null;
   if(dat){ renderCap(dat); if(keep) openCap(); } syncPill();
   if(pendingInfo&&n&&!n.transit){ const p=pendingInfo; pendingInfo=null; openInfo(p); } }
-function openInfo(id){ if(!ITEMS[id]) return; capAnchor=anchorForItem(id)||capAnchor; const dat=capData({item:id,room:curRoomK}); if(!dat) return openItem(id); renderCap(dat); openCap(); }
+function openInfo(id){ if(!ITEMS[id]) return; if(siteOn()){ const t=itemTarget(id); return openSite(t[0],t[1]); } capAnchor=anchorForItem(id)||capAnchor; const dat=capData({item:id,room:curRoomK}); if(!dat) return openItem(id); renderCap(dat); openCap(); }
 pillEl.addEventListener("click",e=>{ e.stopPropagation(); openCap(); });
 document.getElementById("capX").addEventListener("click",e=>{ e.stopPropagation(); closeCap(); });
 document.getElementById("capPrev").addEventListener("click",e=>{ e.stopPropagation(); capGo(capPg-1); });
@@ -3012,7 +3099,7 @@ function normMenu(m){ const out=[]; (Array.isArray(m)?m:[]).forEach(x=>{ if(x&&M
   ["hall","about","collab","coll","contact"].forEach(go=>{ if(!out.some(o=>o.go===go)) out.push({go,on:true,nl:"",en:"",items:null}); }); return out; }
 let MENU=normMenu(EARLY&&EARLY.menu);
 // waar de menuknoppen staan: startcirkel (computer/telefoon), onderbalk op de telefoon, knop 'Ingang'
-function normOpts(o){ o=o||{}; return {heroD:o.heroD!==false, heroM:o.heroM===true, tabM:o.tabM!==false, startM:o.startM===true}; }
+function normOpts(o){ o=o||{}; return {site:o.site!==false, heroD:o.heroD!==false, heroM:o.heroM===true, tabM:o.tabM!==false, startM:o.startM===true}; }
 let MENU_OPTS=normOpts(EARLY&&EARLY.menuOpts);
 function menuLabel(go,short){ const m=MENU.find(x=>x.go===go), c=m&&(m[lang]||"").trim(); if(c) return c; return short&&go==="collab"?tr("nav.collabShort"):short&&go==="contact"?tr("nav.contactShort"):tr(MENU_KEY[go]); }
 function applyMenu(){
@@ -3097,7 +3184,7 @@ const str=(v,d="")=>typeof v==="string"?v:d;
 const splitPath=path=>{ const a=path.split("."); return a[0]==="texts"?[a[0],a[1],a.slice(2).join(".")]:a; };
 const getPath=(o,path)=>splitPath(path).reduce((a,k)=>a==null?a:a[k],o);
 const setPath=(o,path,v)=>{ const ks=splitPath(path); let a=o; ks.slice(0,-1).forEach(k=>{ if(a[k]==null) a[k]={}; a=a[k]; }); a[ks[ks.length-1]]=v; };
-function currentContent(){ return { brand2:true, decor1:true, brand3:true, study1:true, study:clone(STUDY),
+function currentContent(){ return { brand2:true, decor1:true, brand3:true, brand4:true, study1:true, study:clone(STUDY), swatches:clone(SWLIB),
   coll:COLL.map(b=>({...clone(b),dims:{...(b.dims||{})}})), show:clone(SHOW), plinth:PLINTH.filter(Boolean),
   items:Object.fromEntries(WALL_IDS.filter(id=>ITEMS[id]).map(id=>[id,{nl:{...ITEMS[id].nl},en:{...ITEMS[id].en},img:ITEMS[id].img||"",dims:{...(ITEMS[id].dims||{})},modelImg:ITEMS[id].modelImg||""}])),
   texts:{nl:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.nl[k]||""])),en:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.en[k]||""]))},
@@ -3127,7 +3214,7 @@ function applyContent(d){
   if(Array.isArray(d.collections)&&d.collections.length) COLLS=d.collections.filter(c=>c&&typeof c.id==="string").map(c=>({id:c.id,type:["bag","art","other"].includes(c.type)?c.type:"other",nl:{t:str(c.nl&&c.nl.t)||"Collectie",p:str(c.nl&&c.nl.p)},en:{t:str(c.en&&c.en.t)||str(c.nl&&c.nl.t)||"Collection",p:str(c.en&&c.en.p)}}));
   else if(d.collNames&&typeof d.collNames==="object"){ COLLS=JSON.parse(JSON.stringify(COLLS_DEF)); for(const l of ["nl","en"]){ const n=d.collNames[l]||{}; if(str(n.bag)) COLLS[0][l].t=n.bag; if(str(n.art)) COLLS[1][l].t=n.art; } }
   if(Array.isArray(d.partners)) PARTNERS=d.partners.filter(p=>p&&typeof p.id==="string").map(p=>({id:p.id,name:str(p.name),web:str(p.web),email:str(p.email),phone:str(p.phone),logo:str(p.logo),nl:{p:str(p.nl&&p.nl.p)},en:{p:str(p.en&&p.en.p)}}));
-  STUDY=normStudy(d.study); SPACES=spacesFrom(d); OBJS=objsFrom(d); syncObjects(); MENU=normMenu(d.menu); applyMenu();
+  STUDY=normStudy(d.study); SWLIB=normSw(d.swatches); syncSW(); SPACES=spacesFrom(d); OBJS=objsFrom(d); syncObjects(); MENU=normMenu(d.menu); applyMenu();
   PILLAR={}; if(d.pillars&&typeof d.pillars==="object") PILLAR_IDS.forEach(id=>{ const v=str(d.pillars[id]); if(v) PILLAR[id]=v; });
   if(d.doorsOn&&typeof d.doorsOn==='object') DOOR_ON={about:d.doorsOn.about!==false,contact:d.doorsOn.contact!==false,coll:d.doorsOn.coll!==false};
   if(Array.isArray(d.plinth)){ const a=d.plinth.map(v=>str(v)).filter(Boolean); PLINTH=[0,1,2,3,4].map(i=>a[i]||""); }
@@ -3237,7 +3324,8 @@ function objHTML(id){ const i=draft.objects.findIndex(o=>o.id===id); if(i<0) ret
   else if(o.type==="rek") h+=`<p class="adm-hint">Maximaal vier tassen.</p>`+colChecks(P+".cols",o.cols)+pickHTML(P+".picks",o.picks||[],{max:4});
   else if(o.type==="plant") h+=`<div class="row"><div><label>Soort plant</label><select data-p="${P}.v" data-rr="1">${["Olijfboompje","Varen","Monstera","Strelitzia","Kentia-palm","Ficus"].map((l,k)=>`<option value="${k}"${(o.v|0)===k?" selected":""}>${l}</option>`).join("")}</select></div>${num("s","Formaat (1 = normaal, 0,5 tot 2)",o.s||1)}</div>`;
   else if(o.type==="studie") h+=`<p class="adm-hint">Klikken op dit bord opent de pop-up Studie &amp; portfolio. De inhoud pas je aan in het tabblad <button type="button" class="linkbtn" data-gotab="studie">Studie</button>.</p>`;
-  else if(o.type==="stalen") h+=`<p class="adm-hint">Toont alle leerkleuren uit het atelier. Klik erop om de personaliseer-tafel te openen.</p>`;
+  else if(o.type==="stalenwand") h+=two(P+".$.t","Titel boven de stalen (optioneel)")+`<div class="row">${num("y","Hoogte midden (m)",o.y||1.75)}<div></div></div>`+swPickHTML(P,o,12);
+  else if(o.type==="stalen") h+=swPickHTML(P,o,15)+`<p class="adm-hint">Toont alle leerkleuren uit het atelier. Klik erop om de personaliseer-tafel te openen.</p>`;
   else if(o.type==="atelier"){ const bags=draft.coll.map((b,j)=>[b,j]).filter(([b])=>!isFlat(b.kind)&&b.img), on=bags.filter(([b])=>b.custom&&b.custom.on).length;
     h+=`<p class="adm-hint">Vink aan welke tassen bezoekers aan deze tafel mogen personaliseren. ${on?"":"Nu is er niets aangevinkt: dan staan alle tassen op de tafel."} Welke kleuren of foto's per tas beschikbaar zijn stel je in bij Collecties &amp; producten → het product → "Personaliseren in het atelier".</p>
       <div class="pk"><div class="pk-group"><div class="pk-head"><b>Tassen op de personaliseer-tafel</b><span>${on} gekozen</span></div><div class="pk-list">${bags.map(([b,j])=>{ const c=!!(b.custom&&b.custom.on); return `<label class="pk-item${c?" on":""}"><input type="checkbox" data-custon="${j}"${c?" checked":""}><img src="${escAttr(b.img)}" alt=""><span>${escAttr((b.nl&&b.nl.t)||"")}<small>${c?(b.custom.mode==="foto"?"eigen foto's":"kleuren op foto"):""}</small></span></label>`; }).join("")||`<p class="adm-hint">Nog geen tassen met een foto.</p>`}</div></div></div>
@@ -3274,7 +3362,7 @@ function renderAdmin(){
   else if(admTab==="menu"){
     { const O=draft.menuOpts||(draft.menuOpts=normOpts()), ck=(k,l)=>`<label class="adm-check"><input type="checkbox" data-chk="menuOpts.${k}"${O[k]?" checked":""}> ${l}</label>`;
       h+=`<div class="adm-card" data-sec="Waar staan de knoppen"><h5 class="adm-h5" style="margin-top:0">Waar staan de knoppen?</h5><p class="adm-hint">Op de computer staan de knoppen altijd bovenin. Op de telefoon staan ze in de balk onderin. Kies hier waar ze nog meer te zien zijn, zodat er niets dubbel staat.</p>
-        ${ck("heroD","Computer: knoppen ook in de startcirkel midden in de rotonde")}${ck("heroM","Telefoon: knoppen ook in de startcirkel (staan dan dubbel met de onderbalk)")}${ck("tabM","Telefoon: balk met knoppen onderin")}${ck("startM","Telefoon: extra knop ‘Ingang’ in de onderbalk (naast Home)")}
+        ${ck("site","Klik op een item opent het websitevenster op de juiste pagina en plek (uit = het oude informatielabel)")}${ck("heroD","Computer: knoppen ook in de startcirkel midden in de rotonde")}${ck("heroM","Telefoon: knoppen ook in de startcirkel (staan dan dubbel met de onderbalk)")}${ck("tabM","Telefoon: balk met knoppen onderin")}${ck("startM","Telefoon: extra knop ‘Ingang’ in de onderbalk (naast Home)")}
         ${!O.tabM&&!O.heroM?`<p class="adm-hint" style="color:#f0b37e">Let op: zo heeft de telefoon geen menuknoppen. Zet de onderbalk of de startcirkel aan.</p>`:""}</div>`; }
     h+=`<p class="adm-hint">De knoppen bovenin de website. Per knop bepaal je de naam, of hij zichtbaar is, de volgorde en wat er uitschuift als je eroverheen gaat. "Automatisch" volgt vanzelf wat er in de ruimtes staat.</p>`;
     const cand=menuCandidates(), cl=k=>{ const c=cand.find(x=>x.k===k); return c?c.t:(lang==="nl"?"(staat er niet meer)":"(missing)"); };
@@ -3331,6 +3419,7 @@ function renderAdmin(){
       <div class="row">${partSel("rooms."+i+".partnerId",r.partnerId||"","Partner")}${fld("rooms."+i+".partner","Of: naam (als de partner niet in de lijst staat)")}</div>${two("rooms."+i+".$.t","Titel")}${two("rooms."+i+".$.p","Tekst",1)}</div></div>`).join("");
   }
   if(!admScope&&admTab==="studie") h+=studyAdmin();
+  if(!admScope&&admTab==="stalen") h+=swAdmin();
   if(!admScope&&admTab==="aanvragen"){ h+=`<p class="adm-hint">Alle aanvragen die bezoekers via het formulier versturen. Mail ze terug via het e-mailadres en houd de status bij; klanten met een account zien die status terug.</p><div id="admReqs"><p class="adm-hint">Laden…</p></div>`; }
   if(!admScope&&admTab==="info"){
     h+=`<h4 class="adm-h">Contactgegevens</h4><p class="adm-hint">Deze gegevens komen overal op de website terug: op het contactbord, in het uitklapmenu bij Contact, in het informatielabel van de contactkamer en op elk productblad. Laat een veld leeg om het niet te tonen.</p>
@@ -3340,6 +3429,7 @@ function renderAdmin(){
   box.innerHTML=h;
   if(!admScope&&admTab==="aanvragen") loadAdminRequests(box.querySelector("#admReqs"));
   if(!admScope&&admTab==="studie") studyAdminBind(box);
+  if(!admScope&&admTab==="stalen") swAdminBind(box);
   // snelnavigatie binnen het tabblad: knopjes naar elk onderdeel
   { const J=document.getElementById("admJump"), secs=[...box.querySelectorAll("[data-sec]")]; J.innerHTML="";
     if(!admScope&&secs.length>1){ J.innerHTML=`<span>Ga naar</span>`+secs.map((el,i)=>`<button type="button" data-j="${i}"${el.dataset.sub?' class="sub"':""}>${escAttr(el.dataset.sec)}</button>`).join("");
@@ -3464,7 +3554,7 @@ peg.addEventListener("pointerup",dropPeg); peg.addEventListener("pointercancel",
 
 /* ---------- detail & formulier ---------- */
 const itemModal=document.getElementById("itemModal"), formModal=document.getElementById("formModal");
-function openItem(id){
+function openItem(id){ if(siteOn()&&ITEMS[id]){ const t=itemTarget(id); return openSite(t[0],t[1]); }
   const it=ITEMS[id], c=L(it);
   document.getElementById("mArt").innerHTML=it.svg();
   document.getElementById("mN").textContent=it.kind==="about"?tr("k.about"):tr(kindKey[it.kind]);
@@ -3760,7 +3850,7 @@ function placeObj(o,G){ if(o.mount==="wall"){ if(G.userData.y0==null) G.userData
     else { const W=WALLS_L(o.space)[o.wall|0]||WALLS_L(o.space)[0]; G.rotation.y=W.ry; const ox=Math.sin(W.ry)*.02, oz=Math.cos(W.ry)*.02; if(W.ax==="z") G.position.set(W.x+ox,0,o.u||0); else G.position.set(o.u||0,0,W.z+oz); } G.position.y=(o.y||0)-G.userData.y0; }
   else { G.position.set(o.x||0,0,o.z||0); G.rotation.y=o.ry||0; } }
 function objSig(o){ const refs=[...(o.picks||[]),o.product,...((o.cols||[]).flatMap(c=>COLL.filter(b=>collOf(b)===c).map(b=>b.id)))].filter(Boolean).map(id=>{ const b=bagById(id); return b?[b.img,b.kind,b.w,JSON.stringify(b.dims||{})].join(","):id; });
-  const it=o.item&&ITEMS[o.item], sp=o.src==="space"||o.bind==="space"?spaceOf(o.space):null; const {x,z,ry,th,u,wall,...rest}=o; return JSON.stringify(rest)+"|"+refs.join(";")+"|"+(it?(it.img||"")+JSON.stringify(it.dims||{}):"")+"|"+(sp?sp.imgA+sp.imgB:""); }
+  const it=o.item&&ITEMS[o.item], sp=o.src==="space"||o.bind==="space"?spaceOf(o.space):null; const {x,z,ry,th,u,wall,...rest}=o; return JSON.stringify(rest)+"|"+refs.join(";")+"|"+(it?(it.img||"")+JSON.stringify(it.dims||{}):"")+"|"+(sp?sp.imgA+sp.imgB:"")+(o.type==="stalen"||o.type==="stalenwand"?"|"+JSON.stringify(SWLIB):""); }
 function disposeObj(id){ const r=OBJ_REG[id]; if(!r) return; r.G.parent&&r.G.parent.remove(r.G);
   for(const A of [clickables,solids,billboards]) for(let i=A.length-1;i>=0;i--){ let o=A[i], own=false; for(let q=o;q;q=q.parent) if(q===r.G){ own=true; break; } if(own) A.splice(i,1); }
   for(let i=panels.length-1;i>=0;i--){ let own=false; for(let q=panels[i].mesh;q;q=q.parent) if(q===r.G){ own=true; break; } if(own) panels.splice(i,1); }
@@ -3902,7 +3992,7 @@ function placePill(){ const el=pillEl; if(!el.classList.contains("show")){ retur
 
 // ---- deellinks: elk punt en elk product heeft een eigen adres
 let hashBusy=false;
-function setHash(i){ if(hashBusy) return; const n=nodes[i]; if(!n||i<=0) return; try{ history.replaceState(null,"","#"+encodeURIComponent(n.id)); }catch(e){} }
+function setHash(i){ if(hashBusy||document.body.classList.contains("site-open")) return; const n=nodes[i]; if(!n||i<=0) return; try{ history.replaceState(null,"","#"+encodeURIComponent(n.id)); }catch(e){} }
 function openFromHash(){ const h=decodeURIComponent((location.hash||"").slice(1)); if(!h) return; hashBusy=true; setTimeout(()=>hashBusy=false,4000);
   if(h.startsWith("p=")){ const id=h.slice(2); const i=nodes.findIndex(n=>!n.transit&&(n.item===id||(n.obj&&objProducts(OBJS.find(o=>o.id===n.obj)||{}).includes(id)))); pendingInfo=id; if(i>=0) goStation(i); else openInfo(id); return; }
   const i=nodes.findIndex(n=>n.id===h); if(i>=0) goStation(i); }
@@ -3983,14 +4073,14 @@ const STUDY_DEF={cur:1,years:4,
     stage:"My programme takes four years. When my internships take place and how long they last will appear here once known. Does your firm offer internships in architecture? I'd love to hear from you.",
     y:["Broad orientation","Specialisation","Internship","Graduation"]},
   updates:[{d:"2026-09",img:"",nl:{t:"Gestart aan de HvA",p:"Begonnen aan Built Environment, na een tussenjaar waarin ik me oriënteerde op architectuur."},en:{t:"Started at the HvA",p:"Started Built Environment, after a gap year exploring architecture."}}],
-  projects:[{id:"p_wijn",year:"2025",img:"",media:[],nl:{t:"Wijnzaak met proeverij",p:"Examenproject Interieuradviseur, Hout- en Meubileringscollege Amsterdam. Een bestaande wijnzaak herontwikkeld tot wijnzaak met proeverij en kleine hapjes. Bekroond met de Flexa Kleurprijs op de examenexpositie."},
+  projects:[{id:"p_wijn",cat:"interior",year:"2025",img:"",media:[],nl:{t:"Wijnzaak met proeverij",p:"Examenproject Interieuradviseur, Hout- en Meubileringscollege Amsterdam. Een bestaande wijnzaak herontwikkeld tot wijnzaak met proeverij en kleine hapjes. Bekroond met de Flexa Kleurprijs op de examenexpositie."},
     en:{t:"Wine shop with tastings",p:"Graduation project, interior advisor, Hout- en Meubileringscollege Amsterdam. An existing wine shop redeveloped into a wine shop with tastings and small bites. Awarded the Flexa Kleurprijs colour award at the graduation exhibition."}}]};
 let STUDY=JSON.parse(JSON.stringify(STUDY_DEF));
 function normStudy(x){ const D=STUDY_DEF; if(!x||typeof x!=="object") return JSON.parse(JSON.stringify(D)); const s2=v=>typeof v==="string"?v:"", tx=(o,l)=>({t:s2(o&&o[l]&&o[l].t),p:s2(o&&o[l]&&o[l].p)});
   const lang2=l=>({t:s2(x[l]&&x[l].t)||D[l].t,p:s2(x[l]&&x[l].p),stage:s2(x[l]&&x[l].stage),y:[0,1,2,3].map(i=>s2(x[l]&&x[l].y&&x[l].y[i])||D[l].y[i])});
   return {cur:clamp(+x.cur||1,1,6),years:clamp(+x.years||4,1,6),nl:lang2("nl"),en:lang2("en"),
     updates:(Array.isArray(x.updates)?x.updates:[]).filter(Boolean).map(u=>({d:s2(u.d),img:s2(u.img),nl:tx(u,"nl"),en:tx(u,"en")})),
-    projects:(Array.isArray(x.projects)?x.projects:[]).filter(Boolean).map((q,i)=>({id:s2(q.id)||"p"+i,year:s2(q.year),img:s2(q.img),media:(Array.isArray(q.media)?q.media:[]).map(s2).filter(Boolean),link:s2(q.link),nl:tx(q,"nl"),en:tx(q,"en")}))}; }
+    projects:(Array.isArray(x.projects)?x.projects:[]).filter(Boolean).map((q,i)=>({id:s2(q.id)||"p"+i,cat:q.cat==="interior"||q.cat==="arch"?q.cat:(q.id==="p_wijn"?"interior":"arch"),year:s2(q.year),img:s2(q.img),media:(Array.isArray(q.media)?q.media:[]).map(s2).filter(Boolean),link:s2(q.link),nl:tx(q,"nl"),en:tx(q,"en")}))}; }
 // eenmalig: het studiebord in Over mij erbij zetten (daarna vrij te verplaatsen of te verwijderen)
 function withStudy(list,d){ if(d&&d.study1) return list; if(!ROOMKEYS.includes("about")||list.some(o=>o.type==="studie")) return list;
   return list.concat([{id:"a_study",space:"about",type:"studie",mount:"wall",wall:2,u:-6.75,y:2.0}]); }
@@ -4032,8 +4122,8 @@ function studyAdmin(){ const S=draft.study||(draft.study=normStudy(null)); let h
   <div class="adm-card" data-sec="Stage"><h5 class="adm-h5" style="margin-top:0">Stage</h5>${two("study.$.stage","Tekst over stage (leeg = blok verbergen)",1)}</div>
   <h4 class="adm-h" data-sec="Voortgang">Voortgang</h4><p class="adm-hint">Korte updates, de nieuwste komt bovenaan. Datum als 2026-09.</p>`;
   h+=S.updates.map((u,i)=>`<div class="adm-bag"><div>${upl("study.updates."+i+".img")}</div><div><div class="row">${fld("study.updates."+i+".d","Datum (jjjj-mm)")}<div></div></div>${two("study.updates."+i+".$.t","Titel")}${two("study.updates."+i+".$.p","Tekst",1)}<button type="button" class="adm-del" data-stdel="updates.${i}">Update verwijderen</button></div></div>`).join("");
-  h+=`<button type="button" class="btn ghost-light" data-stadd="updates">+ Nieuwe update</button><h4 class="adm-h" data-sec="Portfolio">Portfolio</h4><p class="adm-hint">Projecten uit je opleidingen. Hoofdfoto plus extra foto's; optioneel een link naar het volledige project (bijvoorbeeld een pdf).</p>`;
-  h+=S.projects.map((q,i)=>`<div class="adm-bag" data-sec="${escAttr(q.nl.t||"Project "+(i+1))}" data-sub="1"><div>${upl("study.projects."+i+".img")}</div><div><div class="row">${fld("study.projects."+i+".year","Jaar")}${fld("study.projects."+i+".link","Link (optioneel)")}</div>${two("study.projects."+i+".$.t","Titel")}${two("study.projects."+i+".$.p","Beschrijving",1)}
+  h+=`<button type="button" class="btn ghost-light" data-stadd="updates">+ Nieuwe update</button><h4 class="adm-h" data-sec="Portfolio">Portfolio</h4><p class="adm-hint">Architectuurprojecten verschijnen in je studieportfolio; interieurprojecten bij je opleiding interieuradviseur. Hoofdfoto plus extra foto's; optioneel een link naar het volledige project (bijvoorbeeld een pdf).</p>`;
+  h+=S.projects.map((q,i)=>`<div class="adm-bag" data-sec="${escAttr(q.nl.t||"Project "+(i+1))}" data-sub="1"><div>${upl("study.projects."+i+".img")}</div><div><div class="row"><div><label>Soort project</label><select data-p="study.projects.${i}.cat"><option value="arch"${q.cat!=="interior"?" selected":""}>Architectuur (studieportfolio)</option><option value="interior"${q.cat==="interior"?" selected":""}>Interieur (opleiding interieuradviseur)</option></select></div>${fld("study.projects."+i+".year","Jaar")}</div><div class="row">${fld("study.projects."+i+".link","Link (optioneel)")}<div></div></div>${two("study.projects."+i+".$.t","Titel")}${two("study.projects."+i+".$.p","Beschrijving",1)}
     <label>Extra foto's</label><div class="st-adm-media">${q.media.map((u,j)=>`<span><img src="${escAttr(u)}" alt=""><button type="button" data-stmdel="${i}.${j}" aria-label="Verwijderen">×</button></span>`).join("")}<label class="adm-file">+ Foto<input type="file" accept="image/png,image/webp,image/jpeg" data-stmadd="${i}"></label></div>
     <div class="row"><button type="button" class="adm-mini" data-stmove="${i}.-1">↑ Omhoog</button><button type="button" class="adm-mini" data-stmove="${i}.1">↓ Omlaag</button></div><button type="button" class="adm-del" data-stdel="projects.${i}">Project verwijderen</button></div></div>`).join("");
   return h+`<button type="button" class="btn ghost-light" data-stadd="projects">+ Nieuw project</button>`; }
@@ -4044,6 +4134,195 @@ function studyAdminBind(box){ const S=draft.study, re=()=>{ const y=box.scrollTo
   box.querySelectorAll("[data-stmdel]").forEach(b=>b.addEventListener("click",()=>{ const [i,j]=b.dataset.stmdel.split(".").map(Number); S.projects[i].media.splice(j,1); re(); }));
   box.querySelectorAll("[data-stmadd]").forEach(inp=>inp.addEventListener("change",async()=>{ const f=inp.files&&inp.files[0]; if(!f) return; const note=document.getElementById("admNote"); note.textContent="Foto uploaden…";
     if(!assetsH){ note.textContent="Foto’s uploaden lukt hier niet."; return; } try{ const r=await assetsH.upload(await prepUpload(f)), url=r.id?("/_blob/"+r.id):r.url; S.projects[+inp.dataset.stmadd].media.push(url); note.textContent=""; re(); }catch(err){ note.textContent="Uploaden mislukt: "+(err&&err.message||err); } })); }
+
+
+// =====================================================================================
+//  STALEN-BIBLIOTHEEK: alle leer-, detail- en beslagkleuren, beheerd in Instellingen → Stalen
+//  (voedt ook de personaliseer-tafel: SW wordt uit de bibliotheek opgebouwd)
+// =====================================================================================
+const SW_G={body:{nl:"Leer",en:"Leather"},acc:{nl:"Details",en:"Details"},hw:{nl:"Beslag",en:"Hardware"}};
+const SWLIB_DEF=[...SW.body.map(([k,nl,en,hex])=>({id:"body_"+k,k,g:"body",hex,img:"",nl:{t:nl,p:""},en:{t:en,p:""}})),
+  ...SW.acc.map(([k,nl,en,hex])=>({id:"acc_"+k,k,g:"acc",hex,img:"",nl:{t:nl,p:""},en:{t:en,p:""}})),
+  ...SW.hw.map(([k,nl,en,hex])=>({id:"hw_"+k,k,g:"hw",hex,img:"",nl:{t:nl,p:""},en:{t:en,p:""}}))];
+let SWLIB=JSON.parse(JSON.stringify(SWLIB_DEF));
+function normSw(a){ if(!Array.isArray(a)||!a.length) return JSON.parse(JSON.stringify(SWLIB_DEF)); const s2=v=>typeof v==="string"?v:"", seen=new Set();
+  return a.filter(x=>x&&typeof x.id==="string"&&!seen.has(x.id)&&seen.add(x.id)).map(x=>({id:x.id,k:s2(x.k)||x.id.replace(/^(body|acc|hw)_/,""),g:["body","acc","hw"].includes(x.g)?x.g:"body",
+    hex:/^#[0-9a-f]{6}$/i.test(x.hex||"")?x.hex:"#8a6a50",img:s2(x.img),off:!!x.off,nl:{t:s2(x.nl&&x.nl.t)||"Staal",p:s2(x.nl&&x.nl.p)},en:{t:s2(x.en&&x.en.t)||s2(x.nl&&x.nl.t)||"Swatch",p:s2(x.en&&x.en.p)}})); }
+function syncSW(){ ["body","acc","hw"].forEach(g=>{ const a=SWLIB.filter(x=>x.g===g&&!x.off).map(x=>[x.k,x.nl.t,x.en.t,x.hex]); if(a.length) SW[g]=a; }); }
+const swById=id=>SWLIB.find(x=>x.id===id);
+function swPicks(o,max){ const ids=Array.isArray(o.sw)?o.sw:[]; let list=ids.map(swById).filter(Boolean); if(!list.length) list=SWLIB.filter(x=>x.g!=="hw"&&!x.off).filter((x,i,a)=>a.findIndex(y=>y.hex===x.hex)===i); return list.slice(0,max); }
+function swMat(x){ const m=leather(new THREE.Color(x.hex).getHex()); if(x.img){ loadImg(x.img).then(im=>{ const t=new THREE.Texture(im); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; t.needsUpdate=true; m.map=t; m.color.set(0xffffff); m.needsUpdate=true; }).catch(()=>{}); } return m; }
+// tafel met stalen: nu met keuze uit de bibliotheek, elk staal is aanklikbaar
+OB.stalen=(o,G)=>{ const top=new THREE.Mesh(new RoundedBoxGeometry(1.5,.06,.8,3,.02),M.darkwood); top.position.y=.9; top.castShadow=top.receiveShadow=true; G.add(top);
+  for(const [x,z] of [[-.66,-.32],[.66,-.32],[-.66,.32],[.66,.32]]){ const l=new THREE.Mesh(new THREE.CylinderGeometry(.022,.018,.87,10),M.brass); l.position.set(x,.435,z); l.castShadow=true; G.add(l); }
+  const all=swPicks(o,15), cols=5;
+  all.forEach((x,i)=>{ const c=i%cols, r=Math.floor(i/cols), sw=new THREE.Mesh(new RoundedBoxGeometry(.21,.012,.15,2,.004),swMat(x)); sw.position.set(-.5+c*.25,.938+r*.0005,-.2+r*.2); sw.rotation.y=(i%3-1)*.06; sw.castShadow=true; sw.userData.swatch=x.id; G.add(sw); });
+  const card=makePanel(.5,.16,(g,w,h)=>{ g.fillStyle="#F8F3EA"; g.fillRect(0,0,w,h); g.fillStyle="#52281C"; g.font=F(.05,"sans"); g.textAlign="center"; g.fillText((lang==="nl"?"LEERSTALEN":"LEATHER SWATCHES"),w/2,.07); g.fillStyle="#B08D55"; g.font=F(.034,"sans"); g.fillText((lang==="nl"?"KLIK OP EEN STAAL":"CLICK A SWATCH"),w/2,.12); g.textAlign="left"; },{x:0,y:.96,z:.36,ry:0,parent:G,emissive:.12,click:()=>openSite("coll","stalen")});
+  card.mesh.rotation.x=-1.2;
+  G.traverse(m=>{ if(m.isMesh&&!m.userData.click){ const sid=m.userData.swatch; m.userData.click=sid?()=>openSite("coll","staal-"+sid):()=>openSite("coll","stalen"); m.userData.root=G; clickables.push(m); } }); return {top:1.3,size:1.5}; };
+// stalenwand: een paneel aan de muur met tot 12 stalen en hun namen
+OB.stalenwand=(o,G)=>{ const list=swPicks(o,12), n=list.length||1, cols=Math.min(4,n), rows=Math.ceil(n/cols), tw=.26, th=.19, gx=.1, gy=.16, W=cols*tw+(cols-1)*gx+.36, H=rows*th+(rows-1)*gy+.56, y=o.y||1.75;
+  const fr=new THREE.Mesh(new RoundedBoxGeometry(W+.06,H+.06,.05,3,.012),M.darkwood); fr.position.set(0,y,.025); fr.castShadow=true; G.add(fr);
+  const x0=-W/2+.18+tw/2, y0=y+H/2-.36-th/2;
+  makePanel(W,H,(g,w,h)=>{ g.fillStyle="#F3ECE1"; g.fillRect(0,0,w,h); g.fillStyle="#9C7E47"; g.font=F(.045,"sans"); g.textAlign="center"; g.fillText((L(o)&&L(o).t)||(lang==="nl"?"LEERSTALEN":"LEATHER SWATCHES"),w/2,.16);
+    g.fillStyle="#52281C"; g.font=F(.034,"sans"); list.forEach((x,i)=>{ const c=i%cols, r=Math.floor(i/cols); g.fillText(L(x).t.toUpperCase(),.18+tw/2+c*(tw+gx),.36+th+r*(th+gy)+.06); }); g.textAlign="left"; },
+    {x:0,y,z:.052,parent:G,click:()=>openSite("coll","stalen")});
+  list.forEach((x,i)=>{ const c=i%cols, r=Math.floor(i/cols), m=new THREE.Mesh(new RoundedBoxGeometry(tw,th,.012,2,.004),swMat(x)); m.position.set(x0+c*(tw+gx),y0-r*(th+gy),.062); m.rotation.z=(i%3-1)*.015; m.castShadow=true; m.userData.swatch=x.id; m.userData.click=()=>openSite("coll","staal-"+x.id); m.userData.root=G; clickables.push(m); G.add(m); });
+  return {top:y+H/2+.25,size:W}; };
+OBJ_TYPES.stalenwand={l:"Stalenwand",m:"wall",d:"Paneel aan de wand met tot 12 leer-, detail- of beslagstalen. Kies hieronder welke. Bezoekers klikken op een staal voor de foto en informatie.",max:12};
+OBJ_TYPES.stalen.max=15; OBJ_NEW.stalenwand={y:1.75,sw:[],nl:{t:""},en:{t:""}};
+function swPickHTML(P,o,max){ const S2=new Set(Array.isArray(o.sw)?o.sw:[]);
+  return `<h5 class="adm-h5">Welke stalen</h5><p class="adm-hint">Vink maximaal ${max} stalen aan. Niets aangevinkt = automatisch alle leer- en detailkleuren. Foto's en teksten van de stalen beheer je in het tabblad <button type="button" class="linkbtn" data-gotab="stalen">Stalen</button>.</p>
+  <div class="pk" data-max="${max}">${["body","acc","hw"].map(g=>`<div class="pk-group"><div class="pk-head"><b>${SW_G[g].nl}</b></div><div class="pk-list">${(draft.swatches||SWLIB).filter(x=>x.g===g).map(x=>`<label class="pk-item${S2.has(x.id)?" on":""}"><input type="checkbox" data-pick="${P}.sw" data-id="${escAttr(x.id)}"${S2.has(x.id)?" checked":""}><span class="sw-dot" style="background:${x.img?`url('${escAttr(x.img)}') center/cover`:escAttr(x.hex)}"></span><span>${escAttr(x.nl.t)}</span></label>`).join("")}</div></div>`).join("")}</div>`; }
+function swAdmin(){ const A=draft.swatches||(draft.swatches=JSON.parse(JSON.stringify(SWLIB)));
+  let h=`<p class="adm-hint">Alle stalen: leerkleuren, detailkleuren en beslag. Upload per staal een scherpe foto (tot 2400 pixels breed). Deze kleuren verschijnen op de stalentafel, de stalenwand, de personaliseer-tafel en op de website onder Collectie → Stalen. Zet een staal uit om hem overal te verbergen.</p>`;
+  ["body","acc","hw"].forEach(g=>{ h+=`<h4 class="adm-h" data-sec="${SW_G[g].nl}">${SW_G[g].nl}</h4>`;
+    A.forEach((x,i)=>{ if(x.g!==g) return; const P="swatches."+i; h+=`<div class="adm-bag" data-sec="${escAttr(x.nl.t)}" data-sub="1"><div>${upl(P+".img")}</div><div>${two(P+".$.t","Naam")}${two(P+".$.p","Over dit staal (leersoort, herkomst, afwerking)",1)}
+      <div class="row"><div><label>Kleur (als er geen foto is)</label><input type="color" data-p="${P}.hex" value="${escAttr(x.hex)}"></div><div><label class="adm-check" style="margin-top:24px"><input type="checkbox" data-chk="${P}.off"${x.off?" checked":""}> Verbergen</label></div></div>
+      <button type="button" class="adm-del" data-swdel="${i}">Staal verwijderen</button></div></div>`; });
+    h+=`<button type="button" class="btn ghost-light" data-swadd="${g}">+ Nieuw staal (${SW_G[g].nl.toLowerCase()})</button>`; });
+  return h; }
+function swAdminBind(box){ const A=draft.swatches, re=()=>{ const y=box.scrollTop; renderAdmin(); box.scrollTop=y; };
+  box.querySelectorAll("[data-swadd]").forEach(b=>b.addEventListener("click",()=>{ const g=b.dataset.swadd, k="s"+Date.now().toString(36); A.push({id:g+"_"+k,k,g,hex:"#8a6a50",img:"",nl:{t:"Nieuw staal",p:""},en:{t:"New swatch",p:""}}); re(); }));
+  box.querySelectorAll("[data-swdel]").forEach(b=>b.addEventListener("click",()=>{ if(b.dataset.sure!=="1"){ b.dataset.sure="1"; b.textContent="Zeker? Klik nogmaals"; return; } A.splice(+b.dataset.swdel,1); re(); })); }
+
+// =====================================================================================
+//  WEBSITE-VENSTER: de gewone website, als venster in het gebouw. Elk item opent hier
+//  de juiste pagina op de juiste plek. Pagina's = de menu-items (Home, Over mij, ...).
+// =====================================================================================
+const siteEl=document.createElement("div"); siteEl.className="site-win"; siteEl.id="siteWin"; siteEl.setAttribute("role","dialog"); siteEl.setAttribute("aria-label","Website");
+siteEl.innerHTML=`<div class="sw-shell"><header class="sw-head"><button type="button" class="sw-brand" data-sgo="hall"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#mono"/></svg><span>Elizian</span></button>
+  <nav class="sw-nav" aria-label="Website"></nav><div class="sw-tools"><button type="button" class="sw-lang"></button><button type="button" class="sw-wide" aria-label="Groter"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 15v5h-5M4 4l6 6M20 20l-6-6"/></svg></button>
+  <button type="button" class="sw-close"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg><span></span></button></div><button type="button" class="sw-burger" aria-label="Menu"><i></i><i></i><i></i></button></header>
+  <main class="sw-main" tabindex="-1"></main></div>`;
+document.body.appendChild(siteEl);
+const swMain=siteEl.querySelector(".sw-main"); let sitePage="hall", siteOpen=false, siteWide=false;
+const siteOn=()=>MENU_OPTS.site!==false;
+const pageOf=k=>k==="hall"||k==="garden"?"hall":["about","contact","coll"].includes(k)?k:"collab";
+const BOARD_T={story:["about","verhaal"],edu:["about","opleiding"],vision:["about","visie"],services:["contact","gezocht"],work:["contact","werkwijze"],contact:["contact","contact"],prod:["contact","producent"],coll:["coll","top"]};
+const CAP_T={hall:["hall",""],start:["hall",""],end:["hall",""],about0:["about",""],edu:["about","opleiding"],story:["about","verhaal"],vision:["about","visie"],contact0:["contact",""],contact:["contact","contact"],services:["contact","gezocht"],
+  coll0:["coll",""],collPhoto:["coll","top"],collPlinth:["coll","producten"],collText:["coll","top"],wing:["collab",""],atelier:["coll","personaliseren"],study:["about","studie"]};
+function itemTarget(id){ if(bagById(id)) return ["coll","p-"+id]; if(id==="h7") return ["coll","personaliseren"]; if(id==="h10") return ["contact","producent"]; const it=ITEMS[id]; if(it&&it.kind==="about") return ["about","item-"+id]; return ["hall","item-"+id]; }
+function spaceTarget(k){ const p=pageOf(k); return [p,p==="collab"?"space-"+k:""]; }
+function objTargetSite(o){ if(!o) return null; const t=o.type;
+  if(t==="studie") return ["about","studie"]; if(t==="stalen"||t==="stalenwand") return ["coll","stalen"]; if(t==="atelier") return ["coll","personaliseren"];
+  if(t==="tekst"){ if(o.board&&BOARD_T[o.board]) return BOARD_T[o.board]; if(o.bind==="space") return spaceTarget(o.space); return [pageOf(o.space),"o-"+o.id]; }
+  if(t==="lijst"){ if(o.src==="image") return [pageOf(o.space),"o-"+o.id]; if(o.src==="space") return spaceTarget(o.space); }
+  if(t==="video") return [pageOf(o.space),"o-"+o.id];
+  const it=objTarget(o); if(it) return itemTarget(it); if(["etalage","vitrine","podium","rek"].includes(t)) return ["coll","producten"]; return [pageOf(o.space),""]; }
+function siteTarget(n){ if(!n) return ["hall",""]; if(n.obj){ const t=objTargetSite(OBJS.find(o=>o.id===n.obj)); if(t) return t; }
+  if(n.item) return itemTarget(n.item); if(n.door) return spaceTarget(n.door); if(n.space) return spaceTarget(n.space); if(n.wing!=null) return ["collab",""];
+  if(n.cap&&CAP_T[n.cap]) return CAP_T[n.cap]; return [pageOf(n.room||"hall"),""]; }
+// klik in het gebouw → websitevenster (deuren blijven deuren, de route loopt mee)
+function siteFromHit(u){ if(!siteOn()) return false;
+  if(u.swatch){ openSite("coll","staal-"+u.swatch); return true; }
+  if(u.objId){ const o=OBJS.find(x=>x.id===u.objId); if(!o) return false; let t=u.item&&!["lijst","tekst","video","studie"].includes(o.type)?itemTarget(u.item):objTargetSite(o);
+    if(["etalage","vitrine","podium","rek"].includes(o.type)&&u.item) t=itemTarget(u.item);
+    const i=nodes.findIndex(n=>n.obj===o.id); if(i>=0&&i!==capSt) goStation(i); openSite(t[0],t[1]); return true; }
+  if(u.item){ const t=itemTarget(u.item); openSite(t[0],t[1]); return true; }
+  return false; }
+
+const E=escAttr, nlL=()=>lang==="nl";
+const sec=(id,cls,inner)=>`<section class="sw-sec ${cls||""}" id="w-${id}">${inner}</section>`;
+const eyeb=t=>t?`<p class="sw-ey">${E(t)}</p>`:"";
+const btnS=(t,attr,cls)=>`<button type="button" class="sw-btn ${cls||""}" ${attr}>${E(t)}</button>`;
+const inBuilding=(attr)=>`<button type="button" class="sw-link" ${attr}>${nlL()?"Bekijk in het gebouw":"See it in the building"} →</button>`;
+const paras=t=>(t||"").split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean).map(x=>`<p>${E(x).replace(/\n/g,"<br>")}</p>`).join("");
+function itemImg(id){ const b=bagById(id), it=ITEMS[id]; return (b&&b.img)||(it&&it.img)||""; }
+function customObjs(page){ return OBJS.filter(o=>pageOf(o.space)===page&&((o.type==="tekst"&&!o.board&&o.bind!=="space")||(o.type==="lijst"&&o.src==="image")||o.type==="video")); }
+function customHTML(page){ const list=customObjs(page); if(!list.length) return "";
+  return list.map(o=>{ const c=L(o)||{}, img=o.type==="lijst"?o.img:(o.type==="video"&&!/\.(mp4|webm|mov)/i.test(o.src||"")?o.src:"");
+    const vid=o.type==="video"&&/\.(mp4|webm|mov)/i.test(o.src||"")?`<video src="${E(o.src)}" controls playsinline preload="metadata"></video>`:"";
+    if(!img&&!vid&&!c.t&&!c.p) return ""; return sec("o-"+o.id,"sw-split",`${img?`<figure class="sw-fig"><img src="${E(img)}" alt="" loading="lazy"></figure>`:vid?`<figure class="sw-fig">${vid}</figure>`:""}<div>${eyeb(c.e)}${c.t?`<h2>${E(c.t)}</h2>`:""}${paras(c.p)}${inBuilding(`data-sobj="${E(o.id)}"`)}</div>`); }).join(""); }
+function productHTML(id){ const b=bagById(id), it=ITEMS[id]; if(!it) return ""; const c=L(it), med=mediaOf(id).filter(m=>m.t==="img"), sp=specsOf(id), cu=cuOf(b), imgs=med.length?med.map(m=>m.src):[itemImg(id)].filter(Boolean);
+  return sec("p-"+id,"sw-prod",`<div class="sw-gal">${imgs.map((u,i)=>`<img src="${E(u)}" alt="${E(c.t)}" loading="lazy" class="${i?"":"main"}" data-zoom="${E(u)}">`).join("")||`<div class="sw-ph">${E(c.t.slice(0,1))}</div>`}</div>
+    <div class="sw-pinfo">${eyeb(tr(kindKey[it.kind]||"k.sale"))}<h2>${E(c.t)}</h2>${paras(c.p)}
+    ${sp.length?`<dl class="sw-specs">${sp.map(([k,v])=>`<dt>${E(k)}</dt><dd>${E(v)}</dd>`).join("")}</dl>`:""}
+    <div class="sw-acts">${btnS(tr("m.buy"),`data-sform="buy" data-sitem="${E(c.t)}"`,"gold")}${cu?btnS(nlL()?"Personaliseer":"Personalise",`data-scfg="${E(id)}"`):""}${btnS(tr("m.quote"),`data-sform="custom" data-sitem="${E(c.t)}"`,"ghost")}</div>
+    <div class="sw-small">${inBuilding(`data-sprod="${E(id)}"`)}<button type="button" class="sw-link" data-ssheet="${E(id)}">${nlL()?"Productblad":"Product sheet"}</button></div></div>`); }
+function itemHTML(id,cls){ const it=ITEMS[id]; if(!it) return ""; const c=L(it), img=itemImg(id);
+  return sec("item-"+id,"sw-split "+(cls||""),`${img?`<figure class="sw-fig"><img src="${E(img)}" alt="${E(c.t)}" loading="lazy" data-zoom="${E(img)}"></figure>`:`<figure class="sw-fig sw-svg">${it.svg?it.svg():""}</figure>`}<div>${eyeb(it.kind==="about"?"":tr(kindKey[it.kind]||""))}<h2>${E(c.t)}</h2>${paras(c.p)}
+    ${it.kind==="sale"||it.kind==="art"?`<div class="sw-acts">${btnS(tr("m.buy"),`data-sform="buy" data-sitem="${E(c.t)}"`,"gold")}</div>`:""}${inBuilding(`data-sprod="${E(id)}"`)}</div>`); }
+function projHTML(q){ const c=L(q), imgs=[q.img,...(q.media||[])].filter(Boolean);
+  return sec("proj-"+q.id,"sw-proj",`${eyeb((q.cat==="interior"?(nlL()?"Interieur":"Interior"):(nlL()?"Architectuur":"Architecture"))+(q.year?" · "+q.year:""))}<h3>${E(c.t)}</h3>${paras(c.p)}
+    ${imgs.length?`<div class="sw-thumbs">${imgs.map(u=>`<img src="${E(u)}" alt="" loading="lazy" data-zoom="${E(u)}">`).join("")}</div>`:`<p class="sw-note">${nlL()?"Foto's van dit project volgen binnenkort.":"Photos of this project will follow soon."}</p>`}
+    ${q.link?`<p><a class="sw-link" href="${E(q.link)}" target="_blank" rel="noopener">${nlL()?"Bekijk het volledige project":"View the full project"} ↗</a></p>`:""}`); }
+function contactBlock(){ return `<dl class="sw-contact">${contactLines().map(([k,v])=>`<dt>${E(k)}</dt><dd>${E(v)}</dd>`).join("")}</dl><div class="sw-acts">${contactLinks().map(l=>`<a class="sw-btn ghost" href="${E(l.href)}"${l.href.startsWith("http")?' target="_blank" rel="noopener"':""}>${E(l.t)}</a>`).join("")}</div>`; }
+const PAGES={
+  hall(){ const nl=nlL(), prods=COLL.filter(b=>b.img&&!isFlat(b.kind)).slice(0,6), works=Object.keys(ITEMS).filter(k=>/^h\d+$/.test(k)&&!["h7","h10"].includes(k)&&nodes.some(n=>n.item===k));
+    return sec("top","sw-hero",`<svg class="sw-mono" viewBox="0 0 100 100" aria-hidden="true"><use href="#mono"/></svg><h1>Elizian</h1><p class="sw-tag">${E(tr("entry.tag"))}</p><p class="sw-lead">${E(tr("home.p"))}</p>
+        <div class="sw-acts center">${btnS(menuLabel("coll"),'data-sgo="coll"',"gold")}${btnS(menuLabel("about"),'data-sgo="about"',"ghost")}${btnS(nl?"Loop door het gebouw":"Walk through the building","data-sclose","ghost")}</div>`)
+      +(prods.length?sec("uitgelicht","",`${eyeb(tr("col.ey"))}<h2>${E(tr("col.t"))}</h2><div class="sw-grid">${prods.map(b=>`<button type="button" class="sw-card" data-sgo="coll" data-sa="p-${E(b.id)}"><span class="sw-cimg"><img src="${E(b.img)}" alt="" loading="lazy"></span><b>${E(L(ITEMS[b.id]||b).t)}</b><small>${E(b.price||tr("m.price"))}</small></button>`).join("")}</div>`):"")
+      +sec("intro","sw-split",`<figure class="sw-fig">${itemImg("a5")?`<img src="${E(itemImg("a5"))}" alt="Elise Philips" loading="lazy">`:`<div class="sw-ph">E</div>`}</figure><div>${eyeb(tr("ab.ey"))}<h2>${E(tr("ab.t"))}</h2>${paras(tr("ab.p"))}${btnS(nl?"Lees verder":"Read more",'data-sgo="about"',"ghost")}</div>`)
+      +(works.length?sec("werken","",`${eyeb(nl?"In de galerij":"In the gallery")}<h2>${nl?"Werken":"Works"}</h2>`)+works.map(id=>itemHTML(id)).join(""):"")+customHTML("hall"); },
+  about(){ const nl=nlL(), S2=L(STUDY), ups=[...STUDY.updates].sort((a,b)=>(b.d||"").localeCompare(a.d||"")), arch=STUDY.projects.filter(q=>q.cat!=="interior"), inter=STUDY.projects.filter(q=>q.cat==="interior");
+    const ym=d=>{ const m=/^(\d{4})-(\d{2})/.exec(d||""); if(!m) return E(d||""); return (nl?["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"]:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"])[+m[2]-1]+" "+m[1]; };
+    return sec("verhaal","sw-split sw-first",`<figure class="sw-fig">${itemImg("a5")?`<img src="${E(itemImg("a5"))}" alt="Elise Philips" data-zoom="${E(itemImg("a5"))}">`:`<div class="sw-ph">E</div>`}</figure><div>${eyeb(tr("ab.ey"))}<h1>${E(tr("ab.t"))}</h1>${paras(tr("ab.p"))}${paras(L(ITEMS.a5||{nl:{}}).p)}</div>`)
+      +sec("visie","sw-tl",`${eyeb(tr("vis.ey"))}<h2>${E(tr("vis.t"))}</h2><ol class="sw-steps">${[1,2,3].map(k=>`<li><small>${E(tr(`s${k}.w`))}</small><b>${E(tr(`s${k}.t`))}</b><p>${E(tr(`s${k}.p`))}</p></li>`).join("")}</ol>`)
+      +sec("opleiding","",`${eyeb(tr("edu.ey"))}<h2>${E(tr("edu.t"))}</h2>`)+itemHTML("a1")+inter.map(projHTML).join("")+itemHTML("a2")
+      +sec("studie","sw-study",`${eyeb((nl?"Studie · jaar ":"Studies · year ")+STUDY.cur+(nl?" van ":" of ")+STUDY.years)}<h2>${E(tr("study.btn"))}</h2><p class="sw-lead">${E(S2.t)}</p>${paras(S2.p)}
+        <div class="sw-years">${Array.from({length:STUDY.years},(_,i)=>`<div class="${i+1<STUDY.cur?"done":i+1===STUDY.cur?"now":""}"><i></i><b>${nl?"Jaar":"Year"} ${i+1}</b><small>${E(S2.y[i]||"")}</small></div>`).join("")}</div>
+        ${ups.length?`<h3 class="sw-h3">${nl?"Voortgang":"Progress"}</h3><ol class="sw-ups">${ups.map(u=>`<li>${u.img?`<img src="${E(u.img)}" alt="" loading="lazy" data-zoom="${E(u.img)}">`:""}<div><small>${ym(u.d)}</small><b>${E(L(u).t)}</b>${L(u).p?`<p>${E(L(u).p)}</p>`:""}</div></li>`).join("")}</ol>`:""}
+        <h3 class="sw-h3">${nl?"Portfolio architectuur":"Architecture portfolio"}</h3>${arch.length?"":`<p class="sw-note">${nl?"Mijn eerste architectuurprojecten van de HvA komen hier te staan.":"My first architecture projects from the HvA will appear here."}</p>`}`)
+      +arch.map(projHTML).join("")
+      +(S2.stage?sec("stage","sw-box",`${eyeb(nl?"Stage":"Internship")}<h3>${nl?"Stage in de architectuur":"Architecture internship"}</h3>${paras(S2.stage)}<div class="sw-acts">${btnS(tr("study.intern"),'data-sform="intern" data-sctx="study"',"gold")}</div>`):"")
+      +sec("werk","",`${eyeb(nl?"Werk":"Work")}<h2>${nl?"Met de hand gemaakt":"Made by hand"}</h2>`)+["a3","a4","a6"].filter(id=>ITEMS[id]).map(id=>itemHTML(id)).join("")+customHTML("about"); },
+  collab(){ const nl=nlL(), ks=OPEN0.filter(k=>pageOf(k)==="collab"), c=L(CAPS.wing);
+    return sec("top","sw-first",`${eyeb(menuLabel("collab"))}<h1>${E(c.t)}</h1>${paras(c.p)}`)
+      +(ks.length?ks.map(k=>{ const sp=spaceOf(k), pr=partnerOf(k), imgs=[sp.imgA,sp.imgB,pr&&pr.logo].filter(Boolean);
+        return sec("space-"+k,"sw-split",`<figure class="sw-fig">${imgs[0]?`<img src="${E(imgs[0])}" alt="" loading="lazy" data-zoom="${E(imgs[0])}">`:`<div class="sw-ph">${E((pr?pr.name:L(sp).t).slice(0,1))}</div>`}</figure><div>${eyeb(pr?pr.name:tr("room.ey"))}<h2>${E(L(sp).t)}</h2>${paras(L(sp).p)}${pr&&L(pr).p?paras(L(pr).p):""}
+          ${pr&&pr.web?`<p><a class="sw-link" href="${E(pr.web)}" target="_blank" rel="noopener">${E(pr.web.replace(/^https?:\/\//,""))} ↗</a></p>`:""}${inBuilding(`data-sroom="${E(k)}"`)}</div>`); }).join("")
+        :sec("soon","",`<p class="sw-note">${E(tr("collab.soonP"))}</p>`))+customHTML("collab"); },
+  coll(){ const nl=nlL(), groups=[]; COLLS.forEach(c=>{ const l=COLL.filter(b=>collOf(b)===c.id&&(b.img||b.nl.t)); if(l.length) groups.push([c,l]); }); const loose=COLL.filter(b=>!collOf(b)&&b.img); if(loose.length) groups.push([null,loose]);
+    const sw=SWLIB.filter(x=>!x.off);
+    return sec("top","sw-first",`${eyeb(tr("col.ey"))}<h1>${E(tr("col.t"))}</h1>${paras(tr("col.p"))}<div class="sw-acts">${btnS(nl?"Personaliseer een tas":"Personalise a bag",'data-sa="personaliseren"',"ghost")}${btnS(nl?"Bekijk de stalen":"See the swatches",'data-sa="stalen"',"ghost")}</div>`)
+      +sec("producten","",groups.map(([c,l])=>`${c?`<h3 class="sw-h3">${E(L(c).t)}</h3>${L(c).p?`<p class="sw-note">${E(L(c).p)}</p>`:""}`:""}<div class="sw-grid">${l.map(b=>`<button type="button" class="sw-card" data-sa="p-${E(b.id)}"><span class="sw-cimg">${b.img?`<img src="${E(b.img)}" alt="" loading="lazy">`:""}</span><b>${E(L(ITEMS[b.id]||b).t)}</b><small>${E(b.price||tr("m.price"))} · pre-order</small></button>`).join("")}</div>`).join(""))
+      +groups.flatMap(([c,l])=>l.map(b=>productHTML(b.id))).join("")
+      +sec("personaliseren","sw-box",`${eyeb(nl?"Atelier":"Atelier")}<h2>${E(tr("cfg.t"))}</h2>${paras(tr("cfg.p"))}${paras(L(ITEMS.h7||{nl:{}}).p)}<div class="sw-acts">${btnS(tr("cfg.btn")||(nl?"Ontwerp je tas":"Design your bag"),"data-scfg","gold")}</div>`)
+      +sec("stalen","",`${eyeb(nl?"Materialen":"Materials")}<h2>${nl?"Stalen":"Swatches"}</h2><p class="sw-note">${nl?"Klik op een staal voor een grote foto.":"Click a swatch for a large photo."}</p>${["body","acc","hw"].map(g=>{ const l=sw.filter(x=>x.g===g); return l.length?`<h3 class="sw-h3">${E(SW_G[g][lang]||SW_G[g].nl)}</h3><div class="sw-swatches">${l.map(x=>`<div class="sw-swatch" id="w-staal-${E(x.id)}"><button type="button" class="sw-sw" style="background:${x.img?`url('${E(x.img)}') center/cover`:E(x.hex)}" ${x.img?`data-zoom="${E(x.img)}"`:""} aria-label="${E(L(x).t)}"></button><b>${E(L(x).t)}</b>${L(x).p?`<p>${E(L(x).p)}</p>`:""}</div>`).join("")}</div>`:""; }).join("")}`)
+      +sec("leveranciers","sw-box",`${eyeb(nl?"Gezocht":"Wanted")}<h3>${E(tr("sv2.t"))}</h3>${paras(tr("sv2.p"))}<div class="sw-acts">${btnS(nl?"Ik ben leverancier":"I am a supplier",'data-sform="supplier" data-sctx="coll"',"ghost")}${btnS(nl?"Vraag over de collectie":"Question about the collection",'data-sform="buy" data-sctx="coll"',"ghost")}</div>`)
+      +customHTML("coll"); },
+  contact(){ const nl=nlL();
+    return sec("contact","sw-first",`${eyeb(tr("c.ey"))}<h1>${E(tr("c.t"))}</h1>${contactBlock()}<div class="sw-acts">${btnS(tr("c.btn")||tr("act.form"),'data-sform="other" data-sctx="contact"',"gold")}</div>`)
+      +sec("gezocht","",`${eyeb(tr("sv.ey"))}<h2>${E(tr("sv.t"))}</h2><div class="sw-cols">${[1,2,3].map(k=>`<div><h3>${E(tr(`sv${k}.t`))}</h3><p>${E(tr(`sv${k}.p`))}</p>${k===1?btnS(nl?"Neem contact op":"Get in touch",'data-sform="atelier" data-sctx="contact"',"ghost"):k===2?btnS(nl?"Naar leveranciers":"To suppliers",'data-sgo="coll" data-sa="leveranciers"',"ghost"):btnS(tr("study.btn"),'data-sgo="about" data-sa="studie"',"ghost")}</div>`).join("")}</div>`)
+      +sec("werkwijze","sw-dark",`${eyeb(tr("wk.ey"))}<h2>${E(tr("wk.t"))}</h2><ol class="sw-steps four">${[1,2,3,4].map(k=>`<li><small>0${k}</small><b>${E(tr(`w${k}.t`))}</b><p>${E(tr(`w${k}.p`))}</p></li>`).join("")}</ol>`)
+      +sec("producent","",`${eyeb(tr("end.ey"))}<h2>${E(tr("end.t"))}</h2>${paras(tr("end.p"))}`)+customHTML("contact"); } };
+function siteNav(){ const nav=siteEl.querySelector(".sw-nav"); nav.innerHTML=MENU.filter(m=>m.on!==false).map(m=>`<button type="button" data-sgo="${m.go}"${m.go===sitePage?' class="on" aria-current="page"':""}>${E(menuLabel(m.go))}</button>`).join("");
+  siteEl.querySelector(".sw-lang").textContent=lang==="nl"?"EN":"NL"; siteEl.querySelector(".sw-close span").textContent=lang==="nl"?"Terug naar het gebouw":"Back to the building"; }
+function renderSite(){ siteNav(); swMain.innerHTML=(PAGES[sitePage]||PAGES.hall)()+`<footer class="sw-foot"><svg viewBox="0 0 100 100"><use href="#mono"/></svg><p>Elizian · Elise Philips</p>${contactLines().slice(0,2).map(([k,v])=>`<p>${E(v)}</p>`).join("")}<p class="sw-ft">${E(tr("entry.tag"))}</p></footer>`; }
+function openSite(page,anchor){ page=PAGES[page]?page:"hall"; const same=siteOpen&&page===sitePage; sitePage=page; if(!same) renderSite(); else siteNav();
+  closeCap(); siteEl.classList.add("open"); document.body.classList.add("site-open"); siteOpen=true; siteEl.classList.toggle("wide",siteWide);
+  try{ history.replaceState(null,"","#w/"+page+(anchor?"/"+anchor:"")); }catch(e){}
+  requestAnimationFrame(()=>{ const el=anchor&&swMain.querySelector("#w-"+CSS.escape(anchor)); if(el){ swMain.scrollTo({top:el.offsetTop-14,behavior:same?"smooth":"auto"}); el.classList.remove("sw-hit"); void el.offsetWidth; el.classList.add("sw-hit"); } else if(!same) swMain.scrollTop=0; }); }
+function closeSite(){ siteEl.classList.remove("open"); document.body.classList.remove("site-open"); siteOpen=false; try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
+siteEl.addEventListener("click",e=>{ const t=e.target.closest("button,[data-zoom]"); if(!t) return; const d=t.dataset;
+  if(t.classList.contains("sw-close")||d.sclose!==undefined) return closeSite();
+  if(t.classList.contains("sw-lang")) return setLang(lang==="nl"?"en":"nl");
+  if(t.classList.contains("sw-wide")){ siteWide=!siteWide; siteEl.classList.toggle("wide",siteWide); return; }
+  if(t.classList.contains("sw-burger")){ siteEl.classList.toggle("menu"); return; }
+  if(d.sgo){ siteEl.classList.remove("menu"); return openSite(d.sgo,d.sa||""); }
+  if(d.sa){ return openSite(sitePage,d.sa); }
+  if(d.sform!==undefined){ return openForm(d.sform,d.sitem||"",d.sctx||undefined); }
+  if(d.scfg!==undefined){ return openCfg(d.scfg||undefined); }
+  if(d.ssheet) return productSheet(d.ssheet);
+  if(d.sprod){ closeSite(); location.hash="p="+encodeURIComponent(d.sprod); openFromHash(); return; }
+  if(d.sobj){ closeSite(); const i=nodes.findIndex(n=>n.obj===d.sobj); if(i>=0) goStation(i); return; }
+  if(d.sroom){ closeSite(); goRoom(d.sroom); return; }
+  if(d.zoom){ zoomImg(d.zoom); } });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&siteOpen&&!document.querySelector(".modal.open")&&!zoomEl.classList.contains("open")) closeSite(); });
+window.addEventListener("ep-lang",()=>{ if(siteOpen){ const y=swMain.scrollTop; renderSite(); swMain.scrollTop=y; } });
+const zoomEl=document.createElement("div"); zoomEl.className="sw-zoom"; zoomEl.innerHTML=`<img alt=""><button type="button" aria-label="Sluiten">×</button>`; document.body.appendChild(zoomEl);
+zoomEl.addEventListener("click",()=>zoomEl.classList.remove("open"));
+function zoomImg(u){ zoomEl.querySelector("img").src=u; zoomEl.classList.add("open"); }
+// knop in de bovenbalk en onderbalk: de website openen bij de ruimte waar je nu bent
+{ const ob=document.querySelector(".ov-btn"); if(ob){ ob.replaceWith(ob.cloneNode(true)); const nb=document.querySelector(".ov-btn"); nb.innerHTML=`<svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M3.5 8.5h17M7 12h6M7 15h9"/></svg><span></span>`;
+    const st=()=>{ nb.querySelector("span").textContent="Website"; nb.title=lang==="nl"?"Open de website":"Open the website"; }; st(); window.addEventListener("ep-lang",st);
+    nb.addEventListener("click",()=>siteOpen?closeSite():openSite(pageOf(curRoomK),"")); }
+  const tb=document.querySelector(".tabbar .tab-ov"); if(tb){ const nt=tb.cloneNode(true); tb.replaceWith(nt); nt.querySelector("span").textContent="Website"; window.addEventListener("ep-lang",()=>{ nt.querySelector("span").textContent="Website"; }); nt.addEventListener("click",()=>openSite(pageOf(curRoomK),"")); } }
+// bestaande vensters doorsturen naar de website
+openOverview=()=>openSite("coll","producten");
+openStudy=()=>openSite("about","studie");
+if(/^#w\//.test(location.hash)){ const [,p,a]=location.hash.slice(1).split("/"); setTimeout(()=>openSite(p,a||""),1500); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
