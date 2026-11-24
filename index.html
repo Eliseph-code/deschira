@@ -1082,8 +1082,12 @@ function makePanel(w,h,draw,{x,y,z,ry=0,click=null,parent=BP||S,transparent=fals
 }
 function redrawPanels(){ panels.forEach(p=>{ const g=p.c.getContext("2d"); g.clearRect(0,0,p.c.width,p.c.height); g.save(); g.scale(PX,PX);
   // alle tekst die op het paneel komt onthouden, zodat hij ook als leesbaar venster getoond kan worden
-  const lines=[], of=g.fillText; g.fillText=function(t,x,y,...rest){ lines.push({t:String(t),f:g.font,y}); return of.call(this,t,x,y,...rest); };
-  p.draw(g,p.c.width/PX,p.c.height/PX); g.fillText=of; p.lines=lines; p.read=undefined; g.restore(); p.t.needsUpdate=true; }); }
+  const PW=p.c.width/PX, lines=[], of=g.fillText; g.fillText=function(t,x,y,...rest){ lines.push({t:String(t),f:g.font,y});
+    // tekst die buiten het bord zou lopen wordt iets kleiner gezet in plaats van afgesneden
+    const al=g.textAlign, avail=(al==="center"?2*Math.min(x,PW-x):al==="right"||al==="end"?x:PW-x)-PW*.035, mw=g.measureText(String(t)).width;
+    if(avail>0&&mw>avail&&!rest.length){ const f0=g.font, k=Math.max(.55,avail/mw); g.font=f0.replace(/([\d.]+)px/,(m0,n)=>(parseFloat(n)*k)+"px"); const r=of.call(this,t,x,y); g.font=f0; return r; }
+    return of.call(this,t,x,y,...rest); };
+  p.draw(g,PW,p.c.height/PX); g.fillText=of; p.lines=lines; p.read=undefined; g.restore(); p.t.needsUpdate=true; }); }
 // ---- leesvenster: wandteksten als gewone, goed leesbare tekst
 function readOf(p){ if(p.read!==undefined) return p.read; const L2=p.lines.filter(l=>l.t.trim()&&!/^[←→↑↓\s]+$/.test(l.t)); const chars=L2.reduce((a,l)=>a+l.t.length,0); if(chars<80){ p.read=null; return null; }
   const sz=l=>{ const m=/([\d.]+)px/.exec(l.f); return m?+m[1]:0; }, mx=Math.max(...L2.map(sz)); let title="", eyebrow="", paras=[], cur=null, prev=null;
@@ -3355,7 +3359,7 @@ function hallWallR(th){ const sg=(ROT.segs||[]).find(q=>th>=q.a&&th<=q.b); if(!s
 const objMax=o=>(OBJ_TYPES[o.type]||{}).max||1;
 function objProducts(o){ const ids=[]; (o.cols||[]).forEach(c=>COLL.filter(b=>collOf(b)===c).forEach(b=>ids.push(b.id))); (o.picks||[]).forEach(id=>ids.push(id)); return [...new Set(ids)].filter(id=>bagById(id)).slice(0,objMax(o)); }
 // waar wijst een enkel item naar (product of eigen werk), voor bijschrift, menu en klikken
-function objTarget(o){ if((o.type==="zuil"||o.type==="ezel"||(o.type==="lijst"&&o.src==="product"))&&o.product&&bagById(o.product)) return o.product; if((o.type==="lijst"&&o.src==="item")||o.type==="zuil"||o.type==="ezel") return o.item&&ITEMS[o.item]?o.item:null; return null; }
+function objTarget(o){ if((o.type==="zuil"||o.type==="ezel"||(o.type==="lijst"&&o.src==="product"))&&o.product&&bagById(o.product)&&(bagById(o.product).img||!(o.item&&ITEMS[o.item]))) return o.product; if((o.type==="lijst"&&o.src==="item")||o.type==="zuil"||o.type==="ezel") return o.item&&ITEMS[o.item]?o.item:null; return null; }
 let OBJS=[];
 // ---- omzetten van de oude, vaste inrichting naar items
 function defaultObjects(d){ d=d||{}; const out=[], R=ROT.R, CX=ROT.x, CZ=ROT.z, sh=d.show||{}, pil=d.pillars||{}, face=(x,z)=>Math.atan2(CX-x,CZ-z);
@@ -3516,7 +3520,7 @@ function objStation0(o,dist){ const R=ROT.R;
   if(o.space==="hall"){ if(o.mount==="wall") return {eye:P2(o.th,R-dist),look:P2(o.th,R)}; const f=[Math.sin(o.ry||0),Math.cos(o.ry||0)], d2=o.type==="podium"?3.4:2.6; return {eye:[+(o.x+f[0]*d2).toFixed(2),+(o.z+f[1]*d2).toFixed(2)],look:[o.x,o.z]}; }
   const X=XF[o.space], A=AREAS[o.space]||AREAS.r, Lg=legOf(o.space); let lx,lz,nx,nz;
   if(o.mount==="wall"){ const W=WALLS_L(o.space)[o.wall|0]; lx=W.ax==="z"?W.x:o.u; lz=W.ax==="z"?o.u:W.z; nx=Math.sin(W.ry); nz=Math.cos(W.ry); } else { lx=o.x; lz=o.z; nx=Math.sin(o.ry||0); nz=Math.cos(o.ry||0); }
-  const d2=o.mount==="wall"?dist:(o.type==="podium"?3.2:2.4); let ex=clamp(lx+nx*d2,A.x[0],A.x[1]), ez=clamp(lz+nz*d2,A.z[0],A.z[1]);
+  const d2=o.mount==="wall"?dist:(o.type==="podium"?3.2:o.type==="atelier"?3.6:2.4); let ex=clamp(lx+nx*d2,A.x[0],A.x[1]), ez=clamp(lz+nz*d2,A.z[0],A.z[1]);
   return {eye:X.toW(ex,ez).map(v=>+v.toFixed(2)),look:X.toW(lx,lz).map(v=>+v.toFixed(2))}; }
 const normA=a=>((a+60)%360+360)%360-60;
 function objNode(o){ const st=objStation(o), n={id:"o_"+o.id,room:o.space,eye:st.eye,look:st.look,obj:o.id,pitch:st.pitch}; const t=objTarget(o); if(t) n.item=t;
