@@ -822,7 +822,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795516248"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795516379"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -3993,7 +3993,7 @@ function normStudy(x){ const D=STUDY_DEF; if(!x||typeof x!=="object") return JSO
     projects:(Array.isArray(x.projects)?x.projects:[]).filter(Boolean).map((q,i)=>({id:s2(q.id)||"p"+i,year:s2(q.year),img:s2(q.img),media:(Array.isArray(q.media)?q.media:[]).map(s2).filter(Boolean),link:s2(q.link),nl:tx(q,"nl"),en:tx(q,"en")}))}; }
 // eenmalig: het studiebord in Over mij erbij zetten (daarna vrij te verplaatsen of te verwijderen)
 function withStudy(list,d){ if(d&&d.study1) return list; if(!ROOMKEYS.includes("about")||list.some(o=>o.type==="studie")) return list;
-  return list.concat([{id:"a_study",space:"about",type:"studie",mount:"wall",wall:3,u:-4.6,y:2.0}]); }
+  return list.concat([{id:"a_study",space:"about",type:"studie",mount:"wall",wall:2,u:-6.75,y:2.0}]); }
 OB.studie=(o,G)=>{ const w=1.5,h=1.05,y=o.y||2.0;
   const fr=new THREE.Mesh(new RoundedBoxGeometry(w+.08,h+.08,.05,3,.012),M.darkwood||new THREE.MeshStandardMaterial({color:0x2a1a10})); fr.position.set(0,y,.025); fr.castShadow=true; G.add(fr);
   const p=makePanel(w,h,(g,W,H)=>{ g.fillStyle="#15283E"; g.fillRect(0,0,W,H); g.strokeStyle="#C3A367"; g.lineWidth=.006; g.strokeRect(.04,.04,W-.08,H-.08);
