@@ -3690,7 +3690,7 @@ function buildArrows(ci){ arrowFrom=ci; while(arrowG.children.length){ const c=a
   for(let d=start; d<end&&idx<70; d+=step,idx++){ const sg=seg.find(s=>d<=s.s0+s.L)||seg[seg.length-1], k=(d-sg.s0)/(sg.L||1), x=sg.a[0]+(sg.b[0]-sg.a[0])*k, z=sg.a[1]+(sg.b[1]-sg.a[1])*k;
     const inRoom=(sg.a[2]!=="hall"&&sg.b[2]!=="hall"), y=(inRoom?0:groundAt(x,z))+.025, dx=sg.b[0]-sg.a[0], dz=sg.b[1]-sg.a[1];
     const m=new THREE.Mesh(arrowGeo,new THREE.MeshBasicMaterial({color:0xe2bf72,transparent:true,opacity:0,depthWrite:false,toneMapped:false}));
-    m.position.set(x,y,z); m.rotation.y=Math.atan2(-dx,-dz); m.userData.d=d/total; m.userData.dist=d; arrowG.add(m); } }
+    m.position.set(x,y+.01,z); m.rotation.y=Math.atan2(-dx,-dz); m.renderOrder=20; m.userData.d=d/total; m.userData.dist=d; arrowG.add(m); } }
 function animArrows(now){ const still=!jump&&mode==="route"&&pose.st!=null&&pose.st>=0; arrowFade+=((still?1:0)-arrowFade)*.08;
   arrowG.visible=arrowFade>.02; if(!arrowG.visible) return; const t=now/1000;
   arrowG.children.forEach(m=>{ const w=.5+.5*Math.sin(m.userData.dist*2.2-t*4.2); m.material.opacity=arrowFade*(.22+.6*w*w)*Math.min(1,m.userData.dist/2.4); }); }
