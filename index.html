@@ -965,7 +965,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795559053"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795560287"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2472,7 +2472,7 @@ function updateSky(){
   hemi.color.setRGB(lerp(.3,.84,day),lerp(.38,.88,day),lerp(.62,.98,day)); hemi.groundColor.setRGB(lerp(.1,.6,day),lerp(.09,.52,day),lerp(.1,.4,day)); hemi.intensity=lerp(.26,.72,day);
   fill.intensity=lerp(.05,.14,day);
   lanternLights.forEach(L=>L.intensity=lerp(0,26,night*0.6+ (1-day)*0.4));
-  NIGHT=night; DAY=day; lampLights.forEach(L=>L.intensity=7*clamp(night*0.8+(1-day)*0.4,0,1)); coveMats.forEach(m=>m.color.setRGB(1,.86,.66).multiplyScalar(lerp(.25,.85,clamp(night*0.8+(1-day)*0.5,0,1)))); hemiBase=hemi.intensity; hemiCol.copy(hemi.color); if(FURN.linen) FURN.linen.emissiveIntensity=.08+1.1*clamp(night*0.8+(1-day)*0.4,0,1); sunBase=sun.intensity; for(const k of Object.keys(ROOMLIGHTS)) (ROOMLIGHTS[k]||[]).forEach(o=>{ if(o.L.intensity>0) o.L.intensity=o.base*roomBoost(); });
+  NIGHT=night; DAY=day; lampLights.forEach(L=>L.intensity=7*clamp(night*0.8+(1-day)*0.4,0,1)); coveMats.forEach(m=>m.color.setRGB(1,.86,.66).multiplyScalar(lerp(.12,.5,clamp(night*0.8+(1-day)*0.5,0,1)))); hemiBase=hemi.intensity; hemiCol.copy(hemi.color); if(FURN.linen) FURN.linen.emissiveIntensity=.02+.42*clamp(night*0.8+(1-day)*0.4,0,1); qProductTone(); sunBase=sun.intensity; for(const k of Object.keys(ROOMLIGHTS)) (ROOMLIGHTS[k]||[]).forEach(o=>{ if(o.L.intensity>0) o.L.intensity=o.base*roomBoost(); });
   M.glass.emissiveIntensity=lerp(0,9,clamp(night*0.7+(1-day)*0.5,0,1));
   stars.material.opacity=clamp((-e-6)/8,0,1);
   moon.visible=e<-3; moon.position.copy(dirOf((s.az+180)%360,32)).multiplyScalar(4500);
@@ -2485,7 +2485,7 @@ function updateSky(){
   clouds.forEach(c=>{ c.material.color.copy(cc); c.material.opacity=lerp(.35,.92,day); });
   if(birdGroup) birdGroup.visible=day>.12;
   { const k=clamp(1.75/renderer.toneMappingExposure,1.6,3.2)*lerp(.8,.92,day); panels.forEach(p=>p.mesh.material.color.setRGB(k,k*.975,k*.935)); }
-  if(panoMat){ const k=1.3; panoMat.color.setRGB(k*(lerp(.05,1,day)+golden*.04),k*(lerp(.06,1,day)-golden*.08),k*(lerp(.11,1,day)-golden*.2)); PANO_U.pCol.value.copy(panoMat.color); if(M.peaks) M.peaks.color.copy(panoMat.color).multiplyScalar(.77); HAZE_U.col.value.copy(fogC); HAZE_U.k.value=lerp(.55,.3,day)+golden*.12; }
+  if(panoMat){ const k=1.3; panoMat.color.setRGB(k*(lerp(.032,1,day)+golden*.04),k*(lerp(.05,1,day)-golden*.08),k*(lerp(.12,1,day)-golden*.2)); PANO_U.pCol.value.copy(panoMat.color); if(M.peaks) M.peaks.color.copy(panoMat.color).multiplyScalar(.77); HAZE_U.col.value.copy(fogC); HAZE_U.k.value=lerp(.55,.3,day)+golden*.12; }
   Object.values(treeMats).forEach(m=>{ const k=1.25; m.color.setRGB(k*(lerp(.06,1,day)+golden*.05),k*(lerp(.07,1,day)-golden*.06),k*(lerp(.12,1,day)-golden*.18)); });
   if(waterMat) waterMat.color.setRGB(lerp(.04,.18,day),lerp(.07,.36,day),lerp(.09,.33,day));
   M.hill1.color.setRGB(lerp(.12,.56,day),lerp(.14,.6,day),lerp(.16,.42,day)); M.hill2.color.setRGB(lerp(.14,.66,day),lerp(.15,.67,day),lerp(.2,.52,day));
@@ -3844,7 +3844,7 @@ OB.zuil=(o,G)=>{ const SG=new THREE.Group(); G.add(SG); const st=o.style||"blok"
   if(b){ if(isFlat(b.kind)) canvasArt(G,b,Math.min(.6,prodW(b)),.9,0,top,0); else { const p=flatImg(b.img,prodW(b)*(b.dims&&b.dims.w?1:1.15)); p.position.y=top; G.add(p); billboards.push(p); } }
   else if(it&&it.img){ const p=flatImg(it.img,.62); p.position.y=top; G.add(p); billboards.push(p); }
   else if(o.bag){ const bg=bag(o.bag[0],o.bag[1]); bg.position.y=top; bg.scale.setScalar(1.55); G.add(bg); }
-  contactShadow(G,top,.75*sw,.42*sw); if(o.space==="hall") accent(G,new THREE.Vector3(.4,3.6,.9),new THREE.Vector3(0,1.2,0));
+  contactShadow(G,top,.75*sw,.42*sw); if(o.space==="hall") productLight(G,top,o);
   const tg=()=>objTarget(o); plaqueP(G,tg,0,Math.max(.3,hh*.53),.28*sw); const t=tg(); G.traverse(m=>{ if(m.isMesh&&t){ m.userData.item=t; m.userData.root=G; clickables.push(m); } }); return {top:top+.9,size:.7}; };
 OB.ezel=(o,G)=>{ const leg=(lx,rz)=>{ const m=new THREE.Mesh(new THREE.BoxGeometry(.05,2.1,.05),M.wood); m.position.set(lx,1.02,0); m.rotation.z=rz; m.castShadow=true; G.add(m); };
   leg(-.32,-.13); leg(.32,.13); const bk=new THREE.Mesh(new THREE.BoxGeometry(.05,2.0,.05),M.wood); bk.position.set(0,.98,-.35); bk.rotation.x=-.33; G.add(bk);
@@ -4589,6 +4589,218 @@ function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
 { let f=1; const warm=new THREE.Color(1,.78,.55); const loop=()=>{ if(!sun||!hemi){ requestAnimationFrame(loop); return; } const inR=curRoomK!=="hall", want=inR?.12:1; f+=(want-f)*.06; if(typeof sun!=="undefined"&&sun) sun.intensity=sunBase*f;
     // binnen 's avonds: warme, zachte avondverlichting zodat de kamer leesbaar blijft (2700K)
     const g=(1-f)/.88*NIGHT, dark=inR&&themeOf(curRoomK)==="walnoot"?2.4:1; hemi.intensity=hemiBase+.75*g*dark; hemi.color.copy(hemiCol).lerp(warm,g*.85); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+
+
+// =====================================================================================
+//  KWALITEITSRONDE 3 (samen met ChatGPT): materiaalbibliotheek, meubels, productlicht
+//  Alles procedureel: kleur-, normal- en roughness-texturen uit ruis, geen foto's.
+// =====================================================================================
+function qRng(seed){ let s=(seed*2654435761)>>>0||1; return ()=>{ s^=s<<13; s>>>=0; s^=s>>>17; s^=s<<5; s>>>=0; return s/4294967296; }; }
+// naadloze waarderuis met aparte celgrootte in x en y (voor gestrekte nerf/aders)
+function qNoise(w,h,cx,cy,seed){ const r=qRng(seed), gw=Math.max(1,Math.round(w/cx)), gh=Math.max(1,Math.round(h/cy)), grid=new Float32Array(gw*gh); for(let i=0;i<grid.length;i++) grid[i]=r();
+  const out=new Float32Array(w*h), sx0=gw/w, sy0=gh/h;
+  for(let y=0;y<h;y++){ const gy=y*sy0, iy=Math.floor(gy), y0=iy%gh, y1=(iy+1)%gh; let fy=gy-iy; fy=fy*fy*(3-2*fy);
+    for(let x=0;x<w;x++){ const gx=x*sx0, ix=Math.floor(gx), x0=ix%gw, x1=(ix+1)%gw; let fx=gx-ix; fx=fx*fx*(3-2*fx);
+      const a=grid[y0*gw+x0], b=grid[y0*gw+x1], c=grid[y1*gw+x0], d=grid[y1*gw+x1], top=a+(b-a)*fx, bot=c+(d-c)*fx; out[y*w+x]=top+(bot-top)*fy; } } return out; }
+function qFbm(w,h,cx,cy,oct,seed){ const out=new Float32Array(w*h); let amp=1, tot=0;
+  for(let o=0;o<oct;o++){ const n=qNoise(w,h,Math.max(1,cx/2**o),Math.max(1,cy/2**o),seed+o*31); for(let i=0;i<out.length;i++) out[i]+=n[i]*amp; tot+=amp; amp*=.5; }
+  for(let i=0;i<out.length;i++) out[i]/=tot; return out; }
+function qTexFrom(w,h,fill,{srgb=true,rep=[1,1]}={}){ const c=document.createElement("canvas"); c.width=w; c.height=h; const g=c.getContext("2d"), im=g.createImageData(w,h), d=im.data;
+  for(let i=0,p=0;i<w*h;i++,p+=4){ const v=fill(i); d[p]=v[0]; d[p+1]=v[1]; d[p+2]=v[2]; d[p+3]=255; } g.putImageData(im,0,0);
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(rep[0],rep[1]); if(srgb) t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; return t; }
+function qNormal(H,w,h,str,rep){ return qTexFrom(w,h,i=>{ const x=i%w, y=(i/w)|0, l=H[y*w+(x-1+w)%w], r=H[y*w+(x+1)%w], u=H[((y-1+h)%h)*w+x], dn=H[((y+1)%h)*w+x];
+    const nx=(l-r)*str, ny=(dn-u)*str, L=Math.hypot(nx,ny,1); return [(nx/L*.5+.5)*255,(ny/L*.5+.5)*255,(1/L*.5+.5)*255]; },{srgb:false,rep}); }
+function qGray(A,w,h,rep,lo=0,hi=1){ return qTexFrom(w,h,i=>{ const v=(lo+(hi-lo)*A[i])*255; return [v,v,v]; },{srgb:false,rep}); }
+const qHex=h=>{ const n=parseInt(h.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; };
+const qMix=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+const qCl=v=>v<0?0:v>1?1:v;
+// een volledige set (kleur, normal, roughness) uit één hoogte- en één tintveld
+function qSet(w,h,{col,height,rough,str=2,rep=[1,1]}){ const C=qTexFrom(w,h,col,{rep}); const N=qNormal(height,w,h,str,rep); const R=qGray(rough,w,h,rep); return {map:C,normalMap:N,roughnessMap:R}; }
+
+// ---------- A1 travertijn ----------
+function qTravertine(seed=7,{base="#D8C7AE",light="#E8DDCC",dark="#BDA98E",cool="#CFC7BB",size=1024}={}){ const w=size,h=size;
+  const big=qFbm(w,h,256,256,4,seed), band=qFbm(w,h,512,18,3,seed+5), pore=qNoise(w,h,6,3,seed+9), pore2=qNoise(w,h,14,5,seed+13);
+  const B=qHex(base), Lt=qHex(light), D=qHex(dark), Co=qHex(cool), H=new Float32Array(w*h), R=new Float32Array(w*h), K=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++){ const p=(pore[i]>.86?(pore[i]-.86)*7:0)+(pore2[i]>.9?(pore2[i]-.9)*6:0), b=band[i]; H[i]=.5+.25*(b-.5)-p*.9; R[i]=qCl(.62+p*.6-(big[i]-.5)*.1); K[i]=p; }
+  const set=qSet(w,h,{col:i=>{ let c=qMix(B,Lt,qCl((big[i]-.35)*1.6)); c=qMix(c,D,qCl((band[i]-.55)*2.2)*.55); c=qMix(c,Co,qCl((.45-big[i])*2)*.35); c=qMix(c,qMix(D,[150,128,100],.5),qCl(K[i]*1.6)); return c; },height:H,rough:R,str:3});
+  return set; }
+// ---------- A2 walnoot (panelen van ~75 cm, nerf verticaal) ----------
+function qWalnut(seed=3,{w=1024,h=1024,panels=2,mid="#6A4A34",dark="#4A2E22",light="#86624A",shade="#3C2A22",seams=true}={}){
+  const warp=qFbm(w,h,64,512,3,seed), fine=qNoise(w,h,2,64,seed+3), cloud=qFbm(w,h,256,256,3,seed+7), cath=qFbm(w,h,128,1024,2,seed+11);
+  const M2=qHex(mid), D=qHex(dark), Lt=qHex(light), Sh=qHex(shade), pw=w/panels, H=new Float32Array(w*h), R=new Float32Array(w*h), T=new Float32Array(w*h);
+  const tint=Array.from({length:panels},(_,k)=>qRng(seed+k*7)()*.14-.07);
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const i=y*w+x, pk=Math.min(panels-1,(x/pw)|0), lx=x-pk*pw;
+    const g=(lx+warp[i]*90+Math.sin((y/h)*6.283*2+pk)*cath[i]*60)/11, f=g-Math.floor(g), line=Math.pow(1-Math.abs(f-.5)*2,6);
+    const seam=seams&&(lx<2.2||lx>pw-1.2)?1:0; T[i]=line*.8+(fine[i]-.5)*.25+tint[pk]; H[i]=.5-line*.18-(fine[i]-.5)*.1-seam*.8; R[i]=qCl(.46-line*.12+(cloud[i]-.5)*.12+seam*.3); }
+  return qSet(w,h,{col:i=>{ let c=qMix(M2,Lt,qCl(.35+T[i]*.9+(cloud[i]-.5)*.8)); c=qMix(c,D,qCl(T[i]*1.1)*.65); c=qMix(c,Sh,qCl((.42-cloud[i])*2)*.3); if(H[i]<0) c=qMix(c,[20,12,8],.85); return c; },height:H,rough:R,str:2.4}); }
+// ---------- A3 eiken vloer (planken 20 cm, 1,8–2,4 m, verspringende kopse naden) ----------
+function qOak(seed=19,{size=1024,metres=2.4,base="#B6906C",light="#C9A985",dark="#8D6A4D",grey="#A88E79",smoked=0}={}){ const w=size,h=size, r=qRng(seed), pxm=size/metres, pw=Math.round(.2*pxm), n=Math.round(w/pw);
+  const grain=qNoise(w,h,2,90,seed+1), wav=qFbm(w,h,40,300,3,seed+2), cloud=qFbm(w,h,200,200,3,seed+3), knot=qNoise(w,h,40,40,seed+4);
+  const plank=new Float32Array(w*h), joint=new Uint8Array(w*h); const cols=[]; for(let k=0;k<n;k++){ let y=-r()*h; const segs=[]; while(y<h){ const L=(1.8+r()*.6)*pxm; segs.push([y,y+L,r()]); y+=L; } cols.push(segs); }
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const k=Math.min(n-1,(x/pw)|0), lx=x-k*pw, segs=cols[k]; let t=0, j=lx<1.6?1:0; for(const s of segs){ const yy=((y-s[0])%h+h)%h; if(y>=s[0]&&y<s[1]){ t=s[2]; if(y-s[0]<1.6) j=1; } }
+    plank[y*w+x]=t; joint[y*w+x]=j; }
+  const B=qHex(base), Lt=qHex(light), D=qHex(dark), G=qHex(grey), H=new Float32Array(w*h), R=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++){ const g=(grain[i]-.5)*.6+(wav[i]-.5)*.5, kn=knot[i]>.93?(knot[i]-.93)*12:0; H[i]=.5+g*.2-joint[i]*.9-kn*.3; R[i]=qCl(.5+(cloud[i]-.5)*.12+joint[i]*.35+kn*.2); }
+  return qSet(w,h,{col:i=>{ let c=qMix(B,Lt,qCl(.4+(plank[i]-.5)*.7+(cloud[i]-.5)*.5)); c=qMix(c,D,qCl((grain[i]-.45)*1.4+(wav[i]-.5))*.45); c=qMix(c,G,qCl(plank[i]-.7)*.4);
+      if(knot[i]>.93) c=qMix(c,D,qCl((knot[i]-.93)*14)); if(joint[i]) c=qMix(c,[40,26,16],.8); if(smoked) c=qMix(c,[52,34,22],smoked); return c; },height:H,rough:R,str:2.2}); }
+// ---------- A4 kalkstuc (fijne spaanbewegingen, laag contrast) ----------
+function qPlaster(seed=23,{base="#C9B5A0",light="#D9C8B8",dark="#AA927E",accent=null,size=1024,contrast=1}={}){ const w=size,h=size, r=qRng(seed), c=document.createElement("canvas"); c.width=w; c.height=h; const g=c.getContext("2d");
+  g.fillStyle="#808080"; g.fillRect(0,0,w,h);
+  for(let k=0;k<900;k++){ const x=r()*w, y=r()*h, R0=30+r()*120, a0=r()*6.28, sweep=.6+r()*1.4, lw=8+r()*30, v=r()<.5?255:0; g.strokeStyle=`rgba(${v},${v},${v},${.018+r()*.03})`; g.lineWidth=lw; g.lineCap="round";
+    for(const dx of [-w,0,w]) for(const dy of [-h,0,h]){ g.beginPath(); g.arc(x+dx,y+dy,R0,a0,a0+sweep); g.stroke(); } }
+  const sw=g.getImageData(0,0,w,h).data, big=qFbm(w,h,256,256,3,seed+1), grit=qNoise(w,h,2,2,seed+2), B=qHex(base), Lt=qHex(light), D=qHex(dark), A=accent&&qHex(accent), H=new Float32Array(w*h), R2=new Float32Array(w*h), V=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++){ const s=(sw[i*4]-128)/128; V[i]=(s*.9+(big[i]-.5)*1.2)*contrast; H[i]=.5+s*.25+(grit[i]-.5)*.12; R2[i]=qCl(.86-Math.max(0,s)*.18+(grit[i]-.5)*.06); }
+  return qSet(w,h,{col:i=>{ let col=V[i]>0?qMix(B,Lt,qCl(V[i])):qMix(B,D,qCl(-V[i])); if(A) col=qMix(col,A,qCl((big[i]-.6)*2)*.25*contrast); const gr=(grit[i]-.5)*10*contrast; return [col[0]+gr,col[1]+gr,col[2]+gr]; },height:H,rough:R2,str:1.4}); }
+// ---------- A6 leer (fijne nerf, wolkige diepte; kleur komt uit het materiaal) ----------
+function qLeatherMaps(){ if(qLeatherMaps.c) return qLeatherMaps.c; const w=512,h=512, cell=qNoise(w,h,5,5,41), cell2=qNoise(w,h,9,9,43), cloud=qFbm(w,h,128,128,3,47), H=new Float32Array(w*h), R=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++){ const p=Math.abs(cell[i]-.5)*2, q=Math.abs(cell2[i]-.5)*2, crev=Math.pow(1-Math.min(p,q),4); H[i]=.5-crev*.6+(cloud[i]-.5)*.2; R[i]=qCl(.55+crev*.25+(cloud[i]-.5)*.12); }
+  const set=qSet(w,h,{col:i=>{ const v=232+(cloud[i]-.5)*40-(.5-H[i])*30; return [v,v,v]; },height:H,rough:R,str:3.2,rep:[3,3]}); return (qLeatherMaps.c=set); }
+// ---------- A7 linnen ----------
+function qLinenMaps(){ if(qLinenMaps.c) return qLinenMaps.c; const w=256,h=256, n=qNoise(w,h,32,32,61), H=new Float32Array(w*h);
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const wx=Math.sin(x*Math.PI/2)*.5+.5, wy=Math.sin(y*Math.PI/2)*.5+.5; H[y*w+x]=((x>>1)+(y>>1))%2?wx:wy; H[y*w+x]=H[y*w+x]*.7+n[y*w+x]*.3; }
+  return (qLinenMaps.c=qSet(w,h,{col:i=>{ const v=236+(H[i]-.5)*22; return [v,v*.985,v*.955]; },height:H,rough:H.map(v=>.78+v*.12),str:2,rep:[6,4]})); }
+// ---------- A8 geborsteld metaal ----------
+function qBrushed(){ if(qBrushed.c) return qBrushed.c; const w=512,h=512, n=qNoise(w,h,256,1,71), n2=qNoise(w,h,64,1,73), ox=qFbm(w,h,128,128,3,79), H=new Float32Array(w*h), R=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++){ H[i]=.5+(n[i]-.5)*.5+(n2[i]-.5)*.3; R[i]=qCl(.36+(n2[i]-.5)*.12+Math.max(0,ox[i]-.62)*.6); }
+  return (qBrushed.c={normalMap:qNormal(H,w,h,1.4,[2,2]),roughnessMap:qGray(R,w,h,[2,2]),ox}); }
+
+// ---------- materialen vervangen ----------
+const QM={};
+function qBuildMaterials(){ if(QM.ok) return QM; QM.ok=1;
+  const trav=qTravertine(7);
+  [trav.map,trav.normalMap,trav.roughnessMap].forEach(t=>t.repeat.set(1/2,1/2));
+  QM.trav=trav; QM.stand=qTravertine(17,{base:"#D6CCBE",light:"#E6DED1",dark:"#B4A898",cool:"#978A7C",size:512}); [QM.stand.map,QM.stand.normalMap,QM.stand.roughnessMap].forEach(t=>t.repeat.set(1.4,1.4));
+  const bm=qBrushed();
+  QM.brass=new THREE.MeshPhysicalMaterial({color:0xb08a4c,metalness:1,roughness:.34,roughnessMap:bm.roughnessMap,normalMap:bm.normalMap,normalScale:new THREE.Vector2(.35,.35),clearcoat:.06,clearcoatRoughness:.4,envMapIntensity:1.1});
+  QM.bronze=new THREE.MeshPhysicalMaterial({color:0x6e5943,metalness:1,roughness:.42,roughnessMap:bm.roughnessMap,normalMap:bm.normalMap,normalScale:new THREE.Vector2(.3,.3),clearcoat:.04,envMapIntensity:1});
+  QM.darkBronze=new THREE.MeshPhysicalMaterial({color:0x4b3d31,metalness:1,roughness:.45,roughnessMap:bm.roughnessMap,normalMap:bm.normalMap,normalScale:new THREE.Vector2(.3,.3),envMapIntensity:.9});
+  const wn=qWalnut(3,{w:512,h:512,panels:1,seams:false}); [wn.map,wn.normalMap,wn.roughnessMap].forEach(t=>t.repeat.set(1,1));
+  QM.walnutFurn=new THREE.MeshPhysicalMaterial({...wn,roughness:1,clearcoat:.22,clearcoatRoughness:.32,normalScale:new THREE.Vector2(.5,.5)});
+  const ln=qLinenMaps(); QM.linen=new THREE.MeshPhysicalMaterial({...ln,roughness:1,sheen:.35,sheenColor:new THREE.Color(0xf4ecdd),side:THREE.DoubleSide,emissive:0xffd9a8,emissiveIntensity:0});
+  QM.glass=new THREE.MeshPhysicalMaterial({color:0xdce9e8,transmission:.96,roughness:.03,metalness:0,ior:1.5,thickness:.01,clearcoat:.1,transparent:true,opacity:1,envMapIntensity:1.2,side:THREE.DoubleSide});
+  QM.ceramic=new THREE.MeshPhysicalMaterial({color:0xd8d1c7,roughness:.78,clearcoat:.05,normalMap:QM.stand.normalMap,normalScale:new THREE.Vector2(.25,.25)});
+  return QM; }
+// leer: elke kleur deelt dezelfde nerf, maar wel met eigen kleur en sheen
+function qLeather(hex,{clear=.16}={}){ const L=qLeatherMaps(), c=new THREE.Color(hex); return new THREE.MeshPhysicalMaterial({color:c,map:L.map,normalMap:L.normalMap,normalScale:new THREE.Vector2(.55,.55),roughnessMap:L.roughnessMap,roughness:1,clearcoat:clear,clearcoatRoughness:.52,sheen:.22,sheenRoughness:.6,sheenColor:c.clone().lerp(new THREE.Color(0xffffff),.25),specularIntensity:.8}); }
+
+// bestaande gedeelde materialen opwaarderen (vóór er gebouwd wordt)
+{ const Q=qBuildMaterials();
+  const up=(m,set,o={})=>{ if(!m) return; m.map=set.map; m.normalMap=set.normalMap; m.roughnessMap=set.roughnessMap; m.bumpMap=null; m.normalScale=new THREE.Vector2(o.ns||.6,o.ns||.6); m.roughness=o.r??1; if(o.color!=null) m.color.set(o.color); m.needsUpdate=true; };
+  up(M.stone,Q.trav,{ns:.7,r:1,color:0xffffff}); up(M.stoneTrim,Q.trav,{ns:.6,r:.95,color:0xf6efe4}); up(M.marble,Q.stand,{ns:.5,r:.9,color:0xffffff});
+  ["brass","gold"].forEach(k=>{ if(M[k]){ M[k].copy?.call; } }); M.brass=Q.brass; M.gold=Q.brass; M.bronze=Q.bronze; M.bronzeFrame=Q.darkBronze;
+  M.darkwood=Q.walnutFurn; M.darkTop=new THREE.MeshPhysicalMaterial({color:0x3a302a,roughness:.5,normalMap:Q.stand.normalMap,normalScale:new THREE.Vector2(.2,.2),clearcoat:.15,clearcoatRoughness:.35});
+  FURN.ok=1; FURN.walnut=Q.walnutFurn; FURN.bronze=Q.darkBronze; FURN.linen=Q.linen; FURN.paper=new THREE.MeshStandardMaterial({color:0xf1e9db,roughness:.95}); FURN.pad=qLeather(0x5b2a1c); FURN.cognac=qLeather(0x9a5b3b); }
+
+// thema-materialen van de kamers vervangen door de nieuwe recepten
+{ const _tm=themeMats; themeMats=function(t){ if(TMATS[t]&&TMATS[t].q) return TMATS[t]; const m=_tm(t)||{}; m.q=1;
+    if(t==="walnoot"){ const w=qWalnut(5,{w:1024,h:1024,panels:2}); [w.map,w.normalMap,w.roughnessMap].forEach(x=>x.repeat.set(1/1.5,1/2.4));
+      m.wall=new THREE.MeshPhysicalMaterial({...w,roughness:1,clearcoat:.18,clearcoatRoughness:.36,normalScale:new THREE.Vector2(.6,.6)});
+      const f=qOak(29,{base:"#8a6a50",light:"#9c7a5c",dark:"#5e4434",grey:"#7a6656",smoked:.15}); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.12,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.3}); }
+    if(t==="nachtblauw"){ const p=qPlaster(37,{base:"#1D3350",light:"#2A466B",dark:"#13243B",accent:"#35567B",contrast:.5}); m.wall=new THREE.MeshPhysicalMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.5,.5),sheen:.02});
+      const f=qOak(19); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.12,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.3}); }
+    if(t==="boutique"){ const p=qPlaster(43,{base:"#C9B5A0",light:"#D9C8B8",dark:"#AA927E",contrast:.7}); m.wall=new THREE.MeshPhysicalMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.5,.5)});
+      const f=qTravertine(53,{base:"#8f8276",light:"#a39689",dark:"#6f6359",cool:"#857c74",size:1024}); [f.map,f.normalMap,f.roughnessMap].forEach(x=>x.repeat.set(1/1.6,1/1.6));
+      m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:.8,clearcoat:.2,clearcoatRoughness:.3,normalScale:new THREE.Vector2(.5,.5),envMapIntensity:.15}); }
+    return (TMATS[t]=m); }; }
+
+// ---------- B: meubels opnieuw, op maat en met details ----------
+const rb=(w,h,d,r,seg=4)=>new RoundedBoxGeometry(w,h,d,seg,Math.min(r,w/2-.001,h/2-.001,d/2-.001));
+function qAdd(G,geo,mat,x,y,z,o={}){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); if(o.rx) m.rotation.x=o.rx; if(o.ry) m.rotation.y=o.ry; if(o.rz) m.rotation.z=o.rz; m.castShadow=o.cast!==false; m.receiveShadow=true; G.add(m); return m; }
+function qTaperLeg(top,bot,h,seg=16){ return new THREE.CylinderGeometry(top,bot,h,seg); }
+function qPiping(G,pts,mat,r=.0035){ const c=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p)),true,"centripetal",.1); qAdd(G,new THREE.TubeGeometry(c,Math.max(24,pts.length*8),r,6,true),mat,0,0,0,{cast:false}); }
+const rectLoop=(w,d,y,z0=0,x0=0,rr=.03)=>{ const hw=w/2-rr, hd=d/2-rr, P=[]; for(const [cx,cz,a0] of [[hw,hd,0],[-hw,hd,Math.PI/2],[-hw,-hd,Math.PI],[hw,-hd,Math.PI*1.5]]) for(let k=0;k<=4;k++){ const a=a0+k*Math.PI/8; P.push([x0+cx+Math.cos(a)*rr,y,z0+cz+Math.sin(a)*rr]); } return P; };
+// B1 schrijftafel 140 × 68 × 74, blad 2,8 cm, brons onderstel, ondiepe lade
+OB.bureau=(o,G)=>{ const Q=qBuildMaterials(), W=1.4, D=.68, H=.74, T=.028, wal=Q.walnutFurn, br=Q.darkBronze;
+  qAdd(G,rb(W,T,D,.012),wal,0,H-T/2,0); qAdd(G,rb(W-.02,.006,D-.02,.002),br,0,H-T-.003,0,{cast:false});
+  qAdd(G,rb(W-.16,.05,D-.16,.006),br,0,H-T-.03,0); qAdd(G,rb(.56,.04,.02,.004),wal,0,H-T-.03,D/2-.075); qAdd(G,new THREE.CylinderGeometry(.006,.006,.08,12),Q.brass,0,H-T-.03,D/2-.06,{rz:Math.PI/2});
+  for(const [x,z] of [[-W/2+.06,-D/2+.06],[W/2-.06,-D/2+.06],[-W/2+.06,D/2-.06],[W/2-.06,D/2-.06]]){ const l=qAdd(G,qTaperLeg(.013,.009,H-T-.055),br,x,(H-T-.055)/2,z); l.scale.set(1.35,1,1); qAdd(G,new THREE.CylinderGeometry(.012,.012,.006,12),br,x,.003,z); }
+  const pad=qAdd(G,rb(.5,.005,.32,.002),FURN.pad,-.12,H+.0025,.08); qPiping(G,rectLoop(.5,.32,H+.005,.08,-.12,.004),FURN.pad,.0018);
+  qAdd(G,rb(.21,.018,.15,.004),FURN.cognac,.44,H+.009,-.1,{ry:.22}); qAdd(G,rb(.2,.004,.14,.001),FURN.paper,.44,H+.02,-.1,{ry:.22});
+  qAdd(G,new THREE.CylinderGeometry(.0045,.004,.145,10),Q.brass,.14,H+.006,.2,{rz:Math.PI/2,ry:.35});
+  const card=makePanel(.24,.16,(g,w,h)=>{ g.fillStyle="#F3EBDD"; g.fillRect(0,0,w,h); g.strokeStyle="#B08A4C"; g.lineWidth=.0025; g.strokeRect(.008,.008,w-.016,h-.016); g.fillStyle="#52281C"; g.textAlign="center"; g.font=F(.024,"serif"); g.fillText(lang==="nl"?"Uitnodiging":"Invitation",w/2,.06); g.font=F(.0135,"sans"); g.fillStyle="#7a5a3a"; g.fillText(lang==="nl"?"PERSOONLIJKE AFSPRAAK":"PRIVATE APPOINTMENT",w/2,.092); g.fillText(lang==="nl"?"KLIK OM TE PLANNEN":"CLICK TO PLAN",w/2,.122); g.textAlign="left"; },
+    {x:-.12,y:H+.0062,z:.08,parent:G,emissive:.08,click:()=>openForm("afspraak","","contact")}); card.mesh.rotation.x=-Math.PI/2; card.mesh.rotation.z=.05;
+  qTableLamp(G,-.5,H,-.2); return {top:H+.6,size:W}; };
+// B2 fauteuil 72 × 78, zithoogte 43, rug 76, armen 58, biezen en lichte kuip
+OB.fauteuil=(o,G)=>{ const Q=qBuildMaterials(), lea=qLeather(o.color?new THREE.Color(o.color).getHex():0x9a5b3b), pipe=qLeather(0x6e3e28,{clear:.1}), br=Q.darkBronze;
+  const W=.72, D=.78, SH=.43;
+  qAdd(G,rb(W-.04,.1,D-.08,.03),br,0,.24,-.01).scale.set(1,1,1);
+  const seat=qAdd(G,rb(.58,.12,.6,.045,6),lea,0,SH-.06,.05); seat.scale.y=1; const cushionTop=qAdd(G,rb(.56,.035,.56,.017,5),lea,0,SH+.006,.06);
+  qPiping(G,rectLoop(.58,.6,SH,.05,0,.045),pipe,.004);
+  const back=new THREE.Group(); back.position.set(0,SH+.02,-D/2+.1); back.rotation.x=-.13; G.add(back);
+  qAdd(back,rb(.6,.36,.14,.05,6),lea,0,.18,0); qPiping(back,rectLoop(.6,.14,.36,0,0,.05),pipe,.0035);
+  for(const s of [-1,1]){ qAdd(G,rb(.08,.3,D-.1,.035,5),lea,s*(W/2-.04),.43,0); qPiping(G,[[s*(W/2-.04),.58,D/2-.055],[s*(W/2-.04),.58,-D/2+.055],[s*(W/2-.04),.3,-D/2+.055],[s*(W/2-.04),.3,D/2-.055]],pipe,.0032); }
+  for(const [x,z] of [[-.3,-.3],[.3,-.3],[-.3,.3],[.3,.3]]) qAdd(G,qTaperLeg(.016,.011,.19),br,x,.095,z);
+  return {top:1.1,size:.8}; };
+// B3 bank 128 × 44, zithoogte 44, kussen 8 cm, U-vormige bronzen steunen
+OB.bank=(o,G)=>{ const Q=qBuildMaterials(), lea=qLeather(0x9a5b3b), pipe=qLeather(0x6e3e28,{clear:.1}), br=Q.darkBronze, W=1.28, D=.44;
+  qAdd(G,rb(W,.08,D,.02,5),lea,0,.4,0); qPiping(G,rectLoop(W,D,.44,0,0,.02),pipe,.0035); qPiping(G,rectLoop(W,D,.36,0,0,.02),pipe,.0035);
+  qAdd(G,rb(W-.06,.035,D-.06,.008),Q.walnutFurn,0,.342,0);
+  for(const s of [-1,1]){ const x=s*(W/2-.16); qAdd(G,rb(.022,.32,D-.08,.008),br,x,.165,0); qAdd(G,rb(.06,.014,D-.08,.005),br,x,.007,0); }
+  G.traverse(m=>{ if(m.isMesh) solids.push(m); }); return {top:1.0,size:1.3}; };
+// B4/B5 lampen met gedraaide kappen (LatheGeometry)
+function qShade(rTop,rBot,h){ const pts=[]; for(let i=0;i<=8;i++){ const t=i/8; pts.push(new THREE.Vector2(rBot+(rTop-rBot)*t+Math.sin(t*Math.PI)*.004,t*h)); } return new THREE.LatheGeometry(pts,48); }
+function qTableLamp(G,x,y,z){ const Q=qBuildMaterials(); const base=new THREE.LatheGeometry([[0,0],[.07,0],[.072,.006],[.06,.03],[.03,.05],[.018,.07],[0,.07]].map(p=>new THREE.Vector2(p[0],p[1])),40);
+  qAdd(G,base,Q.darkBronze,x,y,z); qAdd(G,new THREE.CylinderGeometry(.007,.007,.24,12),Q.darkBronze,x,y+.19,z); qAdd(G,new THREE.CylinderGeometry(.016,.016,.03,16),Q.brass,x,y+.315,z);
+  const sh=qAdd(G,qShade(.08,.12,.17),Q.linen,x,y+.27,z,{cast:false}); lampShades.push(sh);
+  if(!isMobile()){ const L=new THREE.PointLight(0xffcf9a,0,3.2,2); L.position.set(x,y+.33,z); G.add(L); lampLights.push(L); L.intensity=6*clamp(NIGHT*0.8+(1-DAY)*0.4,0,1); } }
+OB.vloerlamp=(o,G)=>{ const Q=qBuildMaterials(); const base=new THREE.LatheGeometry([[0,0],[.12,0],[.122,.008],[.115,.022],[.03,.03],[0,.03]].map(p=>new THREE.Vector2(p[0],p[1])),48);
+  qAdd(G,base,Q.darkBronze,0,0,0); qAdd(G,new THREE.CylinderGeometry(.009,.011,1.2,14),Q.darkBronze,0,.63,0); qAdd(G,new THREE.CylinderGeometry(.02,.02,.05,16),Q.brass,0,1.25,0);
+  const sh=qAdd(G,qShade(.12,.155,.22),Q.linen,0,1.21,0,{cast:false}); lampShades.push(sh);
+  if(!isMobile()){ const L=new THREE.PointLight(0xffcf9a,0,4.5,2); L.position.y=1.3; G.add(L); lampLights.push(L); L.intensity=7*clamp(NIGHT*0.8+(1-DAY)*0.4,0,1); }
+  return {top:1.75,size:.45}; };
+// B7 vitrine: stenen sokkel 85×85×92, glazen kap 62×62×52 met slanke bronzen profielen, verhoogd displayblok, binnenlicht
+OB.vitrine=(o,G)=>{ const Q=qBuildMaterials(), ids=objProducts(o), S=.85, SH=.92, gw=.62, gh=.52, pr=.016;
+  qAdd(G,rb(S-.04,SH-.05,S-.04,.006),M.marble,0,(SH-.05)/2,0); qAdd(G,rb(S,.05,S,.008),M.stoneTrim,0,SH-.025,0); qAdd(G,rb(S-.02,.02,S-.02,.004),Q.darkBronze,0,.01,0,{cast:false});
+  const pl=qAdd(G,rb(gw-.03,.018,gw-.03,.004),qLeather(0x6b2e28,{clear:.08}),0,SH+.009,0);
+  for(const [x,z] of [[-1,-1],[1,-1],[-1,1],[1,1]]) qAdd(G,rb(pr,gh,pr,.003),Q.darkBronze,x*(gw/2-pr/2),SH+gh/2,z*(gw/2-pr/2));
+  for(const z of [-1,1]){ qAdd(G,rb(gw,pr,pr,.003),Q.darkBronze,0,SH+gh-pr/2,z*(gw/2-pr/2)); qAdd(G,rb(gw,pr*.6,pr,.003),Q.darkBronze,0,SH+pr*.3,z*(gw/2-pr/2)); }
+  for(const x of [-1,1]){ qAdd(G,rb(pr,pr,gw,.003),Q.darkBronze,x*(gw/2-pr/2),SH+gh-pr/2,0); qAdd(G,rb(pr,pr*.6,gw,.003),Q.darkBronze,x*(gw/2-pr/2),SH+pr*.3,0); }
+  const glass=Q.glass; qAdd(G,new THREE.BoxGeometry(gw-.02,.008,gw-.02),glass,0,SH+gh-.004,0,{cast:false});
+  for(const z of [-1,1]) qAdd(G,new THREE.BoxGeometry(gw-pr*2,gh-pr*1.6,.008),glass,0,SH+gh/2,z*(gw/2-pr/2),{cast:false});
+  for(const x of [-1,1]) qAdd(G,new THREE.BoxGeometry(.008,gh-pr*1.6,gw-pr*2),glass,x*(gw/2-pr/2),SH+gh/2,0,{cast:false});
+  qAdd(G,new THREE.PlaneGeometry(gw*.7,.012),new THREE.MeshBasicMaterial({color:0xfff2dc,toneMapped:false}),0,SH+gh-.02,0,{rx:Math.PI/2,cast:false});
+  ids.forEach((id,i)=>{ const b=bagById(id); if(!b) return; const n=ids.length, w=Math.min(.42,(gw-.08)/n-.03,prodW(b)), x=(i-(n-1)/2)*((gw-.08)/n), C=new THREE.Group(); C.position.set(x,SH+.018,0); C.rotation.y=(i-(n-1)/2)*.09; G.add(C);
+    qAdd(C,rb(w*.8,.012,.12,.003),M.marble,0,.006,0); if(isFlat(b.kind)) canvasArt(C,b,w,gh-.1,0,.012,0); else { contactShadow(C,.013,w*1.1,.16); const p=flatImg(b.img,w,gh-.1); p.position.y=.012; C.add(p); }
+    C.traverse(m=>{ if(m.isMesh){ m.userData.item=id; m.userData.root=C; clickables.push(m); } }); });
+  productLight(G,SH+.05,o); return {top:SH+gh+.6,size:S}; };
+// B8 stalentafel 140 × 58 × 74 met leerstalen, garenklosjes, beslagmonsters en kleurkaart
+{ const _st=OB.stalen; OB.stalen=(o,G)=>{ const Q=qBuildMaterials(), W=1.4, D=.58, H=.74, T=.028;
+  qAdd(G,rb(W,T,D,.012),Q.walnutFurn,0,H-T/2,0); qAdd(G,rb(W-.14,.045,D-.14,.006),Q.darkBronze,0,H-T-.025,0);
+  for(const [x,z] of [[-W/2+.06,-D/2+.06],[W/2-.06,-D/2+.06],[-W/2+.06,D/2-.06],[W/2-.06,D/2-.06]]){ const l=qAdd(G,qTaperLeg(.013,.009,H-T-.05),Q.darkBronze,x,(H-T-.05)/2,z); l.scale.set(1.35,1,1); }
+  const all=swPicks(o,15), cols=5;
+  all.forEach((x,i)=>{ const c=i%cols, r=(i/cols)|0, m=qAdd(G,rb(.19,.006,.13,.002),swMatQ(x),-.5+c*.21,H+.003+r*.0004,-.17+r*.15,{ry:(i%3-1)*.05}); m.userData.swatch=x.id; });
+  const thread=[0x9a5b3b,0xe8e0d3,0x6b2e28,0x2b2420,0xb08a4c]; thread.forEach((t,i)=>{ const sp=qAdd(G,new THREE.CylinderGeometry(.018,.018,.04,20),new THREE.MeshStandardMaterial({color:t,roughness:.7}),.55,H+.02,-.2+i*.05); qAdd(G,new THREE.CylinderGeometry(.022,.022,.004,20),Q.walnutFurn,.55,H+.042,-.2+i*.05); });
+  [[Q.brass,.4],[Q.bronze,.46],[new THREE.MeshPhysicalMaterial({color:0xcfd2d4,metalness:1,roughness:.3}),.52]].forEach(([mt,x],i)=>{ qAdd(G,new THREE.TorusGeometry(.018,.005,10,24),mt,x,H+.006,.2,{rx:Math.PI/2}); qAdd(G,rb(.03,.008,.02,.003),mt,x,H+.005,.15); });
+  const card=makePanel(.5,.16,(g,w,h)=>{ g.fillStyle="#F3EBDD"; g.fillRect(0,0,w,h); g.fillStyle="#52281C"; g.font=F(.045,"sans"); g.textAlign="center"; g.fillText(lang==="nl"?"LEERSTALEN":"LEATHER SWATCHES",w/2,.07); g.fillStyle="#9C7E47"; g.font=F(.03,"sans"); g.fillText(lang==="nl"?"KLIK OP EEN STAAL":"CLICK A SWATCH",w/2,.115); g.textAlign="left"; },{x:-.08,y:H+.002,z:.2,ry:0,parent:G,emissive:.1,click:()=>openSite("coll","stalen")});
+  card.mesh.rotation.x=-Math.PI/2;
+  G.traverse(m=>{ if(m.isMesh&&!m.userData.click){ const sid=m.userData.swatch; m.userData.click=sid?()=>openSite("coll","staal-"+sid):()=>openSite("coll","stalen"); m.userData.root=G; clickables.push(m); } }); return {top:1.3,size:1.4}; }; }
+function swMatQ(x){ const m=qLeather(new THREE.Color(x.hex).getHex(),{clear:.1}); if(x.img) loadImg(x.img).then(im=>{ const t=new THREE.Texture(im); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; t.needsUpdate=true; m.map=t; m.color.set(0xffffff); m.needsUpdate=true; }).catch(()=>{}); return m; }
+// B6 sokkel: 3-delig, alle randen afgerond, dun donker tussenblad
+{ const _sg=standGeo; standGeo=function(G,style){ if(style==="zuil") return _sg(G,style); const add=(geo,mat,y)=>{ const m=new THREE.Mesh(geo,mat); m.position.y=y; m.castShadow=m.receiveShadow=true; G.add(m); solids.push(m); return m; };
+  const off=Math.random(); const mat=M.marble.clone(); if(mat.map){ ["map","normalMap","roughnessMap"].forEach(k=>{ if(mat[k]){ mat[k]=mat[k].clone(); mat[k].offset.set(off,off*.7); mat[k].needsUpdate=true; } }); }
+  add(rb(.6,.07,.6,.006),M.stoneTrim,.035); add(rb(.5,.95,.5,.006),mat,.545); add(rb(.6,.06,.6,.006),M.stoneTrim,1.05); add(rb(.56,.015,.56,.004),M.darkTop,1.0875); return 1.095; }; }
+
+// ---------- C: één uniform productlicht voor alle producten op sokkels ----------
+const PSPOTS=new Set();
+function productLight(G,top,o){ if(isMobile()||o&&o.space!=="hall") return; if(PSPOTS.size>=11) return;
+  const L=new THREE.SpotLight(0xffe2c0,0,3.6,.34,.72,2); L.position.set(-.35,top+1.95,.95); const t=new THREE.Object3D(); t.position.set(0,top+.24,0); G.add(L,t); L.target=t; L.castShadow=false;
+  L.userData.ps=1; PSPOTS.add(L); L.intensity=lerp(30,7,DAY); return L; }
+accent=function(G,from,to){ const top=Math.max(.6,(to&&to.y||1.2)-.15); productLight(G,top,{space:"hall"}); };
+{ const _d=disposeObj; disposeObj=function(id){ const r=OBJ_REG[id]; if(r) r.G.traverse(x=>{ if(x.userData&&x.userData.ps) PSPOTS.delete(x); }); return _d(id); }; }
+// rotondevloer: reliëf in de voegen en een rustige glansvariatie uit de bestaande tegeltekening
+{ try{ const c=tFloor.image, w=c.width, h=c.height, d=c.getContext("2d").getImageData(0,0,w,h).data, Hh=new Float32Array(w*h); for(let i=0;i<w*h;i++) Hh[i]=(d[i*4]+d[i*4+1]+d[i*4+2])/765;
+    const N=qNormal(Hh,w,h,2.2,[tFloor.repeat.x,tFloor.repeat.y]), Rr=qGray(Hh.map(v=>1-v),w,h,[tFloor.repeat.x,tFloor.repeat.y],.34,.6); M.floor.normalMap=N; M.floor.normalScale=new THREE.Vector2(.35,.35); M.floor.roughnessMap=Rr; M.floor.roughness=1; M.floor.needsUpdate=true; }catch(e){} }
+
+// ---------- D: productfoto's met dikte en een zachte rugschaduw ----------
+{ const _f=flatImg; flatImg=function(url,w,maxH,onSize){ const m=_f(url,w,maxH,(ww,hh)=>{ back.scale.set(1,1,1); if(onSize) onSize(ww,hh); });
+    // donkere 'rug' 6 mm achter de foto: geeft dikte als je er schuin langs kijkt
+    const back=new THREE.Mesh(m.geometry,new THREE.MeshBasicMaterial({color:0x2a1d15,alphaTest:.5,side:THREE.DoubleSide,toneMapped:false})); back.visible=false;
+    back.position.z=-.006; m.add(back);
+    const iv=setInterval(()=>{ if(m.material.map){ back.material.map=m.material.map; back.material.needsUpdate=true; back.visible=true; clearInterval(iv); } },300); setTimeout(()=>clearInterval(iv),30000);
+    return m; }; }
+// productfoto's dimmen mee met het licht (overdag volledig, 's avonds iets warmer en zachter)
+function qProductTone(){ try{ qProductTone0(); }catch(e){} }
+function qProductTone0(){ billboards.forEach(b=>{ if(b.material&&b.material.isMeshBasicMaterial&&b.material.map) b.material.color.setRGB(lerp(.9,1,DAY),lerp(.86,1,DAY),lerp(.8,1,DAY)); }); PSPOTS.forEach(L=>L.intensity=lerp(30,7,DAY)); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
