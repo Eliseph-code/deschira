@@ -968,7 +968,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795563625"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795563812"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4953,7 +4953,7 @@ function poDraw(){ const c=document.getElementById("poCanvas"); if(!c) return; c
 async function poImage(){ const b=bagById(PO.model); if(!b||!b.img) return null; const cu=cuOf(b);
   if(!PO.body&&!PO.acc&&!PO.hw) return loadImg(b.img).catch(()=>null);
   if(cu&&cu.mode==="foto"&&cu.photos&&cu.photos[PO.body]) return loadImg(cu.photos[PO.body]).catch(()=>null);
-  const pick=(g)=>PO[g]||(cu&&Array.isArray(cu[g])&&cu[g][0])||"";
+  const pick=(g)=>{ if(PO[g]) return PO[g]; const al=poAllowed(b,g); if(g==="acc"){ const r=al.find(x=>x[0]==="rouge"); if(r) return r[0]; } return al[0]?al[0][0]:""; };
   return recolor(PO.model,pick("body"),pick("acc"),pick("hw")); }
 let poTok=0;
 async function poPreview(){ const c=document.getElementById("poPrev"); if(!c) return; const tok=++poTok, im=await poImage(); if(tok!==poTok||!im) return; const g=c.getContext("2d"), W=c.width, H=c.height; g.clearRect(0,0,W,H);
