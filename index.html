@@ -692,6 +692,11 @@
   .adm-off{opacity:.6}
   @media (max-width:760px){ .ham-btn{display:flex} .tabbar{display:none!important} .site-win{width:calc(100vw - 40px)} .site-win.wide{width:calc(100vw - 40px)}
     .nav-right .links,.nav-right .ov-btn{display:none!important} body{--tabbar-h:0px} }
+  .route-skip{position:absolute;left:50%;bottom:86px;transform:translate(-50%,8px);z-index:18;display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:30px;border:1px solid rgba(217,195,151,.45);background:rgba(28,20,16,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#f3e9d8;font-family:var(--sans);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s}
+  .route-skip.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}.route-skip:hover{background:rgba(28,20,16,.7);color:var(--gold)}
+  .route-skip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
+  body.site-open .route-skip{opacity:0;pointer-events:none}
+  @media (max-width:760px){ .route-hint{bottom:calc(22px + env(safe-area-inset-bottom))!important} .route-skip{bottom:calc(76px + env(safe-area-inset-bottom))} }
   .gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
   .loading{position:absolute;inset:0;display:grid;place-items:end center;padding-bottom:18vh;background:radial-gradient(ellipse at 50% 40%,#5a3424,#2a160f);color:#EFE6DA;font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;transition:opacity 1s;z-index:3;pointer-events:none}
   .loading.done{opacity:0}
@@ -933,7 +938,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795519883"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795521454"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -3131,7 +3136,7 @@ function normMenu(m){ const out=[]; (Array.isArray(m)?m:[]).forEach(x=>{ if(x&&M
   ["hall","about","collab","coll","contact"].forEach(go=>{ if(!out.some(o=>o.go===go)) out.push({go,on:true,nl:"",en:"",items:null}); }); return out; }
 let MENU=normMenu(EARLY&&EARLY.menu);
 // waar de menuknoppen staan: startcirkel (computer/telefoon), onderbalk op de telefoon, knop 'Ingang'
-function normOpts(o){ o=o||{}; return {site:o.site!==false, heroD:o.heroD!==false, heroM:o.heroM===true, tabM:o.tabM!==false, startM:o.startM===true}; }
+function normOpts(o){ o=o||{}; return {site:o.site!==false, follow:o.follow!==false, heroD:o.heroD!==false, heroM:o.heroM===true, tabM:o.tabM!==false, startM:o.startM===true}; }
 let MENU_OPTS=normOpts(EARLY&&EARLY.menuOpts);
 function menuLabel(go,short){ const m=MENU.find(x=>x.go===go), c=m&&(m[lang]||"").trim(); if(c) return c; return short&&go==="collab"?tr("nav.collabShort"):short&&go==="contact"?tr("nav.contactShort"):tr(MENU_KEY[go]); }
 function applyMenu(){
@@ -3396,7 +3401,7 @@ function renderAdmin(){
   else if(admTab==="menu"){
     { const O=draft.menuOpts||(draft.menuOpts=normOpts()), ck=(k,l)=>`<label class="adm-check"><input type="checkbox" data-chk="menuOpts.${k}"${O[k]?" checked":""}> ${l}</label>`;
       h+=`<div class="adm-card" data-sec="Waar staan de knoppen"><h5 class="adm-h5" style="margin-top:0">Waar staan de knoppen?</h5><p class="adm-hint">Op de computer staan de knoppen altijd bovenin. Op de telefoon staan ze in de balk onderin. Kies hier waar ze nog meer te zien zijn, zodat er niets dubbel staat.</p>
-        ${ck("site","Klik op een item opent het websitevenster op de juiste pagina en plek (uit = het oude informatielabel)")}${ck("heroD","Computer: knoppen ook in de startcirkel midden in de rotonde")}${ck("heroM","Telefoon: knoppen ook in de startcirkel (staan dan dubbel met de onderbalk)")}${ck("tabM","Telefoon: balk met knoppen onderin")}${ck("startM","Telefoon: extra knop ‘Ingang’ in de onderbalk (naast Home)")}
+        ${ck("site","Klik op een item opent het websitevenster op de juiste pagina en plek (uit = het oude informatielabel)")}${ck("follow","Meelopen: scrollen in het websitevenster laat de bezoeker in het gebouw meelopen")}${ck("heroD","Computer: knoppen ook in de startcirkel midden in de rotonde")}${ck("heroM","Telefoon: knoppen ook in de startcirkel (staan dan dubbel met de onderbalk)")}${ck("tabM","Telefoon: balk met knoppen onderin")}${ck("startM","Telefoon: extra knop ‘Ingang’ in de onderbalk (naast Home)")}
         ${!O.tabM&&!O.heroM?`<p class="adm-hint" style="color:#f0b37e">Let op: zo heeft de telefoon geen menuknoppen. Zet de onderbalk of de startcirkel aan.</p>`:""}</div>`; }
     h+=`<p class="adm-hint">De knoppen bovenin de website. Per knop bepaal je de naam, of hij zichtbaar is, de volgorde en wat er uitschuift als je eroverheen gaat. "Automatisch" volgt vanzelf wat er in de ruimtes staat.</p>`;
     const cand=menuCandidates(), cl=k=>{ const c=cand.find(x=>x.k===k); return c?c.t:(lang==="nl"?"(staat er niet meer)":"(missing)"); };
@@ -4010,7 +4015,12 @@ function buildRejoin(){ while(rejoinG.children.length){ const c=rejoinG.children
   const ns=nearestStation(); if(ns.i<0||ns.d<1.4||ns.d>14) return; rjIdx=ns.i; const n=nodes[ns.i], dx=n.x-pose.x, dz=n.z-pose.z, L=ns.d, inR=roomOf(pose.x,pose.z)!=="hall";
   for(let d=.9; d<L-.45; d+=.5){ const x=pose.x+dx*d/L, z=pose.z+dz*d/L, m=new THREE.Mesh(arrowGeo,new THREE.MeshBasicMaterial({color:0xf3e6c8,transparent:true,opacity:0,depthWrite:false,toneMapped:false}));
     m.position.set(x,(inR?0:groundAt(x,z))+.04,z); m.rotation.y=Math.atan2(-dx,-dz); m.scale.setScalar(1.15); m.renderOrder=20; m.userData.dist=d; rejoinG.add(m); } }
+// knop om meteen door te gaan naar het volgende onderwerp (de volgende ruimte / pagina)
+const skipEl=document.createElement("button"); skipEl.type="button"; skipEl.className="route-skip"; skipEl.innerHTML=`<span></span><svg viewBox="0 0 24 24"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"/></svg>`; (document.getElementById("scene")||document.body).appendChild(skipEl);
+let skipTo=-1; skipEl.addEventListener("click",()=>{ if(skipTo>=0) goStation(skipTo); });
 function animArrows(now){ const still=!jump&&mode==="route"&&pose.st!=null&&pose.st>=0; arrowFade+=((still?1:0)-arrowFade)*.08;
+  { const ci=curIndex(), j=(still||mode==="free")&&!jump?nextSecIdx(ci):-1, ok=j>=0&&!document.body.classList.contains("at-home");
+    if(j!==skipTo){ skipTo=j; if(j>=0){ const t2=(lang==="nl"?"Door naar ":"On to ")+secName(nodes[j].sec); skipEl.querySelector("span").textContent=t2; skipEl.title=t2; } } skipEl.classList.toggle("show",ok); }
   arrowG.visible=arrowFade>.02; const t=now/1000;
   if(arrowG.visible) arrowG.children.forEach(m=>{ const w=.5+.5*Math.sin(m.userData.dist*2.2-t*4.2); m.material.opacity=arrowFade*(.3+.6*w*w)*Math.min(1,m.userData.dist/1.6); });
   const free=!jump&&mode==="free"; if(free&&Math.hypot(pose.x-rjAt[0],pose.z-rjAt[1])>.5) buildRejoin(); if(!free&&rjAt[0]<1e8){ rjAt=[1e9,1e9]; }
@@ -4341,10 +4351,11 @@ PAGES.legal=()=>{ const nl=nlL(), blk=(id,k)=>{ const lines=(tr(k)||"").split("\
 function siteNav(){ const nav=siteEl.querySelector(".sw-nav"); nav.innerHTML=MENU.filter(m=>m.on!==false).map(m=>`<button type="button" data-sgo="${m.go}"${m.go===sitePage?' class="on" aria-current="page"':""}>${E(menuLabel(m.go))}</button>`).join("");
   siteEl.querySelector(".sw-lang").textContent=lang==="nl"?"EN":"NL"; siteEl.querySelector(".sw-close span").textContent=lang==="nl"?"Terug naar het gebouw":"Back to the building"; }
 function renderSite(){ siteNav(); swMain.innerHTML=(PAGES[sitePage]||PAGES.hall)()+`<footer class="sw-foot"><svg viewBox="0 0 100 100"><use href="#mono"/></svg><p>Elizian · Elise Philips</p>${contactLines().slice(0,2).map(([k,v])=>`<p>${E(v)}</p>`).join("")}<p class="sw-legal">${[["bestellen",nlL()?"Bestellen & levering":"Ordering & delivery"],["retour",nlL()?"Retour":"Returns"],["privacy","Privacy"],["voorwaarden",nlL()?"Voorwaarden":"Terms"]].map(([a,t])=>`<button type="button" data-sgo="legal" data-sa="${a}">${E(t)}</button>`).join("")}</p><p class="sw-ft">${E(tr("entry.tag"))}</p></footer>`; }
+let syncLock=0;
 function openSite(page,anchor){ page=PAGES[page]?page:"hall"; const same=siteOpen&&page===sitePage; sitePage=page; if(!same) renderSite(); else siteNav();
-  closeCap(); siteEl.classList.add("open"); document.body.classList.add("site-open"); siteOpen=true; siteEl.classList.toggle("wide",siteWide);
+  closeCap(); lastSec=anchor||""; siteEl.classList.add("open"); document.body.classList.add("site-open"); siteOpen=true; siteEl.classList.toggle("wide",siteWide);
   try{ history.replaceState(null,"","#w/"+page+(anchor?"/"+anchor:"")); }catch(e){}
-  requestAnimationFrame(()=>{ const el=anchor&&swMain.querySelector("#w-"+CSS.escape(anchor)); if(el){ swMain.scrollTo({top:el.getBoundingClientRect().top-swMain.getBoundingClientRect().top+swMain.scrollTop-10,behavior:same?"smooth":"auto"}); el.classList.remove("sw-hit"); void el.offsetWidth; el.classList.add("sw-hit"); } else if(!same) swMain.scrollTop=0; }); }
+  syncLock=performance.now()+1200; requestAnimationFrame(()=>{ const el=anchor&&swMain.querySelector("#w-"+CSS.escape(anchor)); if(el){ swMain.scrollTo({top:el.getBoundingClientRect().top-swMain.getBoundingClientRect().top+swMain.scrollTop-10,behavior:same?"smooth":"auto"}); el.classList.remove("sw-hit"); void el.offsetWidth; el.classList.add("sw-hit"); } else if(!same) swMain.scrollTop=0; }); }
 function closeSite(){ siteEl.classList.remove("open"); document.body.classList.remove("site-open"); siteOpen=false; try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
 siteEl.addEventListener("click",e=>{ const t=e.target.closest("button,[data-zoom]"); if(!t) return; const d=t.dataset;
   if(t.classList.contains("sw-handle")) return siteOpen?closeSite():openSite(pageOf(curRoomK),"");
@@ -4407,6 +4418,19 @@ pubPop.addEventListener("click",async e=>{ if(e.target.closest("[data-pubx]")){ 
   try{ const cur=unwrap(await dbH.doc(DRAFT_DOC).get())||currentContent(); const d={...cur,updated:Date.now()}; await dbH.doc(LIVE_DOC).set(d); await dbH.doc(DRAFT_DOC).set(d); liveUpdated=d.updated; content=d; markDirty(); pubPop.classList.remove("open"); toast("Alles staat live."); }
   catch(err){ b.disabled=false; b.textContent="Zet live"; toast("Live zetten mislukt: "+(err&&err.message||err)); } });
 document.addEventListener("pointerdown",e=>{ if(pubPop.classList.contains("open")&&!pubPop.contains(e.target)&&!(pubBtn&&pubBtn.contains(e.target))) pubPop.classList.remove("open"); });
+
+// ---- meelopen: scrol je in het venster, dan loopt de camera mee naar het onderdeel dat je leest
+function nodeForSection(page,anchor){ let best=-1, sc=-1; const room=curRoomK;
+  nodes.forEach((n,i)=>{ if(n.transit) return; const t=siteTarget(n); if(t[0]!==page) return; let v=-1;
+    if(anchor&&t[1]===anchor) v=3; else if(!anchor&&(n.space||n.id==="start")) v=2; if(v<0) return; if(n.room===room) v+=.5; if(v>sc){ sc=v; best=i; } });
+  if(best<0&&page!==pageOf(curRoomK)){ nodes.forEach((n,i)=>{ if(best<0&&!n.transit&&n.space&&pageOf(n.space)===page) best=i; }); if(best<0&&page==="hall") best=0; }
+  return best; }
+let syncT=null, lastSec="";
+swMain.addEventListener("scroll",()=>{ if(!siteOpen||MENU_OPTS.follow===false) return; clearTimeout(syncT); syncT=setTimeout(()=>{ if(performance.now()<syncLock) return;
+  const top=swMain.getBoundingClientRect().top, H=swMain.clientHeight; let cur=null;
+  swMain.querySelectorAll("section.sw-sec[id^='w-']").forEach(el=>{ const r=el.getBoundingClientRect(); if(r.top-top<=H*.38) cur=el; });
+  const an=cur?cur.id.slice(2):""; if(an===lastSec) return; lastSec=an; const i=nodeForSection(sitePage,an==="top"&&!nodes.some(n=>!n.transit&&siteTarget(n)[1]==="top"&&siteTarget(n)[0]===sitePage)?"":an);
+  if(i>=0&&i!==curIndex()) goStation(i); },260); },{passive:true});
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
