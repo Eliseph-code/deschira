@@ -640,6 +640,9 @@
   .sw-steps small{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#9C7E47}.sw-steps b{display:block;font-family:var(--serif);font-weight:500;font-size:21px;color:var(--sw-brown);margin:4px 0}.sw-steps p{font-size:16px}
   .sw-dark{background:var(--sw-navy);color:var(--sw-bg)}.sw-dark h2,.sw-dark .sw-steps b{color:var(--sw-bg)}.sw-dark .sw-steps small,.sw-dark .sw-ey{color:var(--sw-gold)}
   .sw-box{background:#E9E2D6}
+  .po-bar{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:18px 0 6px}.po-bar button{font:500 11px/1 var(--sans,'Jost',sans-serif);letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;border:1px solid #cdbf9f;background:transparent;color:#6b5a48;border-radius:20px;cursor:pointer}.po-bar .now button{background:#15283E;color:#F0EDE5;border-color:#15283E}.po-bar .done button{border-color:#C3A367;color:#692719}.po-bar button:disabled{opacity:.45;cursor:default}
+  .po-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px;margin:10px 0}.po-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #d9cfbd;background:#fbf9f5;border-radius:6px;cursor:pointer;text-align:left;font:400 14px/1.2 inherit;color:#2E1D12}.po-chip i{width:26px;height:26px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}.po-chip.on{border-color:#692719;box-shadow:0 0 0 2px #C3A367}
+  .sw-card.on{outline:2px solid #C3A367}.po-card canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(21,40,62,.18);margin:12px 0}
   .sw-study .sw-years{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:22px 0 6px}
   .sw-years div{display:flex;flex-direction:column;gap:2px}.sw-years i{height:4px;background:rgba(82,40,28,.15);margin-bottom:8px}.sw-years .done i{background:var(--sw-gold)}
   .sw-years .now i{background:linear-gradient(90deg,var(--sw-gold) 45%,rgba(82,40,28,.15) 45%)}.sw-years b{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase}.sw-years .now b{color:var(--sw-bord)}.sw-years small{font-size:15px;opacity:.8}
@@ -965,7 +968,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795561534"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795562732"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -1239,7 +1242,7 @@ const B4={nl:{"entry.tag":"Ambacht dat blijft","home.p":"Elizian is het lederlab
 Object.assign(T.nl,B4.nl); Object.assign(T.en,B4.en);
 const B6={nl:{"time.golden":"Gouden uur","o.afspraak":"Persoonlijke afspraak (materialen en wensen bespreken)","hero.sub":"Tijdloze lederwaren, met de hand gestikt en op bestelling gemaakt.","cta.coll":"Ontdek de collectie","cta.walk":"Verken het gebouw","sv.ey":"Interesse","sv.t":"Ik ben geïnteresseerd in","sv2.p":"Europees leer en beslag."},en:{"time.golden":"Golden hour","o.afspraak":"Private appointment (discuss materials and wishes)","hero.sub":"Timeless leather goods, stitched by hand and made to order.","cta.coll":"Discover the collection","cta.walk":"Explore the building","sv.ey":"Interests","sv.t":"I am interested in","sv2.p":"European leather and hardware."}};
 Object.assign(T.nl,B6.nl); Object.assign(T.en,B6.en);
-const B5={nl:{"lg.order": "Bestellen bij Elizian\n\nElizian werkt op pre-order: er is geen voorraad. Elk stuk wordt pas na uw bestelling voor u gemaakt en volledig met de hand gestikt.\n\nZo werkt het\n1. U plaatst een pre-order via het formulier op deze website, eventueel met uw eigen kleuren en initialen.\n2. U ontvangt binnen enkele werkdagen een bevestiging met de prijs, de levertijd en de betaalinstructies.\n3. Na betaling (of aanbetaling, zoals in de bevestiging staat) begint de productie.\n4. Zodra uw stuk klaar is, hoort u hoe het wordt verzonden of opgehaald.\n\nPrijzen\nProducten hebben een vaste prijs of een prijs op aanvraag. Alle prijzen zijn in euro's. Verzendkosten worden vooraf vermeld.\n\nLevertijd\nOmdat elk stuk met de hand wordt gemaakt, verschilt de levertijd per product. U hoort de verwachte levertijd bij de bevestiging van uw bestelling.", "lg.return": "Herroepingsrecht en retour\n\nProducten uit de vaste collectie, zonder persoonlijke aanpassingen, mag u binnen 14 dagen na ontvangst zonder opgaaf van reden retourneren. Meld dit binnen die termijn per e-mail; daarna heeft u nog 14 dagen om het product terug te sturen. Het product moet onbeschadigd en ongebruikt zijn. U ontvangt het aankoopbedrag binnen 14 dagen na de melding terug; de kosten van het terugsturen zijn voor uzelf.\n\nUitzondering: gepersonaliseerde stukken\nStukken die volgens uw eigen specificaties worden gemaakt (bijvoorbeeld een eigen kleurcombinatie of initialen) zijn uitgesloten van het herroepingsrecht. Dat staat ook in de bevestiging van uw bestelling.\n\nKlachten en garantie\nIs er iets mis met uw stuk? Neem dan contact op. Elizian zoekt samen met u naar een passende oplossing, zoals herstel.", "lg.privacy": "Privacyverklaring\n\nElizian (Elise Philips) gaat zorgvuldig om met uw gegevens.\n\nWelke gegevens\nAls u het contactformulier gebruikt of een account aanmaakt, bewaren we uw naam, e-mailadres, de inhoud van uw bericht of aanvraag en, als u die opgeeft, uw bedrijfsnaam en uw opgeslagen ontwerpen.\n\nWaarvoor\nAlleen om uw vraag of bestelling af te handelen en contact met u te houden over uw aanvraag. We sturen geen nieuwsbrieven zonder uw toestemming en verkopen uw gegevens niet.\n\nWaar en hoe lang\nDe gegevens staan bij onze hostingpartij Supabase, op servers in de Europese Unie. We bewaren ze zolang nodig is voor uw aanvraag en de wettelijke bewaartermijnen (bijvoorbeeld 7 jaar voor facturen).\n\nUw rechten\nU mag uw gegevens inzien, laten aanpassen of laten verwijderen. Stuur daarvoor een e-mail. U kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens.\n\nCookies\nDeze website gebruikt alleen functionele opslag in uw browser (zoals uw taalkeuze en inlogsessie), geen trackingcookies.", "lg.terms": "Algemene voorwaarden (concept)\n\n1. Deze voorwaarden gelden voor alle aanbiedingen en pre-orders van Elizian, het label van Elise Philips.\n2. Een bestelling komt tot stand zodra u de bevestiging met prijs en levertijd per e-mail heeft ontvangen en geaccepteerd.\n3. Elk stuk wordt met de hand gemaakt. Kleine verschillen in kleur, nerf en stiksel zijn eigen aan natuurlijk leer en handwerk en zijn geen gebrek.\n4. Levertijden zijn een inschatting. Bij vertraging hoort u dat zo snel mogelijk; u mag de bestelling dan kosteloos annuleren als de vertraging aanzienlijk is.\n5. Voor retour en herroeping geldt de regeling op deze website. Gepersonaliseerde stukken zijn uitgesloten van herroeping.\n6. Op alle overeenkomsten is Nederlands recht van toepassing."},en:{"lg.order": "Ordering from Elizian\n\nElizian works by pre-order: there is no stock. Every piece is made for you only after you order, and stitched entirely by hand.\n\nHow it works\n1. Place a pre-order through the form on this website, optionally with your own colours and initials.\n2. Within a few working days you receive a confirmation with the price, lead time and payment instructions.\n3. Production starts after payment (or the deposit stated in the confirmation).\n4. Once your piece is ready, you hear how it will be shipped or collected.\n\nPrices\nProducts have a fixed price or a price on request. All prices are in euros. Shipping costs are stated in advance.\n\nLead time\nAs every piece is handmade, lead times vary per product. You receive the expected lead time with your order confirmation.", "lg.return": "Right of withdrawal and returns\n\nProducts from the standard collection, without personal changes, may be returned within 14 days of receipt without giving a reason. Let us know by e-mail within that period; you then have another 14 days to send the product back. It must be undamaged and unused. You receive the purchase amount back within 14 days of your notice; return shipping is at your own cost.\n\nException: personalised pieces\nPieces made to your own specifications (for example your own colour combination or initials) are excluded from the right of withdrawal. This is also stated in your order confirmation.\n\nComplaints and guarantee\nIs something wrong with your piece? Get in touch. Elizian will look for a suitable solution with you, such as repair.", "lg.privacy": "Privacy statement\n\nElizian (Elise Philips) handles your data with care.\n\nWhat data\nWhen you use the contact form or create an account, we store your name, e-mail address, the content of your message or request and, if you provide them, your company name and saved designs.\n\nWhat for\nOnly to handle your question or order and to stay in touch about your request. We never send newsletters without your consent and never sell your data.\n\nWhere and how long\nThe data is stored with our hosting provider Supabase, on servers in the European Union. We keep it as long as needed for your request and legal retention periods (for example 7 years for invoices).\n\nYour rights\nYou may view, correct or delete your data. Send us an e-mail. You can also file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).\n\nCookies\nThis website only uses functional storage in your browser (such as your language and login session), no tracking cookies.", "lg.terms": "General terms (draft)\n\n1. These terms apply to all offers and pre-orders of Elizian, the label of Elise Philips.\n2. An order is concluded once you have received and accepted the e-mail confirmation with price and lead time.\n3. Every piece is handmade. Small differences in colour, grain and stitching are inherent to natural leather and handcraft and are not defects.\n4. Lead times are estimates. If there is a delay you will be informed as soon as possible; you may cancel free of charge if the delay is substantial.\n5. Returns and withdrawal follow the policy on this website. Personalised pieces are excluded from withdrawal.\n6. Dutch law applies to all agreements."}}; Object.assign(T.nl,B5.nl); Object.assign(T.en,B5.en);
+const B5={nl:{"lg.order": "Bestellen bij Elizian\n\nElizian werkt op pre-order: er is geen voorraad. Elk stuk wordt pas na uw bestelling voor u gemaakt en volledig met de hand gestikt.\n\nZo werkt het\n1. U plaatst een pre-order via het formulier op deze website, eventueel met uw eigen kleuren.\n2. U ontvangt binnen enkele werkdagen een bevestiging met de prijs, de levertijd en de betaalinstructies.\n3. Na betaling (of aanbetaling, zoals in de bevestiging staat) begint de productie.\n4. Zodra uw stuk klaar is, hoort u hoe het wordt verzonden of opgehaald.\n\nPrijzen\nProducten hebben een vaste prijs of een prijs op aanvraag. Alle prijzen zijn in euro's. Verzendkosten worden vooraf vermeld.\n\nLevertijd\nOmdat elk stuk met de hand wordt gemaakt, verschilt de levertijd per product. U hoort de verwachte levertijd bij de bevestiging van uw bestelling.", "lg.return": "Herroepingsrecht en retour\n\nProducten uit de vaste collectie, zonder persoonlijke aanpassingen, mag u binnen 14 dagen na ontvangst zonder opgaaf van reden retourneren. Meld dit binnen die termijn per e-mail; daarna heeft u nog 14 dagen om het product terug te sturen. Het product moet onbeschadigd en ongebruikt zijn. U ontvangt het aankoopbedrag binnen 14 dagen na de melding terug; de kosten van het terugsturen zijn voor uzelf.\n\nUitzondering: gepersonaliseerde stukken\nStukken die volgens uw eigen specificaties worden gemaakt (bijvoorbeeld een eigen kleurcombinatie) zijn uitgesloten van het herroepingsrecht. Dat staat ook in de bevestiging van uw bestelling.\n\nKlachten en garantie\nIs er iets mis met uw stuk? Neem dan contact op. Elizian zoekt samen met u naar een passende oplossing, zoals herstel.", "lg.privacy": "Privacyverklaring\n\nElizian (Elise Philips) gaat zorgvuldig om met uw gegevens.\n\nWelke gegevens\nAls u het contactformulier gebruikt of een account aanmaakt, bewaren we uw naam, e-mailadres, de inhoud van uw bericht of aanvraag en, als u die opgeeft, uw bedrijfsnaam en uw opgeslagen ontwerpen.\n\nWaarvoor\nAlleen om uw vraag of bestelling af te handelen en contact met u te houden over uw aanvraag. We sturen geen nieuwsbrieven zonder uw toestemming en verkopen uw gegevens niet.\n\nWaar en hoe lang\nDe gegevens staan bij onze hostingpartij Supabase, op servers in de Europese Unie. We bewaren ze zolang nodig is voor uw aanvraag en de wettelijke bewaartermijnen (bijvoorbeeld 7 jaar voor facturen).\n\nUw rechten\nU mag uw gegevens inzien, laten aanpassen of laten verwijderen. Stuur daarvoor een e-mail. U kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens.\n\nCookies\nDeze website gebruikt alleen functionele opslag in uw browser (zoals uw taalkeuze en inlogsessie), geen trackingcookies.", "lg.terms": "Algemene voorwaarden (concept)\n\n1. Deze voorwaarden gelden voor alle aanbiedingen en pre-orders van Elizian, het label van Elise Philips.\n2. Een bestelling komt tot stand zodra u de bevestiging met prijs en levertijd per e-mail heeft ontvangen en geaccepteerd.\n3. Elk stuk wordt met de hand gemaakt. Kleine verschillen in kleur, nerf en stiksel zijn eigen aan natuurlijk leer en handwerk en zijn geen gebrek.\n4. Levertijden zijn een inschatting. Bij vertraging hoort u dat zo snel mogelijk; u mag de bestelling dan kosteloos annuleren als de vertraging aanzienlijk is.\n5. Voor retour en herroeping geldt de regeling op deze website. Gepersonaliseerde stukken zijn uitgesloten van herroeping.\n6. Op alle overeenkomsten is Nederlands recht van toepassing."},en:{"lg.order": "Ordering from Elizian\n\nElizian works by pre-order: there is no stock. Every piece is made for you only after you order, and stitched entirely by hand.\n\nHow it works\n1. Place a pre-order through the form on this website, optionally with your own colours.\n2. Within a few working days you receive a confirmation with the price, lead time and payment instructions.\n3. Production starts after payment (or the deposit stated in the confirmation).\n4. Once your piece is ready, you hear how it will be shipped or collected.\n\nPrices\nProducts have a fixed price or a price on request. All prices are in euros. Shipping costs are stated in advance.\n\nLead time\nAs every piece is handmade, lead times vary per product. You receive the expected lead time with your order confirmation.", "lg.return": "Right of withdrawal and returns\n\nProducts from the standard collection, without personal changes, may be returned within 14 days of receipt without giving a reason. Let us know by e-mail within that period; you then have another 14 days to send the product back. It must be undamaged and unused. You receive the purchase amount back within 14 days of your notice; return shipping is at your own cost.\n\nException: personalised pieces\nPieces made to your own specifications (for example your own colour combination) are excluded from the right of withdrawal. This is also stated in your order confirmation.\n\nComplaints and guarantee\nIs something wrong with your piece? Get in touch. Elizian will look for a suitable solution with you, such as repair.", "lg.privacy": "Privacy statement\n\nElizian (Elise Philips) handles your data with care.\n\nWhat data\nWhen you use the contact form or create an account, we store your name, e-mail address, the content of your message or request and, if you provide them, your company name and saved designs.\n\nWhat for\nOnly to handle your question or order and to stay in touch about your request. We never send newsletters without your consent and never sell your data.\n\nWhere and how long\nThe data is stored with our hosting provider Supabase, on servers in the European Union. We keep it as long as needed for your request and legal retention periods (for example 7 years for invoices).\n\nYour rights\nYou may view, correct or delete your data. Send us an e-mail. You can also file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).\n\nCookies\nThis website only uses functional storage in your browser (such as your language and login session), no tracking cookies.", "lg.terms": "General terms (draft)\n\n1. These terms apply to all offers and pre-orders of Elizian, the label of Elise Philips.\n2. An order is concluded once you have received and accepted the e-mail confirmation with price and lead time.\n3. Every piece is handmade. Small differences in colour, grain and stitching are inherent to natural leather and handcraft and are not defects.\n4. Lead times are estimates. If there is a delay you will be informed as soon as possible; you may cancel free of charge if the delay is substantial.\n5. Returns and withdrawal follow the policy on this website. Personalised pieces are excluded from withdrawal.\n6. Dutch law applies to all agreements."}}; Object.assign(T.nl,B5.nl); Object.assign(T.en,B5.en);
 const B2I={
   a1:{nl:{t:"Interieuradviseur · 2025",p:"Niveau 4, Hout- en Meubileringscollege Amsterdam. Mijn examenproject was een fictief ontwerp, dus niet gerealiseerd: een bestaande wijnzaak herontwikkeld tot wijnzaak met proeverij en kleine hapjes. Het concept werd op de examenexpositie bekroond met de Flexa Kleurprijs."},
       en:{t:"Interior advisor · 2025",p:"Level 4, Hout- en Meubileringscollege Amsterdam. My graduation project was a fictional design, not built: an existing wine shop redeveloped into a wine shop with tastings and small bites. The concept was awarded the Flexa Kleurprijs colour award at the graduation exhibition."}},
@@ -2116,7 +2119,7 @@ function roomLight(L,x,y,z,tx,ty,tz){ const k=BPXF.k, [X,Z]=BPXF.toW(x,z); L.pos
   (ROOMLIGHTS[k]=ROOMLIGHTS[k]||[]).push({L,base:L.intensity}); L.intensity=0; return L; }
 // de schil van een kamer: vloer, plafond, vier wanden (deur in de oostwand), lijst, bord "terug", licht
 // ---- eigen indeling: alles wat na de kale kamer is neergezet wordt per groepje (lijst + werk + bordje, zuil + tas …) een versleepbaar geheel
-function layoutClusters(k,G){ const L=legOf(k), RH=5.6, sh0=G.userData.sh0??0, sh1=G.userData.sh1??0;
+function layoutClusters(k,G){ const L=legOf(k), RH=ROOM_H, sh0=G.userData.sh0??0, sh1=G.userData.sh1??0;
   const cand=G.children.filter((c,i)=>!(i>=sh0&&i<sh1)&&!c.isLight&&!c.userData.cluster0);
   const p0=G.position.clone(), r0=G.rotation.y; G.position.set(0,0,0); G.rotation.y=0; G.updateMatrixWorld(true);
   const items=[]; cand.forEach(c=>{ let has=false; c.traverse(o=>{ if(o.isMesh) has=true; }); if(!has) return; const b=new THREE.Box3().setFromObject(c); if(b.isEmpty()) return;
@@ -2168,7 +2171,8 @@ function themeMats(t){ if(TMATS[t]) return TMATS[t]; let m;
       ceil:new THREE.MeshStandardMaterial({map:plasterTex("#efe7da",29,"120,100,70"),roughness:.95}),plinth:new THREE.MeshPhysicalMaterial({color:0x4a3726,metalness:.7,roughness:.42}),light:[0xffd9ae,30],spot:[0xffe6c4,34]}; }
   else m={wall:M.stone,floor:M.floor,ceil:M.stone,plinth:M.plinth,light:[0xffe0b8,34],spot:[0xffe6c4,26]};
   return (TMATS[t]=m); }
-function roomShell(k){ const L=legOf(k), RH=5.6, zN=L.zN, zS=L.zS, dz=L.dz, len=zN-zS, zc=(zN+zS)/2, TH=themeMats(themeOf(k)); if(BP) BP.userData.sh0=BP.children.length;
+const ROOM_H=4.2;
+function roomShell(k){ const L=legOf(k), RH=ROOM_H, zN=L.zN, zS=L.zS, dz=L.dz, len=zN-zS, zc=(zN+zS)/2, TH=themeMats(themeOf(k)); if(BP) BP.userData.sh0=BP.children.length;
   floorRect(-15.2,-5.6,zN,zS,0.001,TH.floor); { const c=ceilRect(-15.2,-5.6,zN,zS,RH); c.material=TH.ceil; }
   wallX(-15.4,zN,9.8,RH,.4,[],TH.wall); wallX(-15.4,zS-.4,9.8,RH,.4,[],TH.wall);
   wallZ(-15.4,zN+.4,len+.8,RH,.4,[],TH.wall); wallZ(-5.6,zN+.4,len+.8,RH,.55,[archHole(zN+.4-dz,2.4,2.55)],TH.wall);
@@ -2177,7 +2181,7 @@ function roomShell(k){ const L=legOf(k), RH=5.6, zN=L.zN, zS=L.zS, dz=L.dz, len=
   { const P=.15, D=.03, pl=(w,d,x,z)=>box(w,P,d,TH.plinth,x,P/2,z);
     pl(D,len,-15.0+D/2,zc); pl(9.4,D,-10.3,zN-D/2); pl(9.4,D,-10.3,zS+D/2);
     const a1=zS, b1=dz-1.42, a2=dz+1.42, b2=zN; if(b1>a1) pl(D,b1-a1,-5.6-D/2,(a1+b1)/2); if(b2>a2) pl(D,b2-a2,-5.6-D/2,(a2+b2)/2); }
-  makePanel(3.6,.46,(g,w,h)=>doorSign(tr("door.back"),true)(g,w,h),{x:-5.72,y:4.2,z:dz,ry:-Math.PI/2,transparent:true,click:()=>goRoom("hall")});
+  makePanel(3.6,.46,(g,w,h)=>doorSign(tr("door.back"),true)(g,w,h),{x:-5.72,y:ROOM_H-.42,z:dz,ry:-Math.PI/2,transparent:true,click:()=>goRoom("hall")});
   roomLight(new THREE.PointLight(TH.light[0],TH.light[1],22,2),-10.3,RH-.8,zc);
   const disc=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.06,32),M.brass); disc.position.set(-10.3,RH-.4,zc); ADD(disc);
   const bulb=new THREE.Mesh(new THREE.SphereGeometry(.18,24,16),new THREE.MeshStandardMaterial({color:0xfff2dd,emissive:0xffd9a8,emissiveIntensity:2})); bulb.position.set(-10.3,RH-.62,zc); ADD(bulb);
@@ -2566,7 +2570,7 @@ const CAPS={
   collPlinth:{nl:{n:"Collectie",t:"De hele lijn bij elkaar",p:"Klik op een tas om hem te bekijken, te personaliseren of te pre-orderen."},en:{n:"Collection",t:"The whole line together",p:"Click a bag to view it, personalise it or pre-order it."}},
   collText:{nl:{n:"Collectie",t:"Gemaakt om te blijven",p:"Er is geen voorraad: elke tas wordt na uw pre-order met de hand gestikt. Met een vaste prijs of prijs op aanvraag."},en:{n:"Collection",t:"Made to last",p:"There is no stock: every bag is stitched by hand after your pre-order. With a fixed price or price on request."}},
   wing:{nl:{n:"Samenwerkingen",t:"De vleugel in de berg",p:"Achter de galerij liggen kamers voor toekomstige samenwerkingen van Elizian."},en:{n:"Collaborations",t:"The wing in the mountain",p:"Behind the gallery lie rooms for future Elizian collaborations."}},
-  atelier:{nl:{n:"Collectie · Atelier",t:"Ontwerp je eigen tas",p:"Kies een model, combineer leerkleur, details en beslag, en voeg eventueel je initialen toe."},en:{n:"Collection · Atelier",t:"Design your own bag",p:"Choose a model, combine leather colour, details and hardware, and add your initials if you like."}},
+  atelier:{nl:{n:"Collectie · Atelier",t:"Ontwerp je eigen tas",p:"Kies een model en combineer leerkleur, details en beslag."},en:{n:"Collection · Atelier",t:"Design your own bag",p:"Choose a model, combine leather colour, details and hardware."}},
   end:{nl:{n:"Galerij",t:"Dank voor je bezoek",p:"Loop gerust nog eens rond, of neem contact op voor een pre-order of een vraag."},en:{n:"Gallery",t:"Thank you for visiting",p:"Feel free to walk around again, or get in touch for a pre-order or a question."}}
 };
 const ROOMS={hall:"start",collab:"dR0",about:"a0",contact:"c0",coll:"k0",r0:"w00",r1:"w10",r2:"w20",r3:"w30"};
@@ -2740,6 +2744,7 @@ window.addEventListener("pointerup",e=>{
   if(e.target.closest(uiSel)) return;
   // enkele klik: werk of deur openen
   const h=pick(e.clientX,e.clientY,solids.concat(clickables))[0];
+  if(h&&h.object.userData.drawer){ h.object.userData.drawer(); return; }
   if(h){ const u=h.object.userData; if(siteFromHit(u)) return; }
   if(siteOpen) closeSite();
   if(h){ const u=h.object.userData; if(u.item){ openInfo(u.item); return; } if(u.click){ u.click(); return; } }
@@ -3262,7 +3267,7 @@ const str=(v,d="")=>typeof v==="string"?v:d;
 const splitPath=path=>{ const a=path.split("."); return a[0]==="texts"?[a[0],a[1],a.slice(2).join(".")]:a; };
 const getPath=(o,path)=>splitPath(path).reduce((a,k)=>a==null?a:a[k],o);
 const setPath=(o,path,v)=>{ const ks=splitPath(path); let a=o; ks.slice(0,-1).forEach(k=>{ if(a[k]==null) a[k]={}; a=a[k]; }); a[ks[ks.length-1]]=v; };
-function currentContent(){ return { brand2:true, decor1:true, brand3:true, brand4:true, brand6:true, decor2:true, study1:true, study:clone(STUDY), swatches:clone(SWLIB), route:clone(ROUTE),
+function currentContent(){ return { brand2:true, decor1:true, brand3:true, brand4:true, brand6:true, decor2:true, decor3:true, study1:true, study:clone(STUDY), swatches:clone(SWLIB), route:clone(ROUTE),
   coll:COLL_ALL.map(b=>({...clone(b),dims:{...(b.dims||{})}})), show:clone(SHOW), plinth:PLINTH.filter(Boolean),
   items:Object.fromEntries(WALL_IDS.filter(id=>ITEMS[id]).map(id=>[id,{nl:{...ITEMS[id].nl},en:{...ITEMS[id].en},img:ITEMS[id].img||"",dims:{...(ITEMS[id].dims||{})},modelImg:ITEMS[id].modelImg||""}])),
   texts:{nl:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.nl[k]||""])),en:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.en[k]||""]))},
@@ -3793,7 +3798,7 @@ const DECOR1=[{id:"dc_ab_bank",space:"about",type:"bank",mount:"floor",x:-9.6,z:
 const DECOR2=[{id:"dc2_ct_desk",space:"contact",type:"bureau",mount:"floor",x:-12.9,z:-18.2,ry:1.5708},{id:"dc2_ct_ch1",space:"contact",type:"fauteuil",mount:"floor",x:-14.0,z:-18.2,ry:1.5708},{id:"dc2_ct_ch2",space:"contact",type:"fauteuil",mount:"floor",x:-11.7,z:-18.6,ry:-1.3},
   {id:"dc2_ab_chair",space:"about",type:"fauteuil",mount:"floor",x:-7.4,z:-13.4,ry:-.6},{id:"dc2_ab_lamp",space:"about",type:"vloerlamp",mount:"floor",x:-6.4,z:-14.5,ry:0},{id:"dc2_ct_lamp",space:"contact",type:"vloerlamp",mount:"floor",x:-14.4,z:-25.9,ry:0}];
 const withDecor2=(list,d)=>{ if(d&&d.decor2) return list; const ids=new Set(list.map(o=>o.id)); return list.concat(DECOR2.filter(o=>!ids.has(o.id)&&ROOMKEYS.includes(o.space)).map(o=>_c(o))); };
-const withDecor=(list,d)=>{ list=withDecor2(list,d); if(d&&d.decor1) return list; const ids=new Set(list.map(o=>o.id)); return list.concat(DECOR1.filter(o=>!ids.has(o.id)&&ROOMKEYS.includes(o.space)).map(o=>_c(o))); };
+let withDecor=(list,d)=>{ list=withDecor2(list,d); if(d&&d.decor1) return list; const ids=new Set(list.map(o=>o.id)); return list.concat(DECOR1.filter(o=>!ids.has(o.id)&&ROOMKEYS.includes(o.space)).map(o=>_c(o))); };
 function objsFrom(d){ return withStudy(objsFrom0(d),d); }
 function objsFrom0(d){ if(!(d&&Array.isArray(d.objects))) return withDecor(defaultObjects(d),d);
   return withDecor(d.objects.filter(o=>o&&typeof o.id==="string"&&OBJ_TYPES[o.type]&&(o.space==="hall"||ROOMKEYS.includes(o.space))).map(o=>
@@ -3815,8 +3820,9 @@ function canvasArt(par,b,w,maxH,x,y,z){ const d=b.dims||{}, mat=new THREE.MeshBa
   const cv=new THREE.Mesh(new THREE.BoxGeometry(1,1,.03),[M.darkwood,M.darkwood,M.darkwood,M.darkwood,mat,M.darkwood]); cv.scale.set(w,h0,1); cv.position.set(x,y+h0/2,z); cv.castShadow=true; par.add(cv);
   loader.load(b.img,t=>{ t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; mat.map=t; mat.color.set(0xffffff); mat.needsUpdate=true; if(!(d.w&&d.h)){ const h=Math.min(maxH,w/(t.image.width/t.image.height)); cv.scale.y=h; cv.position.y=y+h/2; } },undefined,()=>{}); return cv; }
 OB.tekst=(o,G)=>{ const B=o.board&&BOARDS[o.board], w=B?B.w:(o.w||3.2), h=B?B.h:(o.h||2.1), y=o.y||2.2;
-  if(o.board!=="edu"){ const fr=new THREE.Mesh(new RoundedBoxGeometry(w+.05,h+.05,.026,2,.006),M.bronzeFrame||(M.bronzeFrame=new THREE.MeshStandardMaterial({color:0x3b2a1c,metalness:.65,roughness:.42}))); fr.position.set(0,y,.013); fr.castShadow=true; G.add(fr); }
-  makePanel(w,h,B?B.draw:textDraw(o),{x:0,y,z:.03,ry:0,parent:G,transparent:o.board==="edu",click:B&&B.click||null}); return {top:y+h/2+.25,size:w}; };
+  const sc=o.space!=="hall"&&B&&o.board!=="edu"?.72:1, SG=new THREE.Group(); SG.position.y=y; SG.scale.setScalar(sc); G.add(SG);
+  if(o.board!=="edu"){ const fr=new THREE.Mesh(new RoundedBoxGeometry(w+.05,h+.05,.026,2,.006),M.bronzeFrame||(M.bronzeFrame=new THREE.MeshStandardMaterial({color:0x3b2a1c,metalness:.65,roughness:.42}))); fr.position.set(0,0,.013); fr.castShadow=true; SG.add(fr); }
+  makePanel(w,h,B?B.draw:textDraw(o),{x:0,y:0,z:.03,ry:0,parent:SG,transparent:o.board==="edu",click:B&&B.click||null}); return {top:y+h*sc/2+.25,size:w*sc}; };
 OB.lijst=async(o,G)=>{ const y=o.y||2.05; let H=o.h||1.3, Wd=o.w||0, tex=null, item=null, ph=false;
   const prod=o.src==="product"&&bagById(o.product), it=o.src==="item"&&ITEMS[o.item], sp=o.src==="space"&&spaceOf(o.space);
   try{ if(prod){ item=prod.id; tex=await loader.loadAsync(prod.img); if(prod.dims&&prod.dims.w&&prod.dims.h){ Wd=prod.dims.w/100; H=prod.dims.h/100; } }
@@ -3959,11 +3965,11 @@ OB.vloerlamp=(o,G)=>{ const F2=furnMats(); const base=new THREE.Mesh(new THREE.C
   if(!isMobile()){ const L=new THREE.PointLight(0xffd2a0,0,4.5,2); L.position.y=1.5; G.add(L); lampLights.push(L); L.intensity=7*clamp(NIGHT*0.8+(1-DAY)*0.4,0,1); }
   const bulb=new THREE.Mesh(new THREE.SphereGeometry(.05,12,8),new THREE.MeshBasicMaterial({color:0xfff0d6})); bulb.position.y=1.5; G.add(bulb); return {top:1.9,size:.5}; };
 const lampShades=[], lampLights=[], coveMats=[];
-OB.plant=(o,G)=>{ const k=clamp(+o.s||1,.5,2), pot=new THREE.Mesh(new THREE.CylinderGeometry(.3*k,.22*k,.52*k,28),M.stone); pot.position.y=.26*k; pot.castShadow=pot.receiveShadow=true; G.add(pot);
-  const rim=new THREE.Mesh(new THREE.TorusGeometry(.3*k,.025*k,8,28),M.stoneTrim); rim.rotation.x=Math.PI/2; rim.position.y=.52*k; G.add(rim);
-  const soil=new THREE.Mesh(new THREE.CircleGeometry(.28*k,24),new THREE.MeshStandardMaterial({color:0x3a2a1e,roughness:1})); soil.rotation.x=-Math.PI/2; soil.position.y=.5*k; G.add(soil);
-  const p=flatImg(`assets/plant${clamp(o.v|0,0,5)}.webp`,1.0*k,1.8*k); p.position.y=.46*k; p.material.alphaTest=.4; G.add(p); billboards.push(p);
-  G.traverse(m=>{ if(m.isMesh) solids.push(m); }); return {top:1.7*k,size:.7*k}; };
+OB.plant=(o,G)=>{ const k=clamp(+o.s||1,.5,2)*.62, pm=(typeof QM!=="undefined"&&QM.ceramic)||M.stone, pot=new THREE.Mesh(new THREE.CylinderGeometry(.28*k,.21*k,.5*k,40),pm); pot.position.y=.25*k; pot.castShadow=pot.receiveShadow=true; G.add(pot);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(.275*k,.014*k,8,40),pm); rim.rotation.x=Math.PI/2; rim.position.y=.5*k; G.add(rim);
+  const soil=new THREE.Mesh(new THREE.CircleGeometry(.265*k,32),new THREE.MeshStandardMaterial({color:0x3a2a1e,roughness:1})); soil.rotation.x=-Math.PI/2; soil.position.y=.47*k; G.add(soil);
+  const p=flatImg(`assets/plant${clamp(o.v|0,0,5)}.webp`,1.25*k,2.2*k); p.position.y=.44*k; p.material.alphaTest=.4; G.add(p); billboards.push(p);
+  G.traverse(m=>{ if(m.isMesh) solids.push(m); }); return {top:1.9*k,size:.6*k}; };
 OB.bank=(o,G)=>{ const lea=leather(0x8a4a2b), steel=new THREE.MeshStandardMaterial({color:0x4a3726,roughness:.38,metalness:.75});
   const seat=new THREE.Mesh(new RoundedBoxGeometry(1.7,.16,.5,4,.07),lea); seat.position.y=.48; seat.castShadow=seat.receiveShadow=true; G.add(seat);
   const base=new THREE.Mesh(new THREE.BoxGeometry(1.62,.06,.46),new THREE.MeshStandardMaterial({color:0x3a2016,roughness:.6})); base.position.y=.38; G.add(base);
@@ -4420,10 +4426,10 @@ const PAGES={
         :sec("soon","",`<p class="sw-note">${E(tr("collab.soonP"))}</p>`))+customHTML("collab"); },
   coll(){ const nl=nlL(), groups=[]; COLLS.forEach(c=>{ const l=COLL.filter(b=>collOf(b)===c.id&&(b.img||b.nl.t)); if(l.length) groups.push([c,l]); }); const loose=COLL.filter(b=>!collOf(b)&&b.img); if(loose.length) groups.push([null,loose]);
     const sw=SWLIB.filter(x=>!x.off);
-    return sec("top","sw-first",`${eyeb(tr("col.ey"))}<h1>${E(tr("col.t"))}</h1>${paras(tr("col.p"))}<div class="sw-acts">${btnS(nl?"Personaliseer een tas":"Personalise a bag",'data-sa="personaliseren"',"ghost")}${btnS(nl?"Bekijk de stalen":"See the swatches",'data-sa="stalen"',"ghost")}</div>`)
+    return sec("top","sw-first",`${eyeb(tr("col.ey"))}<h1>${E(tr("col.t"))}</h1>${paras(tr("col.p"))}<div class="sw-acts">${btnS(nl?"Stel je tas samen":"Compose your bag","data-spre","gold")}${btnS(nl?"Bekijk de stalen":"See the swatches",'data-sa="stalen"',"ghost")}</div>`)
       +sec("producten","",groups.map(([c,l])=>`${c?`<h3 class="sw-h3">${E(L(c).t)}</h3>${L(c).p?`<p class="sw-note">${E(L(c).p)}</p>`:""}`:""}<div class="sw-grid">${l.map(b=>`<button type="button" class="sw-card" data-sa="p-${E(b.id)}"><span class="sw-cimg">${b.img?`<img src="${E(b.img)}" alt="" loading="lazy">`:""}</span><b>${E(L(ITEMS[b.id]||b).t)}</b><small>${E(b.price||tr("m.price"))} · pre-order</small></button>`).join("")}</div>`).join(""))
       +groups.flatMap(([c,l])=>l.map(b=>productHTML(b.id))).join("")
-      +sec("personaliseren","sw-box",`${eyeb(nl?"Atelier":"Atelier")}<h2>${E(tr("cfg.t"))}</h2>${paras(tr("cfg.p"))}${paras(L(ITEMS.h7||{nl:{}}).p)}<div class="sw-acts">${btnS(tr("cfg.btn")||(nl?"Ontwerp je tas":"Design your bag"),"data-scfg","gold")}</div>`)
+      +sec("personaliseren","sw-box",`${eyeb(nl?"Atelier":"Atelier")}<h2>${E(tr("cfg.t"))}</h2>${paras(tr("cfg.p"))}${paras(L(ITEMS.h7||{nl:{}}).p)}<div class="sw-acts">${btnS(nl?"Stel je tas samen (pre-order)":"Compose your bag (pre-order)","data-spre","gold")}${btnS(tr("cfg.btn")||(nl?"Ontwerp je tas":"Design your bag"),"data-scfg","ghost")}</div>`)
       +sec("stalen","",`${eyeb(nl?"Materialen":"Materials")}<h2>${nl?"Stalen":"Swatches"}</h2><p class="sw-note">${nl?"Klik op een staal voor een grote foto.":"Click a swatch for a large photo."}</p>${["body","acc","hw"].map(g=>{ const l=sw.filter(x=>x.g===g); return l.length?`<h3 class="sw-h3">${E(SW_G[g][lang]||SW_G[g].nl)}</h3><div class="sw-swatches">${l.map(x=>`<div class="sw-swatch" id="w-staal-${E(x.id)}"><button type="button" class="sw-sw" style="background:${x.img?`url('${E(x.img)}') center/cover`:E(x.hex)}" ${x.img?`data-zoom="${E(x.img)}"`:""} aria-label="${E(L(x).t)}"></button><b>${E(L(x).t)}</b>${L(x).p?`<p>${E(L(x).p)}</p>`:""}</div>`).join("")}</div>`:""; }).join("")}`)
       +sec("leveranciers","sw-box",`${eyeb(nl?"Gezocht":"Wanted")}<h3>${E(tr("sv2.t"))}</h3>${paras(tr("sv2.p"))}<div class="sw-acts">${btnS(nl?"Ik ben leverancier":"I am a supplier",'data-sform="supplier" data-sctx="coll"',"ghost")}${btnS(nl?"Vraag over de collectie":"Question about the collection",'data-sform="buy" data-sctx="coll"',"ghost")}</div>`)
       +customHTML("coll"); },
@@ -4794,6 +4800,155 @@ accent=function(G,from,to){ const top=Math.max(.6,(to&&to.y||1.2)-.15); productL
 // productfoto's dimmen mee met het licht (overdag volledig, 's avonds iets warmer en zachter)
 function qProductTone(){ try{ qProductTone0(); }catch(e){} }
 function qProductTone0(){ billboards.forEach(b=>{ if(b.material&&b.material.isMeshBasicMaterial&&b.material.map) b.material.color.setRGB(lerp(.9,1,DAY),lerp(.86,1,DAY),lerp(.8,1,DAY)); }); PSPOTS.forEach(L=>L.intensity=lerp(32,8,DAY)); }
+
+// =====================================================================================
+//  RONDE 5 (feedback Elise): echte leerkleuren, schaal, ingebouwde etalages, koepel, vloer
+// =====================================================================================
+// ---- Odessa shrunken calfskin (Weinheimer, via Leatherbox): de 11 kleuren voor personalisatie
+// kleurwaarden zijn benaderingen; per staal kan in Materialen & kleuren een echte foto worden gezet
+const ODESSA=[["vert","Vert (groen)","Vert (green)","#2f4a3b"],["jaune","Jaune (geel)","Jaune (yellow)","#d2a23e"],["rose","Rosé","Rosé","#d7a5a0"],["rouge","Rouge (rood)","Rouge (red)","#9a1f24"],
+  ["bleu","Bleu (blauw)","Bleu (blue)","#25375e"],["ivoire","Ivoire (ivoor)","Ivoire (ivory)","#ece2cf"],["goldcognac","Gold Cognac","Gold Cognac","#a8652f"],["etoupe","Étoupe","Étoupe","#8c7e6c"],
+  ["taupe","Taupe","Taupe","#6e6053"],["asphalt","Asphalt (antraciet)","Asphalt (charcoal)","#4a4a4d"],["noir","Noir (zwart)","Noir (black)","#1c1b1b"]];
+const ODESSA_P={nl:"Odessa shrunken kalfsleer van Weinheimer Leder: zichtbare nerf, zeer zacht, krasbestendig en makkelijk te onderhouden.",en:"Odessa shrunken calfskin by Weinheimer Leder: visible grain, very soft, scratch-resistant and easy to care for."};
+function odessaSet(){ const out=[]; for(const g of ["body","acc"]) ODESSA.forEach(([k,nl,en,hex])=>out.push({id:g+"_od_"+k,k,g,hex,img:"",nl:{t:nl,p:ODESSA_P.nl},en:{t:en,p:ODESSA_P.en}})); return out; }
+SWLIB_DEF.splice(0,SWLIB_DEF.length,...odessaSet(),...SWLIB_DEF.filter(x=>x.g==="hw"));
+{ const _n=normSw; normSw=function(a){ if(Array.isArray(a)&&a.length&&!a.some(x=>x&&/_od_/.test(x.id||""))) a=odessaSet().concat(a.filter(x=>x&&x.g==="hw")); return _n(a); }; }
+SWLIB=normSw(null); syncSW();
+
+// ---- accentlicht voor wandkunst weer correct: van 'from' naar 'to' (de lijst zelf), niet boven de lijst
+accent=function(G,from,to){ if(isMobile()||PSPOTS.size>=11) return; const L=new THREE.SpotLight(0xffe6c8,0,6,.32,.8,2); L.position.copy(from); const t=new THREE.Object3D(); t.position.copy(to); G.add(L,t); L.target=t; L.userData.ps=1; PSPOTS.add(L); L.intensity=lerp(32,8,DAY); };
+
+// ---- koepel: rustig kalkstuc in plaats van travertijn met vlekken
+{ const dome=qPlaster(91,{base:"#E6DCCB",light:"#EFE7DA",dark:"#D6CAB6",contrast:.35,size:1024}); [dome.map,dome.normalMap,dome.roughnessMap].forEach(t=>t.repeat.set(4,4));
+  const apply=()=>{ if(!M.dome){ setTimeout(apply,400); return; } Object.assign(M.dome,{map:dome.map,normalMap:dome.normalMap,roughnessMap:dome.roughnessMap,bumpMap:null,roughness:1}); M.dome.normalScale=new THREE.Vector2(.25,.25); M.dome.color.set(0xffffff); M.dome.needsUpdate=true; }; apply(); }
+
+// ---- rotondevloer: scherp, 2048 px, grote gezoete tegels met dunne voegen
+{ try{ const w=2048,h=2048, big=qFbm(w,h,512,512,3,101), band=qFbm(w,h,1024,40,2,103), pore=qNoise(w,h,5,3,105), pore2=qNoise(w,h,11,4,107), B=qHex("#D2C3AC"), Lt=qHex("#DFD3BF"), D=qHex("#B9A88E");
+    const H=new Float32Array(w*h), R=new Float32Array(w*h), K=new Float32Array(w*h);
+    for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const i=y*w+x, jx=(x%1024), jy=(y%1024), joint=(jx<3||jy<3)?1:0, p=(pore[i]>.88?(pore[i]-.88)*6:0)+(pore2[i]>.92?(pore2[i]-.92)*5:0);
+      K[i]=joint?-1:p; H[i]=.5+(band[i]-.5)*.12-p*.7-joint*.9; R[i]=qCl(.56+p*.4+joint*.25+(big[i]-.5)*.06); }
+    const set=qSet(w,h,{col:i=>{ if(K[i]<0) return [150,134,112]; let c=qMix(B,Lt,qCl((big[i]-.4)*.8)); c=qMix(c,D,qCl((band[i]-.6)*1.2)*.3); if(K[i]>0) c=qMix(c,[165,146,120],qCl(K[i]*1.4)); return c; },height:H,rough:R,str:2.5});
+    const rep=[tFloor.repeat.x,tFloor.repeat.y]; [set.map,set.normalMap,set.roughnessMap].forEach(t=>{ t.repeat.set(rep[0],rep[1]); t.anisotropy=maxAniso; t.generateMipmaps=true; t.minFilter=THREE.LinearMipmapLinearFilter; });
+    for(const m of [M.floor,M.hallFloor].filter(Boolean)){ Object.assign(m,{map:set.map,normalMap:set.normalMap,roughnessMap:set.roughnessMap,roughness:1,clearcoat:.02}); m.normalScale=new THREE.Vector2(.18,.18); m.color.set(0xffffff); m.needsUpdate=true; }
+    const late=()=>{ if(!M.hallFloor){ setTimeout(late,400); return; } Object.assign(M.hallFloor,{map:set.map,normalMap:set.normalMap,roughnessMap:set.roughnessMap,roughness:1,clearcoat:.02}); M.hallFloor.normalScale=new THREE.Vector2(.18,.18); M.hallFloor.color.set(0xffffff); M.hallFloor.needsUpdate=true; }; late(); }catch(e){ console.warn(e); } }
+
+// ---- Contact: gerookt eiken in Hongaarse punt (visgraat), Over mij: rustiger walnoot en natuurlijk eiken
+function qChevron(seed=131,{size=1024,metres=2.0,base="#6b5040",light="#7d604c",dark="#4d382c"}={}){ const w=size,h=size, pxm=size/metres, pw=Math.round(.09*pxm/Math.SQRT1_2), colW=Math.round(.5*pxm), r=qRng(seed);
+  const grain=qNoise(w,h,2,60,seed+1), cloud=qFbm(w,h,200,200,3,seed+2), B=qHex(base), Lt=qHex(light), D=qHex(dark), H=new Float32Array(w*h), R=new Float32Array(w*h), T=new Float32Array(w*h), J=new Uint8Array(w*h), tone={};
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const c=Math.floor(x/colW), lx=x-c*colW, s=c%2?1:-1, yy=y+s*lx-(s<0?colW:0), k=Math.floor(yy/pw), f=yy-k*pw, key=c+"_"+k;
+    if(tone[key]===undefined) tone[key]=r(); const i=y*w+x, j=(f<1.5||lx<1.2)?1:0; J[i]=j; T[i]=tone[key]; H[i]=.5+(grain[i]-.5)*.25-j*.9; R[i]=qCl(.55+(cloud[i]-.5)*.1+j*.3); }
+  return qSet(w,h,{col:i=>{ let c=qMix(B,Lt,qCl(.35+(T[i]-.5)*.35+(cloud[i]-.5)*.3)); c=qMix(c,D,qCl((grain[i]-.5)*1.2)*.35); if(J[i]) c=qMix(c,[38,26,20],.7); return c; },height:H,rough:R,str:2.2}); }
+{ const _tm2=themeMats; themeMats=function(t){ const m=_tm2(t); if(m.q2) return m; m.q2=1;
+    if(t==="nachtblauw"){ const f=qChevron(); [f.map,f.normalMap,f.roughnessMap].forEach(x=>x.repeat.set(1/2,1/2)); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.08,clearcoatRoughness:.4,normalScale:new THREE.Vector2(.22,.22),envMapIntensity:.35});
+      m.ceil=new THREE.MeshStandardMaterial({...qPlaster(151,{base:"#E8E0D2",light:"#EFE9DD",dark:"#DDD3C3",contrast:.3,size:512}),roughness:1}); m.plinth=new THREE.MeshPhysicalMaterial({color:0x2c2119,metalness:.6,roughness:.45}); }
+    if(t==="walnoot"){ const w=qWalnut(5,{w:1024,h:1024,panels:2,mid:"#6e5444",dark:"#503d31",light:"#846753",shade:"#3f3027"}); [w.map,w.normalMap,w.roughnessMap].forEach(x=>x.repeat.set(1/1.5,1/2.4));
+      m.wall=new THREE.MeshPhysicalMaterial({...w,roughness:.9,clearcoat:.1,clearcoatRoughness:.36,normalScale:new THREE.Vector2(.15,.15),envMapIntensity:.5});
+      const f=qOak(29,{base:"#9c8670",light:"#a99480",dark:"#7d6a57",grey:"#938273"}); [f.map,f.normalMap,f.roughnessMap].forEach(x=>x.repeat.set(1/2.4,1/2.4)); m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:1,clearcoat:.06,clearcoatRoughness:.45,normalScale:new THREE.Vector2(.2,.2),envMapIntensity:.3}); }
+    return m; }; }
+
+// ---- B2 fauteuil opnieuw: clubfauteuil op pootjes, zonder zwarte plint
+OB.fauteuil=(o,G)=>{ const Q=qBuildMaterials(), lea=qLeather(o.color?new THREE.Color(o.color).getHex():0x91583e), pipe=qLeather(0x6e3e28,{clear:.06}), br=Q.darkBronze, W=.74, D=.8;
+  for(const [x,z] of [[-.31,-.33],[.31,-.33],[-.31,.33],[.31,.33]]) qAdd(G,qTaperLeg(.017,.012,.17),br,x,.085,z);
+  qAdd(G,rb(W,.16,D-.04,.035,6),lea,0,.25,0);                                   // onderbak
+  const cu=qAdd(G,rb(W-.17,.11,D-.17,.045,7),lea,0,.385,.035); cu.scale.y=1;      // zitkussen (top 0,44)
+  qPiping(G,rectLoop(W-.17,D-.17,.44,.035,0,.045),pipe,.0025);
+  for(const s of [-1,1]){ qAdd(G,rb(.085,.33,D-.04,.04,6),lea,s*(W/2-.0425),.335,0); qPiping(G,[[s*(W/2-.0425),.5,D/2-.02],[s*(W/2-.0425),.5,-D/2+.06]],pipe,.0025); }
+  const back=new THREE.Group(); back.position.set(0,.17,-D/2+.07); back.rotation.x=-.12; G.add(back);
+  qAdd(back,rb(W,.6,.13,.05,6),lea,0,.3,0); const bc=qAdd(back,rb(W-.17,.34,.1,.05,7),lea,0,.43,.1);
+  G.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); return {top:1.1,size:.8}; };
+
+// ---- B: ingebouwde etalage: een verdikte wand (zelfde materiaal) met de nis erin, smalle omlijsting
+{ const _et=OB.etalage; OB.etalage=(o,G)=>{ const info=_et(o,G), ids=objProducts(o), Lg=etalageLayout(o,ids), {W,Hh,y0}=Lg, D=.36;
+  // de oude dikke ring wordt een smalle negge: verberg de ring en zet er een verdikte wand omheen
+  G.children.forEach(c=>{ if(c.isMesh&&c.geometry&&c.geometry.type==="ExtrudeGeometry") c.visible=false; });
+  const wallMat=o.space==="hall"?M.stone:(themeMats(themeOf(o.space)).wall||M.stone);
+  const ow=W+1.1, top=y0+Hh+.55, s=new THREE.Shape(); s.moveTo(-ow/2,0); s.lineTo(ow/2,0); s.lineTo(ow/2,top); s.lineTo(-ow/2,top); s.closePath();
+  const hole=new THREE.Path(); nicheOutline(W+.04,Hh+.04,y0-.02).forEach(([x,y],i)=>i?hole.lineTo(x,y):hole.moveTo(x,y)); hole.closePath(); s.holes.push(hole);
+  const geo=new THREE.ExtrudeGeometry(s,{depth:D+.12,bevelEnabled:true,bevelThickness:.012,bevelSize:.012,bevelSegments:2,curveSegments:48}); geo.translate(0,0,-.12);
+  const blk=new THREE.Mesh(geo,wallMat); blk.castShadow=blk.receiveShadow=true; G.add(blk); solids.push(blk);
+  // smalle bronzen omlijsting van 2 cm in de negge
+  const fr=new THREE.Shape(); nicheOutline(W+.1,Hh+.1,y0-.05).forEach(([x,y],i)=>i?fr.lineTo(x,y):fr.moveTo(x,y)); fr.closePath(); const fh=new THREE.Path(); nicheOutline(W+.04,Hh+.04,y0-.02).forEach(([x,y],i)=>i?fh.lineTo(x,y):fh.moveTo(x,y)); fh.closePath(); fr.holes.push(fh);
+  const frm=new THREE.Mesh(new THREE.ExtrudeGeometry(fr,{depth:.012,bevelEnabled:false,curveSegments:48}),qBuildMaterials().darkBronze); frm.position.z=D+.014;
+  G.children.forEach(c=>{ if(c!==blk&&c!==frm&&Math.abs(c.position.z-.08)<.001) c.position.z=D+.06; });
+  qAdd(G,new THREE.BoxGeometry(ow+.02,.1,.02),qBuildMaterials().darkBronze,0,.05,D+.01); G.add(frm);
+  // binnenkant van de nis: zachte schaduw van boven
+  return info; }; }
+
+// ---- B5: materiaalladenkast — vier laden die echt open schuiven (leer, details, garen, beslag)
+const THREADS=[["ivoor","Ivoor","Ivory","#efe6d4"],["cognac","Cognac","Cognac","#a8652f"],["bordeaux","Bordeaux","Burgundy","#6b2026"],["zwart","Zwart","Black","#1c1b1b"],["goud","Goud","Gold","#c3a367"],["grijs","Steengrijs","Stone grey","#8c8781"]];
+OB.ladenkast=(o,G)=>{ const Q=qBuildMaterials(), W=1.6, H=.9, D=.5, rows=4, dh=(H-.12)/rows, wal=Q.walnutFurn, nl=lang==="nl";
+  for(const [x,z] of [[-W/2+.06,-D/2+.06],[W/2-.06,-D/2+.06],[-W/2+.06,D/2-.06],[W/2-.06,D/2-.06]]) qAdd(G,qTaperLeg(.016,.011,.16),Q.darkBronze,x,.08,z);
+  qAdd(G,rb(W,.03,D,.008),wal,0,.16+H-.015,0); qAdd(G,rb(W,.03,D,.008),wal,0,.175,0); for(const s of [-1,1]) qAdd(G,rb(.03,H,D,.008),wal,s*(W/2-.015),.16+H/2,0); qAdd(G,rb(W,H,.02,.004),wal,0,.16+H/2,-D/2+.01);
+  const groups=[["body",nl?"Leer":"Leather"],["acc",nl?"Details":"Details"],["thread",nl?"Garen":"Thread"],["hw",nl?"Beslag":"Hardware"]];
+  groups.forEach(([g,lab],ri)=>{ const y=.16+H-.03-dh*(ri+1)+.005, DR=new THREE.Group(); DR.position.set(0,y,0); G.add(DR);
+    const front=qAdd(DR,rb(W-.07,dh-.012,.025,.006),wal,0,dh/2,D/2-.0125); qAdd(DR,rb(.22,.014,.02,.006),Q.brass,0,dh/2,D/2+.012);
+    const tag=makePanel(.24,.045,(gg,w,h)=>{ gg.fillStyle="#B08A4C"; gg.fillRect(0,0,w,h); gg.fillStyle="#2E1D12"; gg.font=F(.024,"sans"); gg.textAlign="center"; gg.fillText(lab.toUpperCase(),w/2,.032); gg.textAlign="left"; },{x:0,y:dh/2+.045,z:D/2+.002,parent:DR,emissive:.08});
+    qAdd(DR,rb(W-.1,.01,D-.06,.003),wal,0,.012,0); for(const s of [-1,1]) qAdd(DR,rb(.012,dh*.6,D-.06,.003),wal,s*(W/2-.06),dh*.3,0); qAdd(DR,rb(W-.1,dh*.6,.012,.003),wal,0,dh*.3,-D/2+.04);
+    // inhoud
+    const items=g==="thread"?THREADS.map(([k,a,b,hex])=>({id:"thr_"+k,hex,thread:1})):SWLIB.filter(x=>x.g===g&&!x.off);
+    const n=Math.min(items.length,11), cw=(W-.16)/Math.max(n,1);
+    items.slice(0,n).forEach((x,i)=>{ const cx=-W/2+.08+cw*(i+.5); let m;
+      if(x.thread){ m=qAdd(DR,new THREE.CylinderGeometry(.022,.022,.05,20),new THREE.MeshStandardMaterial({color:x.hex,roughness:.7}),cx,.04,-.02,{rz:0}); qAdd(DR,new THREE.CylinderGeometry(.026,.026,.005,20),wal,cx,.067,-.02); }
+      else if(g==="hw"){ m=qAdd(DR,new THREE.TorusGeometry(.028,.007,10,24),new THREE.MeshPhysicalMaterial({color:x.hex,metalness:1,roughness:.32}),cx,.02,0,{rx:Math.PI/2}); }
+      else { m=qAdd(DR,rb(cw*.86,.006,.3,.002),swMatQ(x),cx,.017,0,{ry:(i%2?.02:-.02)}); }
+      if(!x.thread) m.userData.swatch=x.id; });
+    // klikken op het front schuift de la open of dicht
+    let open=0, target=0, raf=0; const step=()=>{ open+=(target-open)*.18; DR.position.z=open*(D*.62); if(Math.abs(target-open)>.002) raf=requestAnimationFrame(step); else { open=target; DR.position.z=open*(D*.62); } };
+    const toggle=()=>{ target=target?0:1; cancelAnimationFrame(raf); raf=requestAnimationFrame(step); };
+    DR.traverse(m=>{ if(m.isMesh){ if(!m.userData.swatch) m.userData.drawer=toggle; m.userData.root=G; clickables.push(m); } }); });
+  return {top:1.4,size:W}; };
+OBJ_TYPES.ladenkast={l:"Materiaalladenkast",m:"floor",d:"Walnoten ladenkast met vier laden (leer, details, garen, beslag). Bezoekers klikken op een la om hem open te schuiven en op een staal voor de foto en uitleg."};
+OBJ_NEW.ladenkast={};
+// eenmalig in Collectie, tegen de wand bij de ingang
+{ const _wd=withDecor; withDecor=(list,d)=>{ list=_wd(list,d); if(d&&d.decor3) return list; if(!ROOMKEYS.includes("coll")||list.some(o=>o.type==="ladenkast")) return list; return list.concat([{id:"dc3_co_kast",space:"coll",type:"ladenkast",mount:"floor",x:-6.55,z:-35.4,ry:-1.5708}]); }; }
+
+// =====================================================================================
+//  Persoonlijke pre-order route: model → leer → details → garen → beslag → afspraakkaart
+//  (zonder initialen, op verzoek van Elise)
+// =====================================================================================
+const PO={step:0,model:"",body:"",acc:"",thread:"",hw:""};
+const poAllowed=(b,g)=>{ if(g==="thread") return THREADS.map(([k,nl,en,hex])=>[k,nl,en,hex]); const cu=cuOf(b); const a=cu&&Array.isArray(cu[g])&&cu[g].length?SW[g].filter(x=>cu[g].includes(x[0])):SW[g]; return a.length?a:SW[g]; };
+const poModels=()=>COLL.filter(b=>cuOf(b)&&!b.off);
+const PO_STEPS=[["model","Model","Model"],["body","Leer","Leather"],["acc","Details","Details"],["thread","Garen","Thread"],["hw","Beslag","Hardware"],["card","Jouw kaart","Your card"]];
+function poName(g,k){ const i=lang==="en"?2:1, a=g==="thread"?THREADS:SW[g]; const x=(a||[]).find(y=>y[0]===k); return x?x[i]:""; }
+function poHex(g,k){ const a=g==="thread"?THREADS:SW[g]; const x=(a||[]).find(y=>y[0]===k); return x?x[3]:"#ccc"; }
+function poLines(){ const nl=nlL(), b=bagById(PO.model); return [[nl?"Model":"Model",b?L(ITEMS[b.id]||b).t:""],[nl?"Leer":"Leather",poName("body",PO.body)],[nl?"Details":"Details",poName("acc",PO.acc)],[nl?"Garen":"Thread",poName("thread",PO.thread)],[nl?"Beslag":"Hardware",poName("hw",PO.hw)]]; }
+PAGES.preorder=()=>{ const nl=nlL(), models=poModels(), s=PO_STEPS[PO.step], g=s[0], b=bagById(PO.model);
+  const bar=`<ol class="po-bar">${PO_STEPS.map((x,i)=>`<li class="${i<PO.step?"done":i===PO.step?"now":""}"><button type="button" data-po="${i}"${i>PO.step?" disabled":""}>${i+1}. ${E(nl?x[1]:x[2])}</button></li>`).join("")}</ol>`;
+  let body="";
+  if(g==="model") body=models.length?`<div class="sw-grid">${models.map(m=>`<button type="button" class="sw-card${PO.model===m.id?" on":""}" data-pom="${E(m.id)}"><span class="sw-cimg">${m.img?`<img src="${E(m.img)}" alt="" loading="lazy">`:""}</span><b>${E(L(ITEMS[m.id]||m).t)}</b><small>${E(m.price||tr("m.price"))}</small></button>`).join("")}</div>`
+      :`<p class="sw-note">${nl?"Er zijn op dit moment geen modellen die je kunt personaliseren.":"There are no models to personalise right now."}</p>`;
+  else if(g!=="card"){ const list=poAllowed(b,g);
+    body=`<div class="po-chips">${list.map(x=>`<button type="button" class="po-chip${PO[g]===x[0]?" on":""}" data-pok="${E(x[0])}"><i style="background:${E(x[3])}"></i><span>${E(lang==="en"?x[2]:x[1])}</span></button>`).join("")}</div>`
+      +(g==="body"?`<p class="sw-note">${nl?"Odessa shrunken kalfsleer van Weinheimer Leder: zichtbare nerf, heel zacht en krasbestendig. Kleuren op een scherm wijken altijd iets af; bij de afspraak zie en voel je de echte stalen.":"Odessa shrunken calfskin by Weinheimer Leder: visible grain, very soft and scratch-resistant. Colours on screen always differ slightly; at the appointment you see and feel the real swatches."}</p>`:"")
+      +(g==="thread"?`<p class="sw-note">${nl?"Alles wordt met de hand gestikt, met gewaxt garen.":"Everything is hand-stitched with waxed thread."}</p>`:""); }
+  else body=`<div class="po-card"><canvas id="poCanvas" width="1200" height="760"></canvas></div><p class="sw-note">${nl?"Dit is geen bestelling. Elise neemt contact met je op om je keuze te bespreken en de stalen samen te bekijken.":"This is not an order. Elise will contact you to discuss your choice and look at the swatches together."}</p>
+      <div class="sw-acts"><button type="button" class="sw-btn gold" data-posend>${nl?"Verstuur aanvraag":"Send request"}</button><button type="button" class="sw-btn ghost" data-podl>${nl?"Bewaar kaart (PNG)":"Save card (PNG)"}</button><button type="button" class="sw-btn ghost" data-po="0">${nl?"Opnieuw beginnen":"Start again"}</button></div>`;
+  const ok=g==="card"||!!PO[g]||(g==="model"&&!models.length);
+  const nav=g==="card"?"":`<div class="sw-acts">${PO.step?`<button type="button" class="sw-btn ghost" data-po="${PO.step-1}">← ${nl?"Vorige":"Back"}</button>`:""}${models.length?`<button type="button" class="sw-btn gold" data-po="${PO.step+1}"${ok?"":" disabled"}>${nl?"Volgende":"Next"} →</button>`:""}</div>`;
+  return sec("preorder","sw-first",`${eyeb(nl?"Pre-order · atelier":"Pre-order · atelier")}<h1>${nl?"Stel je tas samen":"Compose your bag"}</h1><p class="sw-lead">${nl?"Kies in vijf stappen je model, leer, details, garen en beslag. Je krijgt een afspraakkaart met jouw keuze.":"Choose your model, leather, details, thread and hardware in five steps. You receive an appointment card with your choice."}</p>${bar}<h2 class="sw-h3">${E(nl?s[1]:s[2])}</h2>${body}${nav}`); };
+function poDraw(){ const c=document.getElementById("poCanvas"); if(!c) return; const g=c.getContext("2d"), W=c.width, H=c.height, nl=nlL(), b=bagById(PO.model);
+  g.fillStyle="#F0EDE5"; g.fillRect(0,0,W,H); g.strokeStyle="#C3A367"; g.lineWidth=3; g.strokeRect(28,28,W-56,H-56); g.lineWidth=1; g.strokeRect(40,40,W-80,H-80);
+  g.fillStyle="#692719"; g.font="500 26px 'Jost',sans-serif"; g.textAlign="left"; g.fillText((nl?"AFSPRAAKKAART · PRE-ORDER":"APPOINTMENT CARD · PRE-ORDER").split("").join(" "),90,118);
+  g.fillStyle="#15283E"; g.font="400 68px 'Cormorant Garamond',serif"; g.fillText("Elizian",90,200);
+  g.fillStyle="#7a6a58"; g.font="italic 30px 'Cormorant Garamond',serif"; g.fillText(nl?"Ambacht dat blijft":"Craft that lasts",90,242);
+  g.strokeStyle="#C3A367"; g.beginPath(); g.moveTo(90,280); g.lineTo(W-90,280); g.stroke();
+  const rows=poLines(), keys=[null,["body",PO.body],["acc",PO.acc],["thread",PO.thread],["hw",PO.hw]];
+  rows.forEach(([k,v],i)=>{ const y=340+i*68; g.fillStyle="#8a7a66"; g.font="500 22px 'Jost',sans-serif"; g.fillText(k.toUpperCase(),90,y); g.fillStyle="#2E1D12"; g.font="400 38px 'Cormorant Garamond',serif"; g.fillText(v||"—",300,y+2);
+    if(keys[i]){ g.fillStyle=poHex(keys[i][0],keys[i][1]); g.beginPath(); g.arc(W-130,y-10,22,0,Math.PI*2); g.fill(); g.strokeStyle="rgba(0,0,0,.25)"; g.stroke(); } });
+  g.fillStyle="#8a7a66"; g.font="400 22px 'Jost',sans-serif"; const d=new Date(); g.fillText((nl?"Samengesteld op ":"Composed on ")+d.toLocaleDateString(nl?"nl-NL":"en-GB",{day:"numeric",month:"long",year:"numeric"})+(nl?" · met de hand gestikt":" · hand-stitched"),90,H-80);
+  if(b&&b.img) loadImg(b.img).then(im=>{ const s=Math.min(300/im.width,300/im.height); g.drawImage(im,W-140-im.width*s,60,im.width*s,im.height*s); }).catch(()=>{}); }
+function poMsg(){ const nl=nlL(); return (nl?"Ik wil graag deze tas laten maken (pre-order):\n":"I would like this bag made (pre-order):\n")+poLines().map(([k,v])=>k+": "+v).join("\n")+(nl?"\n\nGraag hoor ik wanneer we een afspraak kunnen maken.":"\n\nPlease let me know when we can make an appointment."); }
+function openPreorder(model){ PO.step=0; if(model&&bagById(model)&&cuOf(bagById(model))){ PO.model=model; PO.step=1; } openSite("preorder",""); }
+siteEl.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t||!siteEl.contains(t)) return; const d=t.dataset; let hit=true;
+  if(d.spre!==undefined) openPreorder(d.spre||"");
+  else if(d.po!==undefined){ PO.step=clamp(+d.po,0,PO_STEPS.length-1); if(+d.po===0&&t.closest(".sw-acts")) Object.assign(PO,{model:"",body:"",acc:"",thread:"",hw:""}); renderSite(); }
+  else if(d.pom!==undefined){ PO.model=d.pom; const b=bagById(PO.model); ["body","acc","hw"].forEach(g=>{ if(!poAllowed(b,g).some(x=>x[0]===PO[g])) PO[g]=""; }); renderSite(); }
+  else if(d.pok!==undefined){ PO[PO_STEPS[PO.step][0]]=d.pok; renderSite(); }
+  else if(d.podl!==undefined){ const c=document.getElementById("poCanvas"); if(c){ const a=document.createElement("a"); a.download="elizian-afspraakkaart.png"; try{ a.href=c.toDataURL("image/png"); a.click(); }catch(err){ console.warn(err); } } }
+  else if(d.posend!==undefined){ openForm("custom",PO.model,"coll"); setTimeout(()=>{ const m=document.getElementById("f-msg"); if(m) m.value=poMsg(); },60); }
+  else hit=false;
+  if(hit){ e.stopPropagation(); if(sitePage==="preorder") requestAnimationFrame(()=>{ poDraw(); swMain.scrollTop=0; }); } },true);
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
