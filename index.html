@@ -514,6 +514,15 @@
   @media (min-width:761px){ body.hide-hero-d .hero-btns{display:none} }
   @media (max-width:760px){ body.hide-hero-m .hero-btns{display:none} body.hide-tab .tabbar{display:none} body.hide-start .tabbar [data-start]{display:none}
     .ov-btn span{display:none}.ov-btn{padding:8px} .ov-grid{grid-template-columns:repeat(2,1fr);gap:12px} }
+  .route-hint{position:absolute;left:50%;bottom:30px;transform:translate(-50%,10px);z-index:18;display:flex;align-items:center;gap:12px;padding:7px 18px 7px 7px;border-radius:30px;border:1px solid rgba(217,195,151,.7);background:rgba(28,20,16,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#f8f1e6;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;max-width:min(420px,70vw)}
+  .route-hint.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+  .route-hint .rh-arrow{flex:none;width:34px;height:34px;border-radius:50%;background:var(--gold);display:grid;place-items:center;transition:transform .25s}
+  .route-hint svg{width:18px;height:18px;fill:#2a1a12}
+  .route-hint .rh-txt{display:flex;flex-direction:column;align-items:flex-start;min-width:0;text-align:left}
+  .route-hint small{font-family:var(--sans);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft)}
+  .route-hint b{font-family:var(--serif);font-weight:500;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .route-hint:hover{background:rgba(28,20,16,.75)}
+  @media (max-width:760px){ .route-hint{bottom:calc(76px + env(safe-area-inset-bottom));max-width:62vw} body.hide-tab .route-hint{bottom:24px} }
   .gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
   .loading{position:absolute;inset:0;display:grid;place-items:end center;padding-bottom:18vh;background:radial-gradient(ellipse at 50% 40%,#5a3424,#2a160f);color:#EFE6DA;font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;transition:opacity 1s;z-index:3;pointer-events:none}
   .loading.done{opacity:0}
@@ -3681,19 +3690,30 @@ OBJS=objsFrom(EARLY);
 // ---- routepijlen op de vloer: van het punt waar je staat naar het volgende punt
 const arrowG=new THREE.Group(); arrowG.renderOrder=3; S.add(arrowG);
 const arrowGeo=(()=>{ const s=new THREE.Shape(); s.moveTo(-.17,-.07); s.lineTo(0,.09); s.lineTo(.17,-.07); s.lineTo(.17,.03); s.lineTo(0,.19); s.lineTo(-.17,.03); s.closePath(); const g=new THREE.ShapeGeometry(s); g.rotateX(-Math.PI/2); return g; })();
-let arrowFrom=-9, arrowFade=0;
-function buildArrows(ci){ arrowFrom=ci; while(arrowG.children.length){ const c=arrowG.children.pop(); c.material.dispose(); }
-  if(ci<0||ci>=nodes.length-1) return; let j=ci+1; while(j<nodes.length-1&&nodes[j].transit) j++;
-  const pts=nodes.slice(ci,j+1).map(n=>[n.x,n.z,n.room]); let total=0; const seg=[];
+let arrowFrom=-9, arrowFade=0, arrowNext=-1;
+const nextStop=(ci)=>{ let j=ci+1; while(j<nodes.length-1&&nodes[j].transit) j++; return j<nodes.length?j:-1; };
+function buildArrows(ci){ arrowFrom=ci; arrowNext=-1; while(arrowG.children.length){ const c=arrowG.children.pop(); c.material.dispose(); }
+  if(ci<0||ci>=nodes.length-1) return; const j=nextStop(ci); if(j<0) return; arrowNext=j; const j2=Math.max(j,nextStop(j));
+  // het spoor loopt door tot en met het punt daarna, zodat je ook ziet waar de route verder gaat
+  const pts=nodes.slice(ci,(j2>j?j2:j)+1).map(n=>[n.x,n.z,n.room]); let total=0; const seg=[];
   for(let k=0;k<pts.length-1;k++){ const a=pts[k], b=pts[k+1], L=Math.hypot(b[0]-a[0],b[1]-a[1]); seg.push({a,b,L,s0:total}); total+=L; }
-  if(total<2.2) return; const step=.62, start=1.1, end=total-1.0; let idx=0;
-  for(let d=start; d<end&&idx<70; d+=step,idx++){ const sg=seg.find(s=>d<=s.s0+s.L)||seg[seg.length-1], k=(d-sg.s0)/(sg.L||1), x=sg.a[0]+(sg.b[0]-sg.a[0])*k, z=sg.a[1]+(sg.b[1]-sg.a[1])*k;
-    const inRoom=(sg.a[2]!=="hall"&&sg.b[2]!=="hall"), y=(inRoom?0:groundAt(x,z))+.025, dx=sg.b[0]-sg.a[0], dz=sg.b[1]-sg.a[1];
+  if(total<1.2) return; const step=.55, start=.7, end=total-.6; let idx=0;
+  for(let d=start; d<end&&idx<90; d+=step,idx++){ const sg=seg.find(s=>d<=s.s0+s.L)||seg[seg.length-1], k=(d-sg.s0)/(sg.L||1), x=sg.a[0]+(sg.b[0]-sg.a[0])*k, z=sg.a[1]+(sg.b[1]-sg.a[1])*k;
+    const inRoom=(sg.a[2]!=="hall"&&sg.b[2]!=="hall"), y=(inRoom?0:groundAt(x,z))+.035, dx=sg.b[0]-sg.a[0], dz=sg.b[1]-sg.a[1];
     const m=new THREE.Mesh(arrowGeo,new THREE.MeshBasicMaterial({color:0xe2bf72,transparent:true,opacity:0,depthWrite:false,toneMapped:false}));
-    m.position.set(x,y+.01,z); m.rotation.y=Math.atan2(-dx,-dz); m.renderOrder=20; m.userData.d=d/total; m.userData.dist=d; arrowG.add(m); } }
+    m.position.set(x,y,z); m.rotation.y=Math.atan2(-dx,-dz); m.scale.setScalar(1.35); m.renderOrder=20; m.userData.dist=d; arrowG.add(m); } }
+// richtingwijzer onderin beeld: wijst naar het volgende punt en zegt wat er komt
+const hint=document.createElement("button"); hint.type="button"; hint.className="route-hint"; hint.innerHTML=`<span class="rh-arrow"><svg viewBox="0 0 24 24"><path d="M12 3l7 9h-4.5v9h-5v-9H5z"/></svg></span><span class="rh-txt"><small></small><b></b></span>`; document.body.appendChild(hint);
+hint.addEventListener("click",()=>{ const j=arrowNext; if(j>=0) goStation(j); });
 function animArrows(now){ const still=!jump&&mode==="route"&&pose.st!=null&&pose.st>=0; arrowFade+=((still?1:0)-arrowFade)*.08;
-  arrowG.visible=arrowFade>.02; if(!arrowG.visible) return; const t=now/1000;
-  arrowG.children.forEach(m=>{ const w=.5+.5*Math.sin(m.userData.dist*2.2-t*4.2); m.material.opacity=arrowFade*(.22+.6*w*w)*Math.min(1,m.userData.dist/2.4); }); }
+  arrowG.visible=arrowFade>.02; const t=now/1000;
+  if(arrowG.visible) arrowG.children.forEach(m=>{ const w=.5+.5*Math.sin(m.userData.dist*2.2-t*4.2); m.material.opacity=arrowFade*(.3+.6*w*w)*Math.min(1,m.userData.dist/1.6); });
+  const j=arrowNext, n=j>=0&&nodes[j], show=still&&!!n&&!document.body.classList.contains("at-home")&&!capEl.classList.contains("show");
+  hint.classList.toggle("show",!!show); if(!show) return;
+  const tx=n.look?n.look[0]:n.x, tz=n.look?n.look[1]:n.z, ty=deg(Math.atan2(tx-pose.x,-(tz-pose.z))), rel=((ty-(pose.yaw+lookYaw))%360+540)%360-180;
+  hint.querySelector(".rh-arrow").style.transform=`rotate(${rel.toFixed(1)}deg)`;
+  const lab=nodeLab(n)||(n.door?spaceTitle(n.door):n.space?spaceTitle(n.space):""), sec=n.sec&&n.sec!==(nodes[arrowFrom]||{}).sec?secName(n.sec):"";
+  const s1=hint.querySelector("small"), s2=hint.querySelector("b"), a=(lang==="nl"?"Volgende":"Next")+(sec?" · "+sec:""); if(s1.textContent!==a) s1.textContent=a; if(s2.textContent!==lab) s2.textContent=lab; }
 
 // ---- info-knopje naast het item zelf (computer en telefoon)
 let capAnchor=null; const _ab=new THREE.Box3(), _av=new THREE.Vector3();
