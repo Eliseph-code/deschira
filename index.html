@@ -905,7 +905,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795518537"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795518658"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2093,7 +2093,7 @@ function themeMats(t){ if(TMATS[t]) return TMATS[t]; let m;
   else if(t==="boutique"){ // donkere greige kalkverf, gepolijste donkere natuursteen, sterke spots op de producten
     const floor=canvasTex(1024,1024,(g,w,h)=>{ const r=rng(55); g.fillStyle="#3d322a"; g.fillRect(0,0,w,h); for(let i=0;i<60;i++){ g.strokeStyle=`rgba(${200+r()*40|0},${190+r()*30|0},${170+r()*30|0},${.04+r()*.1})`; g.lineWidth=.5+r()*2; g.beginPath(); let x=r()*w,y=r()*h; g.moveTo(x,y); for(let k=0;k<12;k++){ x+=(r()-.3)*90; y+=(r()-.5)*60; g.lineTo(x,y); } g.stroke(); }
         g.strokeStyle="rgba(0,0,0,.5)"; g.lineWidth=2; for(let x=0;x<=w;x+=w/2) { g.beginPath(); g.moveTo(x,0); g.lineTo(x,h); g.stroke(); } for(let y=0;y<=h;y+=h/2){ g.beginPath(); g.moveTo(0,y); g.lineTo(w,y); g.stroke(); } },{rep:[1/1.6,1/1.6]});
-    m={wall:new THREE.MeshStandardMaterial({map:plasterTex("#a3917f",13,"90,66,44"),roughness:.92}),floor:new THREE.MeshPhysicalMaterial({map:floor,roughness:.22,clearcoat:.45,clearcoatRoughness:.14,envMapIntensity:.35}),
+    m={wall:new THREE.MeshStandardMaterial({map:plasterTex("#a3917f",13,"90,66,44"),roughness:.92}),floor:new THREE.MeshPhysicalMaterial({map:floor,roughness:.3,clearcoat:.35,clearcoatRoughness:.2,envMapIntensity:.12}),
       ceil:new THREE.MeshStandardMaterial({map:plasterTex("#6f6458",17,"40,30,20"),roughness:.95}),plinth:new THREE.MeshPhysicalMaterial({color:0x2a2622,roughness:.3,clearcoat:.4}),light:[0xffe4c4,16],spot:[0xfff0dc,58]}; }
   else if(t==="nachtblauw"){ // nachtblauwe kalkverf, warme eiken vloer, lichte plafonds
     const floor=canvasTex(1024,1024,(g,w,h)=>{ const r=rng(91), pw=w/6; for(let p=0;p<6;p++){ let y=-(r()*h); while(y<h){ const len=h*(.45+r()*.5), l=52+r()*10; g.fillStyle=`hsl(33,42%,${l}%)`; g.fillRect(p*pw,y,pw,len);
