@@ -2,26 +2,21 @@
   <div class="form-box admin-box">
     <button class="x" data-close aria-label="Sluiten">×</button>
     <h3 id="admTitle">Beheer</h3>
-    <p class="lead">Alleen jij kunt dit zien en opslaan. Wijzig wat je wilt en klik op Opslaan.</p>
+    <p class="lead">Alleen jij ziet dit. <b>Opslaan</b> bewaart je wijzigingen in je concept; met <b>Live zetten</b> (bovenin het scherm) worden ze zichtbaar voor bezoekers.</p>
     <div class="adm-head">
     <div class="adm-tabs" id="admTabs">
-      <button type="button" data-tab="ruimtes" class="on">Ruimtes</button>
-      <button type="button" data-tab="partners">Samenwerkingen</button>
-      <button type="button" data-tab="cols">Collecties &amp; producten</button>
-      <button type="button" data-tab="items">Werken</button>
-      <button type="button" data-tab="stalen">Stalen</button>
-      <button type="button" data-tab="studie">Studie</button>
-      <button type="button" data-tab="menu">Menu</button>
-      <button type="button" data-tab="texts">Teksten</button>
-      <button type="button" data-tab="info">Gegevens</button>
-      <button type="button" data-tab="aanvragen">Aanvragen</button>
+      <div class="adm-tg"><span>Begin</span><div><button type="button" data-tab="start" class="on">Overzicht</button></div></div>
+      <div class="adm-tg"><span>Collectie</span><div><button type="button" data-tab="cols">Producten</button><button type="button" data-tab="stalen">Materialen &amp; kleuren</button></div></div>
+      <div class="adm-tg"><span>Over mij</span><div><button type="button" data-tab="items">Werken</button><button type="button" data-tab="studie">Studie</button></div></div>
+      <div class="adm-tg"><span>Gebouw</span><div><button type="button" data-tab="ruimtes">Ruimtes</button><button type="button" data-tab="route">Route</button><button type="button" data-tab="partners">Samenwerkingen</button><button type="button" data-tab="menu">Menu</button></div></div>
+      <div class="adm-tg"><span>Algemeen</span><div><button type="button" data-tab="texts">Teksten</button><button type="button" data-tab="info">Contactgegevens</button><button type="button" data-tab="aanvragen">Aanvragen</button></div></div>
     </div>
     <div class="adm-jump" id="admJump"></div>
     </div>
     <div id="admBody"></div>
     <button type="button" class="adm-all" id="admAll">Alle instellingen tonen</button>
     <div class="adm-foot">
-    <div class="adm-acts"><button class="btn" type="button" id="admSave">Opslaan</button><button class="btn ghost-light" type="button" id="admReset">Alles terugzetten naar standaard</button><button class="btn ghost-light adm-top" type="button" onclick="this.closest('.form-box').scrollTo({top:0,behavior:'smooth'})">↑ Naar boven</button></div>
+    <div class="adm-acts"><button class="btn" type="button" id="admSave">Opslaan</button><button class="btn ghost-light" type="button" id="admReset">Concept weggooien (terug naar wat live staat)</button><button class="btn ghost-light adm-top" type="button" onclick="this.closest('.form-box').scrollTo({top:0,behavior:'smooth'})">↑ Naar boven</button></div>
     <p class="form-note" id="admNote" role="status"></p>
     </div>
   </div>

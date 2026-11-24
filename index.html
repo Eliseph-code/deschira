@@ -697,6 +697,28 @@
   .route-skip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
   body.site-open .route-skip{opacity:0;pointer-events:none}
   @media (max-width:760px){ .route-hint{position:fixed!important;bottom:calc(92px + env(safe-area-inset-bottom))!important} .route-skip{position:fixed;bottom:calc(150px + env(safe-area-inset-bottom))} }
+  /* ---- beheer: overzichtelijke tabbladen, overzicht, route ---- */
+  .adm-tabs{gap:4px 22px;align-items:flex-end}
+  .adm-tg{display:flex;flex-direction:column}.adm-tg>span{font-family:var(--sans);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(239,230,218,.45);padding:8px 14px 0}
+  .adm-tg>div{display:flex;flex-wrap:wrap}
+  .adm-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:8px 0 6px}
+  .adm-tile{text-align:left;background:rgba(239,230,218,.06);border:1px solid rgba(239,230,218,.16);color:var(--cream);padding:16px 16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:6px;font-family:inherit;transition:.2s}
+  .adm-tile:hover{border-color:var(--gold);background:rgba(196,164,106,.1)}
+  .adm-tile b{font-family:var(--serif);font-weight:500;font-size:21px;color:#fff8ec}.adm-tile span{font-size:14.5px;line-height:1.45;opacity:.8}.adm-tile small{font-family:var(--sans);font-size:11px;letter-spacing:.08em;color:var(--gold-soft);margin-top:4px}
+  .adm-status{padding:14px 16px;border-left:3px solid #6f9a6a;background:rgba(111,154,106,.12);margin:4px 0 14px;font-size:15.5px}.adm-status.dirty{border-left-color:var(--gold);background:rgba(196,164,106,.14)}
+  .rt-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}.rt-tag{font-family:var(--sans);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft)}
+  .rt-list{list-style:none;display:flex;flex-direction:column;gap:4px;padding:0;margin:0}
+  .rt-list li{display:flex;align-items:center;gap:10px;padding:7px 10px;background:rgba(239,230,218,.05);border:1px solid rgba(239,230,218,.1)}
+  .rt-list li.skip .rt-l{opacity:.45;text-decoration:line-through}
+  .rt-n{width:24px;height:24px;border-radius:50%;background:var(--gold);color:#2b1a14;display:grid;place-items:center;font-family:var(--sans);font-size:11px;flex:none}
+  .rt-l{flex:1;font-size:15px;min-width:0}.rt-list .adm-mini{margin:0;padding:4px 9px}.rt-list .adm-mini:disabled{opacity:.25;cursor:default}
+  .rt-skip{display:flex;align-items:center;gap:5px;font-family:var(--sans);font-size:11px;letter-spacing:.08em;white-space:nowrap;margin-left:6px}
+  .adm-colcust{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(239,230,218,.12)}.adm-colcust span{flex:1 1 100%;font-size:15px}.adm-colcust .btn{padding:8px 12px;font-size:10.5px}
+  .adm-swnew{background:none;border:1px dashed rgba(196,164,106,.6);color:var(--gold-soft);font-family:var(--sans);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;cursor:pointer;align-self:center}
+  .adm-swnew:hover{border-style:solid;color:var(--gold)}
+  .adm-swform{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px;border:1px solid rgba(196,164,106,.5);background:rgba(0,0,0,.2)}
+  .adm-swform input[type=text]{width:170px;padding:7px 9px}.adm-swform input[type=color]{width:38px;height:32px;padding:0;border:0;background:none}.adm-swform .btn{padding:7px 12px;font-size:10.5px}
+  @media (max-width:760px){ .adm-tabs{flex-wrap:nowrap;overflow-x:auto;gap:0 10px} .adm-tg>div{flex-wrap:nowrap} .rt-list li{flex-wrap:wrap} }
   .gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
   .loading{position:absolute;inset:0;display:grid;place-items:end center;padding-bottom:18vh;background:radial-gradient(ellipse at 50% 40%,#5a3424,#2a160f);color:#EFE6DA;font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;transition:opacity 1s;z-index:3;pointer-events:none}
   .loading.done{opacity:0}
@@ -938,7 +960,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795522132"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795523247"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -2498,14 +2520,14 @@ function makeRoute(){
   const out=[], C0=[ROT.x,ROT.z], R=ROT.R;
   // 1. de hal: start midden in de rotonde, dan alles wat er gepresenteerd staat, rondom
   out.push({id:"start",room:"hall",sec:"hall",eye:C0,look:P2(-2.5,R+40),cap:"hall"});
-  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
+  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
   out.push({id:"vw",room:"hall",sec:"hall",eye:P2(-2.5,R-3.4),look:P2(-2.5,R+60),cap:"hall"});
   // 2. de ruimtes in vaste volgorde: over mij → samenwerkingen → collectie → contact (binnen een groep: volgorde uit Instellingen)
   OPEN0.map((k,i)=>({k,i})).sort((p,q)=>spaceRank(p.k)-spaceRank(q.k)||p.i-q.i).forEach(({k})=>{
     const th=DOOR_TH[k], X=XF[k], Lg=legOf(k), W=q=>X.toW(q[0],q[1]).map(v=>+v.toFixed(2)), cz=(Lg.zN+Lg.zS)/2;
     out.push({id:"d_"+k,room:"hall",sec:k,eye:P2(th,R-5.2),look:P2(th,R-.2),door:k},{id:"t_"+k+"1",room:"hall",sec:k,eye:P2(th,R-1.5),look:P2(th,R+6),transit:true});
     out.push({id:"e_"+k,room:k,sec:k,eye:W([-6.4,Lg.dz]),look:W([-15,Lg.dz]),space:k});
-    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).forEach(p=>out.push({...objNode(p.o),sec:k}));
+    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(p=>out.push({...objNode(p.o),sec:k}));
     out.push({id:"t_"+k+"2",room:k,sec:k,eye:W([-6.4,Lg.dz]),look:C0,transit:true},{id:"t_"+k+"3",room:"hall",sec:k,eye:P2(th,R-1.7),look:C0,transit:true}); });
   // 3. via de bogen naar de tuin, eindigen bij de ingang met zicht op de rotonde
   // naar buiten lopen kan niet meer: de rondleiding eindigt weer midden in de rotonde
@@ -3204,7 +3226,7 @@ window.addEventListener("keydown",e=>{ if(document.querySelector(".modal.open")|
    BEHEER: inhoud uit de database, alleen Elise (eigenaar) mag schrijven
    ==================================================================== */
 let admColFilter="";
-const LIVE_DOC="site/content", DRAFT_DOC="site/draft"; let DOC=LIVE_DOC, liveUpdated=0; let dbH=null, assetsH=null, isOwner=false, content=null, draft=null, admTab="ruimtes";
+const LIVE_DOC="site/content", DRAFT_DOC="site/draft"; let DOC=LIVE_DOC, liveUpdated=0; let dbH=null, assetsH=null, isOwner=false, content=null, draft=null, admTab="start";
 const clone=o=>JSON.parse(JSON.stringify(o));
 const DEF={T:{nl:{...T.nl},en:{...T.en}}, ITEMS:{}, ROOMS:clone(ROOMDATA)};
 const WALL_IDS=["h1","h2","h3","h4","h5","h6","h7","h8","h9","h10","a1","a2","a3","a4","a5","a6"];
@@ -3222,7 +3244,7 @@ const str=(v,d="")=>typeof v==="string"?v:d;
 const splitPath=path=>{ const a=path.split("."); return a[0]==="texts"?[a[0],a[1],a.slice(2).join(".")]:a; };
 const getPath=(o,path)=>splitPath(path).reduce((a,k)=>a==null?a:a[k],o);
 const setPath=(o,path,v)=>{ const ks=splitPath(path); let a=o; ks.slice(0,-1).forEach(k=>{ if(a[k]==null) a[k]={}; a=a[k]; }); a[ks[ks.length-1]]=v; };
-function currentContent(){ return { brand2:true, decor1:true, brand3:true, brand4:true, study1:true, study:clone(STUDY), swatches:clone(SWLIB),
+function currentContent(){ return { brand2:true, decor1:true, brand3:true, brand4:true, study1:true, study:clone(STUDY), swatches:clone(SWLIB), route:clone(ROUTE),
   coll:COLL_ALL.map(b=>({...clone(b),dims:{...(b.dims||{})}})), show:clone(SHOW), plinth:PLINTH.filter(Boolean),
   items:Object.fromEntries(WALL_IDS.filter(id=>ITEMS[id]).map(id=>[id,{nl:{...ITEMS[id].nl},en:{...ITEMS[id].en},img:ITEMS[id].img||"",dims:{...(ITEMS[id].dims||{})},modelImg:ITEMS[id].modelImg||""}])),
   texts:{nl:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.nl[k]||""])),en:Object.fromEntries(TEXT_GROUPS.flatMap(g=>g[1]).map(([k])=>[k,T.en[k]||""]))},
@@ -3253,7 +3275,7 @@ function applyContent(d){
   if(Array.isArray(d.collections)&&d.collections.length) COLLS=d.collections.filter(c=>c&&typeof c.id==="string").map(c=>({id:c.id,type:["bag","art","other"].includes(c.type)?c.type:"other",nl:{t:str(c.nl&&c.nl.t)||"Collectie",p:str(c.nl&&c.nl.p)},en:{t:str(c.en&&c.en.t)||str(c.nl&&c.nl.t)||"Collection",p:str(c.en&&c.en.p)}}));
   else if(d.collNames&&typeof d.collNames==="object"){ COLLS=JSON.parse(JSON.stringify(COLLS_DEF)); for(const l of ["nl","en"]){ const n=d.collNames[l]||{}; if(str(n.bag)) COLLS[0][l].t=n.bag; if(str(n.art)) COLLS[1][l].t=n.art; } }
   if(Array.isArray(d.partners)) PARTNERS=d.partners.filter(p=>p&&typeof p.id==="string").map(p=>({id:p.id,name:str(p.name),web:str(p.web),email:str(p.email),phone:str(p.phone),logo:str(p.logo),nl:{p:str(p.nl&&p.nl.p)},en:{p:str(p.en&&p.en.p)}}));
-  STUDY=normStudy(d.study); SWLIB=normSw(d.swatches); syncSW(); SPACES=spacesFrom(d); OBJS=objsFrom(d); syncObjects(); MENU=normMenu(d.menu); applyMenu();
+  STUDY=normStudy(d.study); ROUTE=normRoute(d.route); SWLIB=normSw(d.swatches); syncSW(); SPACES=spacesFrom(d); OBJS=objsFrom(d); syncObjects(); MENU=normMenu(d.menu); applyMenu();
   PILLAR={}; if(d.pillars&&typeof d.pillars==="object") PILLAR_IDS.forEach(id=>{ const v=str(d.pillars[id]); if(v) PILLAR[id]=v; });
   if(d.doorsOn&&typeof d.doorsOn==='object') DOOR_ON={about:d.doorsOn.about!==false,contact:d.doorsOn.contact!==false,coll:d.doorsOn.coll!==false};
   if(Array.isArray(d.plinth)){ const a=d.plinth.map(v=>str(v)).filter(Boolean); PLINTH=[0,1,2,3,4].map(i=>a[i]||""); }
@@ -3305,11 +3327,12 @@ function parseMediaLink(u){ u=(u||"").trim(); if(!u) return null; if(!/^https?:\
   if((m=/vimeo\.com\/(?:video\/)?(\d+)/.exec(u))) return {t:"vimeo",src:m[1]};
   if(/\.(mp4|webm|mov)(\?|#|$)/i.test(u)) return {t:"video",src:u}; if(/\.(jpe?g|png|webp|gif)(\?|#|$)/i.test(u)) return {t:"img",src:u}; return {t:"link",src:u}; }
 function custAdm(i){ const b=draft.coll[i]; if(isFlat(b.kind)) return ""; const P="coll."+i+".custom", cu=b.custom||{}, on=!!cu.on, foto=cu.mode==="foto";
-  const grp=(g,lab)=>{ const sel=Array.isArray(cu[g])?cu[g]:[]; return `<div class="adm-cgrp"><span class="adm-lab">${lab} <small>${sel.length?"":"(niets aangevinkt = alle kleuren)"}</small></span><div class="adm-sw">${SW[g].map(([k,nl,en,hx])=>`<label class="adm-swi${sel.includes(k)?" on":""}" title="${nl}"><input type="checkbox" data-cswatch="${i}" data-g="${g}" data-k="${k}"${sel.includes(k)?" checked":""}><i style="background:${hx}"></i>${nl}</label>`).join("")}</div></div>`; };
+  const SWD=g=>(draft.swatches||SWLIB).filter(x=>x.g===g&&!x.off).map(x=>[x.k,x.nl.t,x.en.t,x.img?`url('${escAttr(x.img)}') center/cover`:x.hex]);
+  const grp=(g,lab)=>{ const sel=Array.isArray(cu[g])?cu[g]:[]; return `<div class="adm-cgrp"><span class="adm-lab">${lab} <small>${sel.length?"":"(niets aangevinkt = alle kleuren)"}</small></span><div class="adm-sw">${SWD(g).map(([k,nl,en,hx])=>`<label class="adm-swi${sel.includes(k)?" on":""}" title="${nl}"><input type="checkbox" data-cswatch="${i}" data-g="${g}" data-k="${k}"${sel.includes(k)?" checked":""}><i style="background:${hx}"></i>${nl}</label>`).join("")}<button type="button" class="adm-swnew" data-swnew="${g}" data-ci="${i}">+ ${g==="hw"?"Nieuw beslag":g==="acc"?"Nieuwe detailkleur":"Nieuw materiaal / kleur"}</button></div></div>`; };
   return `<details class="adm-det adm-cust"${on?" open":""}><summary>Personaliseren in het atelier${on?" · aan":""}</summary><div class="adm-detb">
     <label class="adm-check"><input type="checkbox" data-chk="${P}.on"${on?" checked":""} data-rrchk="1"> Bezoekers kunnen deze tas personaliseren (staat in het atelier, knop "Personaliseer" in het informatielabel)</label>
     ${on?`<div class="row"><div><label>Hoe worden de kleuren getoond?</label><select data-p="${P}.mode" data-rr="1"><option value="kleur"${!foto?" selected":""}>Kleuren automatisch op de foto toepassen</option><option value="foto"${foto?" selected":""}>Eigen foto per kleur (jij uploadt per kleur een foto)</option></select></div><div></div></div>
-    ${foto?`<p class="adm-hint">Upload per leerkleur een foto van de tas in die kleur. Alleen kleuren met een foto worden aan bezoekers getoond.</p><div class="adm-cphotos">${SW.body.map(([k,nl,en,hx])=>`<div class="adm-cph"><span><i style="background:${hx}"></i>${nl}</span>${upl(P+".photos."+k)}</div>`).join("")}</div>`
+    ${foto?`<p class="adm-hint">Upload per leerkleur een foto van de tas in die kleur. Alleen kleuren met een foto worden aan bezoekers getoond.</p><div class="adm-cphotos">${SWD("body").map(([k,nl,en,hx])=>`<div class="adm-cph"><span><i style="background:${hx}"></i>${nl}</span>${upl(P+".photos."+k)}</div>`).join("")}</div><button type="button" class="adm-swnew" data-swnew="body" data-ci="${i}">+ Nieuw materiaal / kleur</button>`
       :`<p class="adm-hint">Kies welke kleuren bezoekers mogen kiezen. De kleuren worden op je productfoto toegepast.</p>${grp("body","Leer")}${grp("acc","Details")}${grp("hw","Beslag")}`}`:""}
   </div></details>`; }
 function mediaAdm(i){ const b=draft.coll[i], P="coll."+i, M=b.media||[], lab={video:"▶ Video",yt:"▶ YouTube",vimeo:"▶ Vimeo",link:"Link"};
@@ -3415,7 +3438,7 @@ function renderAdmin(){
   else if(admTab==="cols"){
     h+=`<p class="adm-hint">Je collecties met hun producten. Elke collectie krijgt een kopje in het menu onder Collectie. In een etalage vink je daarna hele collecties of losse producten aan.</p>`;
     const grp=(c,i,list)=>`<details data-sec="${c?escAttr(c.nl.t):"Zonder collectie"}" class="adm-det"${admColFilter===(c?c.id:"-")?" open":""}><summary>${c?escAttr(c.nl.t):"Zonder collectie"} · ${list.length} product${list.length===1?"":"en"}</summary><div class="adm-detb">
-      ${c?`<div class="adm-card">${two("collections."+i+".$.t","Naam collectie")}${two("collections."+i+".$.p","Korte omschrijving",1)}<div class="row"><div><label>Soort</label><select data-p="collections.${i}.type">${[["bag","Tassen & lederwaren"],["art","Kunst & posters"],["other","Anders"]].map(([v,l])=>`<option value="${v}"${c.type===v?" selected":""}>${l}</option>`).join("")}</select></div><div><label>&nbsp;</label><button type="button" class="adm-del" data-delcol="${i}">Collectie verwijderen</button></div></div></div>`:""}
+      ${c?`<div class="adm-card">${two("collections."+i+".$.t","Naam collectie")}${two("collections."+i+".$.p","Korte omschrijving",1)}<div class="row"><div><label>Soort</label><select data-p="collections.${i}.type">${[["bag","Tassen & lederwaren"],["art","Kunst & posters"],["other","Anders"]].map(([v,l])=>`<option value="${v}"${c.type===v?" selected":""}>${l}</option>`).join("")}</select></div><div><label>&nbsp;</label><button type="button" class="adm-del" data-delcol="${i}">Collectie verwijderen</button></div></div>${c.type!=="art"?(()=>{ const bags=list.filter(([b])=>!isFlat(b.kind)), on=bags.filter(([b])=>b.custom&&b.custom.on).length; return `<div class="adm-colcust"><span><b>Personaliseren</b> · ${on} van ${bags.length} tassen staan open voor personalisatie</span><button type="button" class="btn ghost-light" data-colcust="${escAttr(c.id)}" data-v="1">Alle tassen aan</button><button type="button" class="btn ghost-light" data-colcust="${escAttr(c.id)}" data-v="0">Alle tassen uit</button><button type="button" class="linkbtn" data-gotab="stalen">Materialen, kleuren en beslag beheren →</button></div>`; })():""}</div>`:""}
       ${list.map(([b,j])=>productCard(j,true)).join("")}<button type="button" class="btn ghost-light" data-add="prod" data-col="${c?escAttr(c.id):""}">+ Product in ${c?escAttr(c.nl.t):"deze groep"}</button></div></details>`;
     h+=draft.collections.map((c,i)=>grp(c,i,draft.coll.map((b,j)=>[b,j]).filter(([b])=>draftCollOf(b)===c.id))).join("");
     const loose=draft.coll.map((b,j)=>[b,j]).filter(([b])=>!draftCollOf(b)); if(loose.length) h+=grp(null,-1,loose);
@@ -3459,6 +3482,8 @@ function renderAdmin(){
   }
   if(!admScope&&admTab==="studie") h+=studyAdmin();
   if(!admScope&&admTab==="stalen") h+=swAdmin();
+  if(!admScope&&admTab==="route") h+=routeAdmin();
+  if(!admScope&&admTab==="start") h+=startAdmin();
   if(!admScope&&admTab==="aanvragen"){ h+=`<p class="adm-hint">Alle aanvragen die bezoekers via het formulier versturen. Mail ze terug via het e-mailadres en houd de status bij; klanten met een account zien die status terug.</p><div id="admReqs"><p class="adm-hint">Laden…</p></div>`; }
   if(!admScope&&admTab==="info"){
     h+=`<h4 class="adm-h">Contactgegevens</h4><p class="adm-hint">Deze gegevens komen overal op de website terug: op het contactbord, in het uitklapmenu bij Contact, in het informatielabel van de contactkamer en op elk productblad. Laat een veld leeg om het niet te tonen.</p>
@@ -3469,6 +3494,8 @@ function renderAdmin(){
   if(!admScope&&admTab==="aanvragen") loadAdminRequests(box.querySelector("#admReqs"));
   if(!admScope&&admTab==="studie") studyAdminBind(box);
   if(!admScope&&admTab==="stalen") swAdminBind(box);
+  if(!admScope&&admTab==="route") routeAdminBind(box);
+  admExtraBind(box);
   // snelnavigatie binnen het tabblad: knopjes naar elk onderdeel
   { const J=document.getElementById("admJump"), secs=[...box.querySelectorAll("[data-sec]")]; J.innerHTML="";
     if(!admScope&&secs.length>1){ J.innerHTML=`<span>Ga naar</span>`+secs.map((el,i)=>`<button type="button" data-j="${i}"${el.dataset.sub?' class="sub"':""}>${escAttr(el.dataset.sec)}</button>`).join("");
@@ -3553,7 +3580,7 @@ function updatePens(){ if(!pensOn) return; try{ const room=roomKey(pose.x,pose.z
     if(a.el._on!==on){ a.el._on=on; a.el.classList.toggle("on",on); } } }catch(e){ pensOn=false; console.warn("pennetjes uit",e); } }
 function openAdmin(scope){ draft=currentContent();
   if(Array.isArray(scope)){ admScope=scope; admScopeTitle="Bewerken · "+penLabel(scope[0]); }
-  else { admScope=null; if(!["ruimtes","partners","cols","items","texts","info"].includes(admTab)) admTab="ruimtes"; }
+  else { admScope=null; if(!ADM_TABS.includes(admTab)) admTab="start"; }
   renderAdmin(); document.getElementById("admNote").textContent=dbH?"":"Opslaan is hier niet beschikbaar."; document.getElementById("adminModal").classList.add("open"); }
 async function saveDraft(){ if(!dbH||!isOwner) return false; const d={...clone(draft),updated:Date.now()}; try{ await dbH.doc(DOC).set(d); applyContent(d); markDirty(); return true; }catch(e){ return false; } }
 document.getElementById("admSave").addEventListener("click",async()=>{ const note=document.getElementById("admNote"); if(!dbH||!isOwner){ note.textContent="Alleen de eigenaar kan opslaan."; return; }
@@ -4436,6 +4463,60 @@ swMain.addEventListener("scroll",()=>{ if(!siteOpen||MENU_OPTS.follow===false) r
 { let vo=0; const loop=()=>{ const want=siteOpen&&!siteWide&&window.innerWidth>760?siteEl.offsetWidth/2:0;
     if(Math.abs(want-vo)>.3){ vo+=(want-vo)*.12; if(Math.abs(want-vo)<=.3) vo=want; const W=scene.clientWidth, H=scene.clientHeight; if(vo<.3){ camera.clearViewOffset(); } else camera.setViewOffset(W,H,vo,0,W,H); }
     requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+
+// =====================================================================================
+//  BEHEER: route zelf bepalen, overzichtspagina, snel materialen/kleuren aanmaken
+// =====================================================================================
+const ADM_TABS=["start","cols","stalen","items","studie","ruimtes","route","partners","menu","texts","info","aanvragen"];
+let ROUTE={order:{},skip:[]};
+function normRoute(r){ const o={order:{},skip:[]}; if(r&&typeof r==="object"){ if(r.order&&typeof r.order==="object") Object.keys(r.order).forEach(k=>{ if(Array.isArray(r.order[k])) o.order[k]=r.order[k].filter(x=>typeof x==="string"); });
+  if(Array.isArray(r.skip)) o.skip=r.skip.filter(x=>typeof x==="string"); } return o; }
+const routeIdx=(R,o)=>{ const L=R.order[o.space]; const i=L?L.indexOf(o.id):-1; return i<0?1e6:i; };
+function routeCmp(p,q){ return routeIdx(ROUTE,p.o)-routeIdx(ROUTE,q.o); }
+function routeRoomsAdm(){ return ["hall",...OPEN0.slice().sort((a,b)=>spaceRank(a)-spaceRank(b))]; }
+function routeListAdm(room){ const R=draft.route||(draft.route={order:{},skip:[]}), ROT2=ROT;
+  const list=draft.objects.filter(o=>o.space===room&&o.type!=="bank"&&o.type!=="plant"&&!o.off).map(o=>{ let a=0; try{ const w=objWorld(o);
+      if(room==="hall") a=normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT2.z,w.x-ROT2.x))); else { const Lg=legOf(room), cz=(Lg.zN+Lg.zS)/2; a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; } }catch(e){}
+      return {o,a,r:routeRank(o)}; });
+  return list.sort((p,q)=>p.r-q.r||p.a-q.a).sort((p,q)=>routeIdx(R,p.o)-routeIdx(R,q.o)); }
+const roomName=k=>k==="hall"?menuLabel("hall"):spaceTitle(k);
+function routeAdmin(){ const R=draft.route||(draft.route={order:{},skip:[]});
+  let h=`<p class="adm-hint">De volgorde waarin bezoekers met scrollen, de pijlen en "Volgende" door het gebouw lopen. Standaard volgt de route de volgorde van de website. Verander hier per ruimte de volgorde met ↑ en ↓, of laat een item overslaan (het blijft dan wel zichtbaar). De volgorde van de ruimtes zelf stel je in bij <button type="button" class="linkbtn" data-gotab="menu">Menu</button>.</p>`;
+  routeRoomsAdm().forEach((k,ri)=>{ const list=routeListAdm(k), custom=!!R.order[k];
+    h+=`<div class="adm-card" data-sec="${escAttr(roomName(k))}"><div class="rt-head"><h5 class="adm-h5" style="margin:0">${ri+1}. ${escAttr(roomName(k))}</h5><span class="rt-tag">${custom?"Eigen volgorde":"Standaard (volgens website)"}</span>${custom?`<button type="button" class="linkbtn" data-rtreset="${escAttr(k)}">Terug naar standaard</button>`:""}</div>
+      ${list.length?`<ol class="rt-list">${list.map((e,j)=>{ const sk=R.skip.includes(e.o.id); return `<li class="${sk?"skip":""}"><span class="rt-n">${j+1}</span><span class="rt-l">${escAttr(penLabel("obj:"+e.o.id))}</span>
+        <button type="button" class="adm-mini" data-rtmove="${escAttr(k)}" data-id="${escAttr(e.o.id)}" data-d="-1"${j===0?" disabled":""} aria-label="Eerder">↑</button><button type="button" class="adm-mini" data-rtmove="${escAttr(k)}" data-id="${escAttr(e.o.id)}" data-d="1"${j===list.length-1?" disabled":""} aria-label="Later">↓</button>
+        <label class="rt-skip"><input type="checkbox" data-rtskip="${escAttr(e.o.id)}"${sk?" checked":""}> Overslaan</label></li>`; }).join("")}</ol>`:`<p class="adm-hint">Nog geen items in deze ruimte.</p>`}</div>`; });
+  return h; }
+function routeAdminBind(box){ const R=draft.route, re=()=>{ const y=box.scrollTop; renderAdmin(); box.scrollTop=y; };
+  box.querySelectorAll("[data-rtmove]").forEach(b=>b.addEventListener("click",()=>{ const k=b.dataset.rtmove, ids=routeListAdm(k).map(e=>e.o.id), i=ids.indexOf(b.dataset.id), j=i+(+b.dataset.d); if(i<0||j<0||j>=ids.length) return; [ids[i],ids[j]]=[ids[j],ids[i]]; R.order[k]=ids; re(); }));
+  box.querySelectorAll("[data-rtreset]").forEach(b=>b.addEventListener("click",()=>{ delete R.order[b.dataset.rtreset]; re(); }));
+  box.querySelectorAll("[data-rtskip]").forEach(c=>c.addEventListener("change",()=>{ const id=c.dataset.rtskip; R.skip=R.skip.filter(x=>x!==id); if(c.checked) R.skip.push(id); re(); })); }
+// overzicht: alles op één plek, met een korte uitleg en de stand van zaken
+function startAdmin(){ const D=draft, prods=D.coll||[], hid=prods.filter(b=>b.off).length, cust=prods.filter(b=>b.custom&&b.custom.on).length, sw=(D.swatches||SWLIB), sp=(D.spaces||[]).filter(x=>x.on).length, S2=D.study||STUDY, R=D.route||{order:{},skip:[]};
+  const card=(tab,t,p,stat)=>`<button type="button" class="adm-tile" data-gotab="${tab}"><b>${t}</b><span>${p}</span>${stat?`<small>${stat}</small>`:""}</button>`;
+  const dirty=((content&&content.updated)||0)>liveUpdated;
+  return `<div class="adm-status ${dirty?"dirty":""}">${dirty?`<b>Je concept bevat wijzigingen die bezoekers nog niet zien.</b> Klik bovenin het scherm op <b>Live zetten</b> als alles klopt.`:`<b>Alles staat live.</b> Wat jij ziet, zien bezoekers ook.`}</div>
+  <h4 class="adm-h">Collectie</h4><div class="adm-tiles">${card("cols","Producten","Collecties en producten: foto's, tekst, prijs, maten, personaliseren en verbergen.",`${prods.length} producten${hid?` · ${hid} verborgen`:""} · ${cust} te personaliseren`)}
+    ${card("stalen","Materialen & kleuren","Leer, detailkleuren en beslag met foto en uitleg. Ook voor de personaliseer-tafel en de stalenwand.",`${sw.filter(x=>x.g==="body").length} leer · ${sw.filter(x=>x.g==="acc").length} details · ${sw.filter(x=>x.g==="hw").length} beslag`)}</div>
+  <h4 class="adm-h">Over mij</h4><div class="adm-tiles">${card("items","Werken","Je diploma, eerdere tassen en andere stukken aan de wanden: foto's en teksten.","")}
+    ${card("studie","Studie","Voortgang, architectuurportfolio, interieurprojecten en stage.",`Jaar ${S2.cur} · ${(S2.projects||[]).length} projecten · ${(S2.updates||[]).length} updates`)}</div>
+  <h4 class="adm-h">Gebouw</h4><div class="adm-tiles">${card("ruimtes","Ruimtes","Welke ruimtes open zijn, hun naam, sfeer en foto boven de deur.",`${sp} ruimtes open`)}
+    ${card("route","Route","De volgorde waarin bezoekers door het gebouw lopen, en wat ze overslaan.",Object.keys(R.order).length?`${Object.keys(R.order).length} ruimte(s) met eigen volgorde`:"Standaard: volgt de website")}
+    ${card("partners","Samenwerkingen","Merken en makers waarmee je samenwerkt.",`${(D.partners||[]).length} samenwerkingen`)}${card("menu","Menu","Menuknoppen, hun volgorde en wat er gebeurt als je op een item klikt.","")}</div>
+  <h4 class="adm-h">Algemeen</h4><div class="adm-tiles">${card("texts","Teksten","Alle teksten op borden en op de website, inclusief de juridische pagina's.","")}${card("info","Contactgegevens","Telefoon, e-mail, Instagram, LinkedIn, KvK en btw.",D.email&&!/voorbeeld/.test(D.email)?escAttr(D.email):"E-mail nog invullen")}${card("aanvragen","Aanvragen","Berichten en pre-orders van bezoekers.","")}</div>
+  <p class="adm-hint" style="margin-top:18px">Tip: in het gebouw zie je bij elk item een pennetje. Klik erop om alleen dat item te bewerken.</p>`; }
+// snel een nieuw materiaal, kleur of beslag aanmaken vanuit het personaliseren van een product; personalisatie per collectie
+function admExtraBind(box){ const re=()=>{ const o=[...box.querySelectorAll("details.adm-det")].map(d=>d.open), y=box.scrollTop; renderAdmin(); box.querySelectorAll("details.adm-det").forEach((d,i)=>{ if(o[i]) d.open=true; }); box.scrollTop=y; };
+  box.querySelectorAll("[data-swnew]").forEach(b=>b.addEventListener("click",()=>{ const g=b.dataset.swnew, ci=+b.dataset.ci, f=document.createElement("span"); f.className="adm-swform";
+    f.innerHTML=`<input type="text" placeholder="${g==="hw"?"Bijv. Mat goud":g==="acc"?"Bijv. Bosgroen":"Bijv. Nappa cognac"}" aria-label="Naam"><input type="color" value="${g==="hw"?"#c9a45c":"#8a6a50"}" aria-label="Kleur"><button type="button" class="btn gold">Toevoegen</button><button type="button" class="linkbtn">Annuleren</button>`;
+    b.replaceWith(f); const [nm,col,ok,cx]=f.querySelectorAll("input,button"); nm.focus();
+    cx.addEventListener("click",re); const add=()=>{ const t=nm.value.trim(); if(!t){ nm.focus(); return; } const A=draft.swatches||(draft.swatches=JSON.parse(JSON.stringify(SWLIB))), k=t.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"").slice(0,18)+Date.now().toString(36).slice(-3);
+      A.push({id:g+"_"+k,k,g,hex:col.value,img:"",nl:{t,p:""},en:{t,p:""}}); const cu=draft.coll[ci]&&draft.coll[ci].custom; if(cu&&Array.isArray(cu[g])&&cu[g].length) cu[g].push(k);
+      document.getElementById("admNote").textContent=`"${t}" is toegevoegd. Een foto en uitleg geef je in Materialen & kleuren. Vergeet niet op te slaan.`; re(); };
+    ok.addEventListener("click",add); nm.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); add(); } }); }));
+  box.querySelectorAll("[data-colcust]").forEach(b=>b.addEventListener("click",()=>{ const c=b.dataset.colcust, on=b.dataset.v==="1";
+    draft.coll.forEach(p=>{ if(draftCollOf(p)!==c||isFlat(p.kind)) return; p.custom={mode:"kleur",body:[],acc:[],hw:[],photos:{},...(p.custom||{}),on}; }); re(); })); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
