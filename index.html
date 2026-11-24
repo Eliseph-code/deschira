@@ -960,7 +960,7 @@ import {OutlinePass} from "three/addons/postprocessing/OutlinePass.js";
 import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
 
-{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795523247"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
+{ const h=document.getElementById("admHost"); if(h){ try{ const r=await fetch("admin.html?v=1795523366"); if(r.ok) h.outerHTML=await r.text(); }catch(e){} } }
 /* =====================================================================
    INSTELLINGEN
    CONTACT_EMAIL : adres voor berichten (ook zichtbaar op de site)
@@ -4484,7 +4484,7 @@ function routeAdmin(){ const R=draft.route||(draft.route={order:{},skip:[]});
   let h=`<p class="adm-hint">De volgorde waarin bezoekers met scrollen, de pijlen en "Volgende" door het gebouw lopen. Standaard volgt de route de volgorde van de website. Verander hier per ruimte de volgorde met ↑ en ↓, of laat een item overslaan (het blijft dan wel zichtbaar). De volgorde van de ruimtes zelf stel je in bij <button type="button" class="linkbtn" data-gotab="menu">Menu</button>.</p>`;
   routeRoomsAdm().forEach((k,ri)=>{ const list=routeListAdm(k), custom=!!R.order[k];
     h+=`<div class="adm-card" data-sec="${escAttr(roomName(k))}"><div class="rt-head"><h5 class="adm-h5" style="margin:0">${ri+1}. ${escAttr(roomName(k))}</h5><span class="rt-tag">${custom?"Eigen volgorde":"Standaard (volgens website)"}</span>${custom?`<button type="button" class="linkbtn" data-rtreset="${escAttr(k)}">Terug naar standaard</button>`:""}</div>
-      ${list.length?`<ol class="rt-list">${list.map((e,j)=>{ const sk=R.skip.includes(e.o.id); return `<li class="${sk?"skip":""}"><span class="rt-n">${j+1}</span><span class="rt-l">${escAttr(penLabel("obj:"+e.o.id))}</span>
+      ${list.length?`<ol class="rt-list">${list.map((e,j)=>{ const sk=R.skip.includes(e.o.id); return `<li class="${sk?"skip":""}"><span class="rt-n">${j+1}</span><span class="rt-l">${escAttr(rtLabel(e.o))}</span>
         <button type="button" class="adm-mini" data-rtmove="${escAttr(k)}" data-id="${escAttr(e.o.id)}" data-d="-1"${j===0?" disabled":""} aria-label="Eerder">↑</button><button type="button" class="adm-mini" data-rtmove="${escAttr(k)}" data-id="${escAttr(e.o.id)}" data-d="1"${j===list.length-1?" disabled":""} aria-label="Later">↓</button>
         <label class="rt-skip"><input type="checkbox" data-rtskip="${escAttr(e.o.id)}"${sk?" checked":""}> Overslaan</label></li>`; }).join("")}</ol>`:`<p class="adm-hint">Nog geen items in deze ruimte.</p>`}</div>`; });
   return h; }
@@ -4517,6 +4517,14 @@ function admExtraBind(box){ const re=()=>{ const o=[...box.querySelectorAll("det
     ok.addEventListener("click",add); nm.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); add(); } }); }));
   box.querySelectorAll("[data-colcust]").forEach(b=>b.addEventListener("click",()=>{ const c=b.dataset.colcust, on=b.dataset.v==="1";
     draft.coll.forEach(p=>{ if(draftCollOf(p)!==c||isFlat(p.kind)) return; p.custom={mode:"kleur",body:[],acc:[],hw:[],photos:{},...(p.custom||{}),on}; }); re(); })); }
+
+const RT_BOARD={story:"Mijn verhaal",edu:"Opleiding (kopje)",vision:"Mijn weg / visie",services:"Ik ben op zoek naar",work:"Zo werkt bestellen",contact:"Contactgegevens",prod:"Elizian als producent",coll:"Collectie-introductie"};
+function rtLabel(o){ const base=(OBJ_TYPES[o.type]||{l:"Item"}).l;
+  if(o.type==="tekst"&&o.board&&RT_BOARD[o.board]) return "Tekstbord · "+RT_BOARD[o.board];
+  if(o.type==="tekst"&&o.bind==="space") return "Tekstbord · "+spaceTitle(o.space);
+  if(["etalage","vitrine","podium","rek"].includes(o.type)){ const ids=objProducts(o).slice(0,3).map(id=>{ const b=(draft&&draft.coll||COLL).find(x=>x.id===id); return b?(b.nl&&b.nl.t)||"":""; }).filter(Boolean); return base+(ids.length?" · "+ids.join(", ")+(objProducts(o).length>3?" …":""):" · leeg"); }
+  if(o.type==="studie") return "Studie & portfolio";
+  const lab=penLabel("obj:"+o.id); return lab; }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
