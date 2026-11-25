@@ -5117,7 +5117,7 @@ OB.studiewand=(o,G)=>{ const S2=studioMats(), Q=S2.Q, L=legOf(o.space), W=L.zN-L
     { const bk=[[.035,.32,.24,0x2f2a26],[.03,.3,.23,0xd9cbb0],[.04,.33,.25,0x6f4b36]]; let x=cx-.75; bk.forEach(([t,h,d,c])=>{ qAdd(G,rb(t,h,d,.004,1),new THREE.MeshStandardMaterial({color:c,roughness:.8}),x+t/2,sh(4)+h/2,zc); x+=t+.004; }); } }
   { const cx=JW.nx[1], body=SM.body();
     // vak 0: rollen Odessa-leer rechtop, in de collectiekleuren
-    body.slice(0,6).forEach((b,i)=>{ const x=cx-.75+i*.29, r=.085+(i%2)*.01; sA(G,new THREE.CylinderGeometry(r,r,.45,36),SM.ode(b.hex),x,sh(0)+.225,zc+(i%2?.04:-.03),{uy:i*.3}); qAdd(G,new THREE.TorusGeometry(r+.002,.005,6,36),S2.leaD,x,sh(0)+.32,zc+(i%2?.04:-.03),{rx:Math.PI/2}); });
+    { const r=.08, sp=2*r+.012; body.slice(0,Math.min(body.length,Math.floor((JW.NW-.1)/sp))).forEach((b,i)=>{ const ro=leatherRoll(b.hex,r,.46,i*.9); ro.position.set(cx-JW.NW/2+.06+r+i*sp,sh(0)+.23,zc+(i%2?.03:-.02)); ro.rotation.y=i*.7; G.add(ro); }); }
     // vak 1: netjes opgevouwen huiden, gestapeld per kleur
     body.slice(0,7).forEach((b,i)=>{ const t=.022; sA(G,rb(.6,t,.27,.01,2),SM.ode(b.hex),cx-.45,sh(1)+t/2+i*t,zc,{ry:(i%2?.02:-.015)}); });
     body.slice(3,8).forEach((b,i)=>{ const t=.022; sA(G,rb(.5,t,.25,.01,2),SM.ode(b.hex),cx+.42,sh(1)+t/2+i*t,zc,{ry:(i%2?-.02:.02)}); });
@@ -5170,19 +5170,73 @@ OB.studiewand=(o,G)=>{ const S2=studioMats(), Q=S2.Q, L=legOf(o.space), W=L.zN-L
     qAdd(mq,sbox(.18,.12,.14,.002),S2.card,-.08,.075,-.04); qAdd(mq,sbox(.12,.2,.1,.002),S2.card,.1,.115,-.06); qAdd(mq,sbox(.22,.006,.12,.001),S2.balsa,-.04,.14,-.03); qAdd(mq,sbox(.08,.06,.08,.002),S2.paper,.12,.045,.08);
     for(let i=0;i<4;i++) qAdd(mq,new THREE.CylinderGeometry(.004,.004,.06,6),S2.balsa,-.15+i*.04,.045,.1); }
   deskPlant(G,3.1,y,z0+.3,.4,41);
-  // ---- linnen kuipstoel op vijfteen voet, met de rug naar de bezoeker
-  { const C=new THREE.Group(); C.position.set(-.45,0,D+JW.deskD+.55); C.rotation.y=Math.PI+.12; G.add(C);
-    for(let i=0;i<5;i++){ const a=i/5*6.283, leg=new THREE.Group(); leg.rotation.y=-a; C.add(leg); qAdd(leg,rb(.3,.03,.045,.012,3),SM.chrome,.15,.075,0,{rz:.08}); qAdd(leg,new THREE.SphereGeometry(.026,14,10),S2.black,.29,.03,0); qAdd(leg,sbox(.03,.03,.03,.008),SM.chrome,.29,.055,0); }
-    qAdd(C,new THREE.CylinderGeometry(.03,.04,.06,24),SM.chrome,0,.1,0); qAdd(C,new THREE.CylinderGeometry(.022,.022,.26,20),SM.chrome,0,.25,0); qAdd(C,new THREE.CylinderGeometry(.09,.06,.03,24),S2.steel,0,.385,0);
-    // zitkussen (gedraaid profiel) en kuiprug (gedeeltelijk gedraaid, dik profiel met afgeronde bovenrand)
-    sA(C,new THREE.LatheGeometry([[0,0],[.25,0],[.275,.012],[.285,.045],[.28,.075],[.26,.095],[.2,.1],[0,.1]].map(p=>new THREE.Vector2(p[0],p[1])),48),S2.lin,0,.4,0);
-    const prof=[[.27,0],[.3,.02],[.305,.2],[.3,.34],[.285,.37],[.265,.37],[.25,.35],[.245,.2],[.25,.02]].map(p=>new THREE.Vector2(p[0],p[1]));
-    const back=sA(C,new THREE.LatheGeometry(prof,56,Math.PI*.22,Math.PI*1.56),S2.lin,0,.43,0); back.scale.set(1,1,.92);
-    C.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); }
+  // ---- ergonomische bureaustoel, met de rug naar de bezoeker
+  { const C=ergoChair(); C.position.set(-.45,0,D+JW.deskD+.5); C.rotation.y=Math.PI+.12; G.add(C); }
   return {top:3.6,size:2.4}; };
 // camerastandpunt bij de studiewand: tussen werkbank en bureau, met de stoel in beeld
 { const _os=objStation0; objStation0=function(o,dist){ if(o.type!=="studiewand"||o.space==="hall") return _os(o,dist); const X=XF[o.space], A=AREAS[o.space]||AREAS.r, nx=Math.sin(o.ry||0), nz=Math.cos(o.ry||0);
     const lx=o.x+nx*(JW.D+.3), lz=o.z+nz*(JW.D+.3), ex=clamp(o.x+nx*4.1,A.x[0],A.x[1]), ez=clamp(o.z+nz*4.1,A.z[0],A.z[1]); return {eye:X.toW(ex,ez).map(v=>+v.toFixed(2)),look:X.toW(lx,lz).map(v=>+v.toFixed(2))}; }; }
+// ---- ergonomische bureaustoel (zonder hoofdsteun): alles uit zachte, afgeronde vormen (superellipsoïden en buizen),
+//      mesh rug in S-curve met lendensteun, gevormde zitting met watervalrand, T-armleuningen, aluminium kruisvoet
+function softBlob(a,c,b,e1,e2,seg=40,ring=24,deform){ const pos=[], idx=[], sp=(v,p)=>Math.sign(v)*Math.pow(Math.abs(v),p);
+  for(let i=0;i<=ring;i++){ const ph=-Math.PI/2+Math.PI*i/ring, cp=Math.cos(ph), spp=Math.sin(ph);
+    for(let j=0;j<=seg;j++){ const th=-Math.PI+2*Math.PI*j/seg; let x=a*sp(cp,e1)*sp(Math.cos(th),e2), y=c*sp(spp,e1), z=b*sp(cp,e1)*sp(Math.sin(th),e2); if(deform){ const r=deform(x,y,z); x=r[0]; y=r[1]; z=r[2]; } pos.push(x,y,z); } }
+  for(let i=0;i<ring;i++) for(let j=0;j<seg;j++){ const p=i*(seg+1)+j, q=p+seg+1; idx.push(p,p+1,q,q,p+1,q+1); }
+  const g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3)); g.setIndex(idx); g.computeVertexNormals(); return g; }
+function ergoChair(){ const C=new THREE.Group();
+  if(!SM.ergo2){ const E={};
+    E.alu=new THREE.MeshPhysicalMaterial({color:0xd6d3ce,metalness:.95,roughness:.22,clearcoat:.4,clearcoatRoughness:.2,envMapIntensity:1.2});
+    E.frame=new THREE.MeshPhysicalMaterial({color:0x222224,roughness:.38,metalness:.1,clearcoat:.25,clearcoatRoughness:.4});
+    E.plastic=new THREE.MeshStandardMaterial({color:0x18181a,roughness:.55});
+    E.chrome=new THREE.MeshStandardMaterial({color:0xd8dadc,metalness:1,roughness:.1});
+    E.pad=new THREE.MeshPhysicalMaterial({color:0x2a2a2d,roughness:.6,sheen:.4,sheenColor:new THREE.Color(0x6a6a6a)});
+    const seat=stMat("tex_05_linnen",.1,{rough:.95,ns:1.2,sheen:.45}); seat.color.setHex(0x45474b); E.seat=seat;
+    const mt=canvasTex(256,256,(g,w,h)=>{ g.clearRect(0,0,w,h); g.fillStyle="rgba(30,30,33,.6)"; g.fillRect(0,0,w,h); g.strokeStyle="rgba(16,16,18,1)"; g.lineWidth=3; for(let i=0;i<=w;i+=8){ g.beginPath(); g.moveTo(i,0); g.lineTo(i,h); g.stroke(); } g.lineWidth=2; for(let j=0;j<=h;j+=6){ g.beginPath(); g.moveTo(0,j); g.lineTo(w,j); g.stroke(); } });
+    mt.repeat.set(7,8); E.mesh=new THREE.MeshStandardMaterial({map:mt,color:0xffffff,transparent:true,depthWrite:false,side:THREE.DoubleSide,roughness:.7});
+    SM.ergo2=E; }
+  const E=SM.ergo2, V=(x,y,z)=>new THREE.Vector3(x,y,z), add=(g,m,x,y,z,r={})=>{ const o=new THREE.Mesh(g,m); o.position.set(x,y,z); if(r.rx) o.rotation.x=r.rx; if(r.ry) o.rotation.y=r.ry; if(r.rz) o.rotation.z=r.rz; C.add(o); return o; };
+  // ---- kruisvoet: vijf ronde, taps toelopende, licht gebogen armen
+  for(let i=0;i<5;i++){ const a=i/5*6.283+.31, arm=new THREE.Group(); arm.rotation.y=-a; C.add(arm);
+    const g=softBlob(.17,.022,.026,.6,.6,32,16,(x,y,z)=>{ const t=(x+.17)/.34, s=1-.45*t; return [x,y*s-.012*t*t,z*s]; });
+    const m=new THREE.Mesh(g,E.alu); m.position.set(.17,.1,0); m.rotation.z=-.06; arm.add(m);
+    const w=new THREE.Group(); w.position.set(.325,0,0); arm.add(w);
+    const st=new THREE.Mesh(new THREE.CylinderGeometry(.01,.012,.04,14),E.chrome); st.position.set(0,.07,0); w.add(st);
+    const fork=new THREE.Mesh(softBlob(.03,.016,.022,.5,.5,20,12),E.plastic); fork.position.set(-.01,.05,0); w.add(fork);
+    for(const s of [-1,1]){ const wh=new THREE.Mesh(softBlob(.027,.027,.009,.9,.5,24,12),E.plastic); wh.position.set(-.02,.027,s*.013); w.add(wh); } }
+  add(new THREE.LatheGeometry([[0,.085],[.065,.088],[.072,.1],[.062,.125],[.04,.14],[.03,.15],[0,.15]].map(p=>new THREE.Vector2(p[0],p[1])),40),E.alu,0,0,0);
+  // ---- gasveer en mechaniek (afgerond)
+  add(new THREE.CylinderGeometry(.022,.022,.13,28),E.chrome,0,.21,0); add(new THREE.CylinderGeometry(.03,.034,.12,28),E.plastic,0,.32,0);
+  const SY=.44; add(softBlob(.12,.032,.14,.45,.35,32,16),E.frame,0,SY-.055,-.01);
+  for(const s of [-1,1]){ const lv=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(s*.1,SY-.06,.06),V(s*.2,SY-.065,.07),V(s*.23,SY-.08,.08)]),12,.006,8,false),E.chrome); C.add(lv); add(softBlob(.022,.01,.016,.5,.5,16,10),E.plastic,s*.24,SY-.085,.08); }
+  // ---- zitting: zacht kussen, lichte kuil in het midden, opstaande zijkanten en een watervalrand aan de voorkant
+  { const g=softBlob(.255,.05,.245,.32,.28,64,32,(x,y,z)=>{ let yy=y; if(y>0){ const u=x/.255, v=(z+.02)/.245; yy-=.014*Math.max(0,1-u*u)*Math.max(0,1-v*v); yy+=.008*Math.pow(Math.abs(u),4); }
+      if(z>.1){ const t=(z-.1)/.145; yy-=.035*t*t; } if(z<-.18) yy+=.004; return [x*(1+.04*(-z/.245)),yy,z]; });
+    stUV(g,"z"); add(g,E.seat,0,SY+.035,0); add(softBlob(.235,.018,.225,.5,.4,32,12),E.plastic,0,SY-.015,-.01); }
+  // ---- rugleuning: S-curve frame met gespannen mesh (geen hoofdsteun)
+  const prof=[V(0,.56,-.25),V(0,.7,-.232),V(0,.86,-.255),V(0,1.02,-.295),V(0,1.12,-.325)];
+  const curve=new THREE.CatmullRomCurve3(prof), N=28, Mx=18, half=y=>.24-.03*clamp((y-.6)/.5,0,1), wrap=u=>u*u*.06;
+  { const pos=[], uv=[], idx=[]; for(let j=0;j<=N;j++){ const c=curve.getPoint(j/N), t=j/N, top=1-Math.pow(Math.max(0,t-.82)/.18,2)*.12; for(let i=0;i<=Mx;i++){ const u=i/Mx*2-1, hw=half(c.y)*top; pos.push(u*hw,c.y,c.z+wrap(u)); uv.push(i/Mx,j/N); } }
+    for(let j=0;j<N;j++) for(let i=0;i<Mx;i++){ const a=j*(Mx+1)+i, b=a+Mx+1; idx.push(a,b,a+1,b,b+1,a+1); }
+    const g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3)); g.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2)); g.setIndex(idx); g.computeVertexNormals(); C.add(new THREE.Mesh(g,E.mesh));
+    // één doorlopend, afgerond frame rondom (zijkanten + boog bovenaan + onderdwars)
+    const ring=[]; for(let j=0;j<=20;j++){ const c=curve.getPoint(j/20); ring.push(V(-(half(c.y)+.01),c.y,c.z+wrap(1)+.002)); }
+    const tp=curve.getPoint(1), hwT=half(tp.y)+.01; for(let i=1;i<12;i++){ const u=-1+2*i/12; ring.push(V(u*hwT,tp.y+.025*Math.cos(u*Math.PI/2),tp.z+wrap(u)+.002)); }
+    for(let j=20;j>=0;j--){ const c=curve.getPoint(j/20); ring.push(V(half(c.y)+.01,c.y,c.z+wrap(1)+.002)); }
+    const bt=curve.getPoint(0), hwB=half(bt.y)+.01; for(let i=11;i>0;i--){ const u=-1+2*i/12; ring.push(V(u*hwB,bt.y-.01,bt.z+wrap(u)+.002)); }
+    C.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ring,true,"centripetal"),160,.016,12,true),E.frame));
+    // verstelbare lendensteun: zachte band
+    { const c=curve.getPoint(.24), pts=[]; for(let i=0;i<=14;i++){ const u=i/14*2-1; pts.push(V(u*.2,c.y,c.z+wrap(u)+.014)); } C.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),28,.02,12,false),E.pad));
+      for(const s of [-1,1]) add(new THREE.SphereGeometry(.02,16,12),E.pad,s*.2,c.y,c.z+wrap(1)+.014); }
+    // gebogen rugdrager naar de mechaniek
+    C.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(0,SY-.05,-.08),V(0,SY-.05,-.22),V(0,SY+.02,-.29),V(0,.58,-.27)]),24,.028,14,false),E.frame)); }
+  // ---- T-armleuningen: gebogen drager vanaf de mechaniek, verstelbare stijl, zachte pad
+  for(const s of [-1,1]){ const x=s*.275;
+    C.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(s*.09,SY-.06,-.03),V(s*.2,SY-.065,-.035),V(x,SY-.03,-.035),V(x,SY+.04,-.035)]),24,.016,12,false),E.frame));
+    add(new THREE.CylinderGeometry(.019,.019,.13,20),E.frame,x,SY+.1,-.035); add(new THREE.CylinderGeometry(.014,.014,.06,16),E.chrome,x,SY+.19,-.035);
+    add(softBlob(.03,.012,.06,.5,.5,20,10),E.frame,x,SY+.225,-.035);
+    add(softBlob(.042,.016,.13,.45,.4,32,14),E.pad,x,SY+.245,-.02); }
+  C.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); return C; }
+
 // wandobjecten op de achterwand van Over mij komen op de voorkant van het maatwerk (of in een nis)
 { const _po=placeObj; placeObj=function(o,G){ _po(o,G); if(o.space!=="hall"&&o.mount==="wall"&&(o.wall|0)===0){ const jw=OBJS.find(x=>x.space===o.space&&x.type==="studiewand"&&!x.off); if(!jw) return;
       const lx=(jw.z||0)-(o.u||0), y=o.y||2, inN=JW.nx.some(c=>Math.abs(lx-c)<JW.NW/2-.05)&&y>JW.NB&&y<JW.NT; G.position.x+=inN?JW.D-JW.ND:JW.D; } }; }
@@ -5221,12 +5275,29 @@ OB.werkbank=(o,G)=>{ const S2=studioMats(), Q=S2.Q, W=3.4, D=1.3, H=.92, T=.09, 
       let open=0, target=0, raf=0; const stepF=()=>{ open+=(target-open)*.16; DR.position.z=open*dd*.7; if(Math.abs(target-open)>.002) raf=requestAnimationFrame(stepF); else { open=target; DR.position.z=open*dd*.7; } };
       const toggle=()=>{ target=target?0:1; cancelAnimationFrame(raf); raf=requestAnimationFrame(stepF); };
       DR.traverse(m=>{ if(m.isMesh){ m.userData.drawer=toggle; m.userData.root=G; clickables.push(m); } }); } }
-  // ---- opgerolde huiden Odessa-leer op de lattenbodem (collectiekleuren)
-  SM.body().slice(0,5).forEach((b,i)=>{ const rr=.1+(i%3)*.012, Lh=.95+(i%2)*.15, x=-.05+i*.28, z=(i%2?-.2:.18); const c=sA(G,new THREE.CylinderGeometry(rr,rr,Lh,40),SM.ode(b.hex),x+.25,.216+rr,z,{rz:Math.PI/2}); c.rotation.y=(i-2)*.04;
-    qAdd(G,new THREE.TorusGeometry(rr+.002,.004,6,36),S2.leaD,x+.25+Lh*.3,.216+rr,z,{ry:Math.PI/2}); });
+  // ---- opgerolde huiden Odessa-leer op de lattenbodem: kopse kanten naar voren, onderste rij naast elkaar, bovenste rij in de groeven
+  { const body=SM.body(), r=.072, gap=.008, sp=2*r+gap, x0=-.7, x1=W/2-.12-LG/2-.02, n=Math.floor((x1-x0+gap)/sp), y0=.216+r+.001;
+    let k=0; for(let i=0;i<n;i++){ const b=body[k++%body.length], L=.92-((i*37)%5)*.012; const ro=leatherRoll(b.hex,r,L,i*.7); ro.rotation.x=Math.PI/2; ro.position.set(x0+r+i*sp,y0,((i*13)%3-1)*.01); G.add(ro); }
+    for(let i=0;i<n-1;i++){ const b=body[k++%body.length], L=.9-((i*29)%4)*.012; const ro=leatherRoll(b.hex,r,L,i*1.3+.4); ro.rotation.x=Math.PI/2; ro.position.set(x0+r+sp/2+i*sp,y0+sp*Math.sqrt(3)/2,((i*7)%3-1)*.012); G.add(ro); } }
   // de spullen op het blad zijn losse items (type werkstuk), zodat ze in beheer te verplaatsen zijn
   return {top:H+.55,size:2.2}; };
 
+// ---- een opgerolde huid: Odessa-nerf op ware schaal, spiraal van lagen op de kopse kanten, losse buitenrand met een flap
+function spiralTex(hex){ SM.spir=SM.spir||{}; if(SM.spir[hex]) return SM.spir[hex];
+  const t=canvasTex(256,256,(g,w,h)=>{ const c=new THREE.Color(hex), R=w/2, base=`rgb(${c.r*255|0},${c.g*255|0},${c.b*255|0})`, dark=`rgba(${c.r*120|0},${c.g*110|0},${c.b*100|0},.9)`;
+      g.clearRect(0,0,w,h); g.fillStyle=base; g.beginPath(); g.arc(R,R,R,0,7); g.fill(); g.lineCap="round";
+      const turns=9, r0=R*.16; for(const [col,lw,off] of [[dark,3.2,0],["rgba(236,222,198,.55)",1.4,1.8]]){ g.strokeStyle=col; g.lineWidth=lw; g.beginPath(); for(let a=0;a<=turns*6.283;a+=.05){ const r=r0+(R-3-r0)*a/(turns*6.283)+off, x=R+Math.cos(a)*r, y=R+Math.sin(a)*r; a?g.lineTo(x,y):g.moveTo(x,y); } g.stroke(); }
+      g.fillStyle="#1a120d"; g.beginPath(); g.arc(R,R,r0*.8,0,7); g.fill(); });
+  t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping; return (SM.spir[hex]=new THREE.MeshStandardMaterial({map:t,transparent:true,alphaTest:.5,roughness:.85})); }
+function leatherRoll(hex,r,len,seed=0){ const R=new THREE.Group(), mat=SM.ode(hex), seg=48;
+  const g=new THREE.CylinderGeometry(r,r,len,seg,1,true), uv=g.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,uv.getX(i)*6.283*r+seed,uv.getY(i)*len); 
+  const body=new THREE.Mesh(g,mat); R.add(body);
+  for(const s of [-1,1]){ const cap=new THREE.Mesh(new THREE.CircleGeometry(r,seg),spiralTex(hex)); cap.position.y=s*len/2; cap.rotation.x=s>0?-Math.PI/2:Math.PI/2; cap.rotation.z=seed*3; R.add(cap); }
+  // buitenste laag: iets dikker, eindigt in een vrije rand die tegen de rol aan ligt
+  const a0=1.1+seed, fl=new THREE.CylinderGeometry(r+.0035,r+.0035,len*.995,seg,1,true,a0,1.3), fu=fl.attributes.uv; for(let i=0;i<fu.count;i++) fu.setXY(i,fu.getX(i)*1.3*r,fu.getY(i)*len);
+  R.add(new THREE.Mesh(fl,mat));
+  const edge=new THREE.Mesh(new THREE.BoxGeometry(.006,len*.995,.004),mat); const ae=a0+1.3; edge.position.set(Math.sin(ae)*(r+.002),0,Math.cos(ae)*(r+.002)); edge.rotation.y=ae; R.add(edge);
+  R.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); return R; }
 // ---- spullen op de werkbank: elk een eigen item (verplaatsen, draaien, verbergen in beheer)
 function benchItems(G,y,only,o){ const S2=studioMats(), Q=S2.Q, ivo=SM.ode(SM.bodyHex("ivoor")), bor=SM.ode(SM.bodyHex("bordeaux")), cog=SM.ode(SM.bodyHex("cognac")), want=k=>only===k;
   // ---- bovenop: uitgespreide huid in ivoor Odessa (de huid uit de collectie), met zachte rand
