@@ -2542,14 +2542,14 @@ function makeRoute(){
   const out=[], C0=[ROT.x,ROT.z], R=ROT.R;
   // 1. de hal: start midden in de rotonde, dan alles wat er gepresenteerd staat, rondom
   out.push({id:"start",room:"hall",sec:"hall",eye:C0,look:P2(-2.5,R+40),cap:"hall"});
-  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
+  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
   out.push({id:"vw",room:"hall",sec:"hall",eye:P2(-2.5,R-3.4),look:P2(-2.5,R+60),cap:"hall"});
   // 2. de ruimtes in vaste volgorde: over mij → samenwerkingen → collectie → contact (binnen een groep: volgorde uit Instellingen)
   OPEN0.map((k,i)=>({k,i})).sort((p,q)=>spaceRank(p.k)-spaceRank(q.k)||p.i-q.i).forEach(({k})=>{
     const th=DOOR_TH[k], X=XF[k], Lg=legOf(k), W=q=>X.toW(q[0],q[1]).map(v=>+v.toFixed(2)), cz=(Lg.zN+Lg.zS)/2;
     out.push({id:"d_"+k,room:"hall",sec:k,eye:P2(th,R-5.2),look:P2(th,R-.2),door:k},{id:"t_"+k+"1",room:"hall",sec:k,eye:P2(th,R-1.5),look:P2(th,R+6),transit:true});
     out.push({id:"e_"+k,room:k,sec:k,eye:W([-6.4,Lg.dz]),look:W([-15,Lg.dz]),space:k});
-    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(p=>out.push({...objNode(p.o),sec:k}));
+    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(p=>out.push({...objNode(p.o),sec:k}));
     out.push({id:"t_"+k+"2",room:k,sec:k,eye:W([-6.4,Lg.dz]),look:C0,transit:true},{id:"t_"+k+"3",room:"hall",sec:k,eye:P2(th,R-1.7),look:C0,transit:true}); });
   // 3. via de bogen naar de tuin, eindigen bij de ingang met zicht op de rotonde
   // naar buiten lopen kan niet meer: de rondleiding eindigt weer midden in de rotonde
@@ -4356,7 +4356,7 @@ const CAP_T={hall:["hall",""],start:["hall",""],end:["hall",""],about0:["about",
 function itemTarget(id){ if(bagById(id)) return ["coll","p-"+id]; if(id==="h7") return ["coll","personaliseren"]; if(id==="h10") return ["contact","producent"]; const it=ITEMS[id]; if(it&&it.kind==="about") return ["about","item-"+id]; return ["hall","item-"+id]; }
 function spaceTarget(k){ const p=pageOf(k); return [p,p==="collab"?"space-"+k:""]; }
 function objTargetSite(o){ if(!o) return null; const t=o.type;
-  if(t==="studie") return ["about","studie"]; if(t==="bureau") return ["contact","contact"]; if(t==="fauteuil"||t==="vloerlamp"||t==="plant"||t==="bank") return [pageOf(o.space),""]; if(t==="stalen"||t==="stalenwand") return ["coll","stalen"]; if(t==="atelier") return ["coll","personaliseren"];
+  if(t==="studie"||t==="studiewand") return ["about","studie"]; if(t==="werkbank") return ["about","werk"]; if(t==="kruk"||t==="vloerkleed") return [pageOf(o.space),""]; if(t==="werkstuk") return ["about","werk"]; if(t==="bureau") return ["contact","contact"]; if(t==="fauteuil"||t==="vloerlamp"||t==="plant"||t==="bank") return [pageOf(o.space),""]; if(t==="stalen"||t==="stalenwand") return ["coll","stalen"]; if(t==="atelier") return ["coll","personaliseren"];
   if(t==="tekst"){ if(o.board&&BOARD_T[o.board]) return BOARD_T[o.board]; if(o.bind==="space") return spaceTarget(o.space); return [pageOf(o.space),"o-"+o.id]; }
   if(t==="lijst"){ if(o.src==="image") return [pageOf(o.space),"o-"+o.id]; if(o.src==="space") return spaceTarget(o.space); }
   if(t==="video") return [pageOf(o.space),"o-"+o.id];
@@ -4933,6 +4933,399 @@ siteEl.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t||
   else if(d.posend!==undefined){ openForm("custom",PO.model,"coll"); setTimeout(()=>{ const m=document.getElementById("f-msg"); if(m) m.value=poMsg(); },60); }
   else hit=false;
   if(hit){ e.stopPropagation(); if(sitePage==="preorder") requestAnimationFrame(()=>{ poDraw(); poPreview(); if(d.pok===undefined) swMain.scrollTop=0; }); } },true);
+
+// =====================================================================================
+//  OVER MIJ · STUDIO  (versie 2, samen met ChatGPT, november 2026)
+//  Fotorealistische texturen (door ChatGPT gerenderd, naadloos gemaakt, met normal maps),
+//  een volledig ingebouwde walnoten achterwand met verzonken, verlichte nissen en een
+//  zwevend bureau, een eiken leerwerkbank, linnen kuipstoel en leren kruk.
+//  Geen plafondlamp: alleen indirect licht.
+// =====================================================================================
+const ST_DIR="assets/studio/", STX={};
+function stTex(file,rep,srgb=true){ const k=file+"|"+rep; if(STX[k]) return STX[k]; const t=loader.load(ST_DIR+file+".jpg"); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(rep,rep); if(srgb) t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; return (STX[k]=t); }
+// materiaal met echte maat: UV's zijn in meters (zie stUV), de textuur beslaat 'size' meter
+function stMat(name,size,{rough=.7,ns=.5,color=0xffffff,clear=0,sheen=0,metal=0,env=.4}={}){ const r=1/size;
+  const m=new THREE.MeshPhysicalMaterial({map:stTex(name,r),normalMap:stTex(name+"_n",r,false),normalScale:new THREE.Vector2(ns,ns),roughness:rough,metalness:metal,color,clearcoat:clear,clearcoatRoughness:.45,sheen,sheenRoughness:.6,sheenColor:new THREE.Color(0xfff1e0),envMapIntensity:env});
+  m.userData.world=true; return m; }
+// UV's in meters, per vlak geprojecteerd; 'along' is de as waarlangs de nerf moet lopen
+function stUV(g,along="y"){ const p=g.attributes.position, n=g.attributes.normal; if(!n) g.computeVertexNormals(); const N=g.attributes.normal, uv=new Float32Array(p.count*2);
+  for(let i=0;i<p.count;i++){ const P={x:p.getX(i),y:p.getY(i),z:p.getZ(i)}, ax=Math.abs(N.getX(i)), ay=Math.abs(N.getY(i)), az=Math.abs(N.getZ(i)); let a,b;
+    if(ax>=ay&&ax>=az){ a="z"; b="y"; } else if(ay>=az){ a="x"; b="z"; } else { a="x"; b="y"; }
+    let U=a, V=b; if(along===a){ U=b; V=a; } uv[i*2]=P[U]; uv[i*2+1]=P[V]; }
+  g.setAttribute("uv",new THREE.BufferAttribute(uv,2)); return g; }
+// toevoegen; met een 'wereld'-materiaal krijgt de vorm eerst meter-UV's
+function sA(G,geo,mat,x,y,z,o={}){ if(mat&&mat.userData&&mat.userData.world){ geo=geo.clone(); geo.translate(o.ux||0,o.uy||0,o.uz||0); stUV(geo,o.along||"y"); geo.translate(-(o.ux||0),-(o.uy||0),-(o.uz||0)); }
+  const m=qAdd(G,geo,mat,x,y,z,o); if(o.solid) solids.push(m); return m; }
+const sbox=(w,h,d,r=.004)=>rb(w,h,d,r,2);
+LEATHER.cream=0xe6d8c2;
+
+// ---- materiaalbibliotheek
+const SM={};
+function studioMats(){ if(SM.ok) return SM; SM.ok=1; const Q=qBuildMaterials(); SM.Q=Q;
+  SM.wal=stMat("tex_01_walnoot",1.2,{rough:.65,ns:.2,clear:.06}); SM.wal.map.repeat.set(1/1.2,1/3.6); SM.wal.normalMap.repeat.set(1/1.2,1/3.6);
+  SM.walD=stMat("tex_01_walnoot",1.2,{rough:.66,ns:.3,color:0x9a8a80});
+  SM.lat=stMat("tex_09_walnoot_latjes",.6,{rough:.7,ns:.6});
+  SM.oak=stMat("tex_08_eiken_werkblad",1.0,{rough:.6,ns:.45,clear:.04,color:0xd9c9b8});
+  SM.lea=stMat("tex_04_cognac_leer",.3,{rough:.55,ns:.6,clear:.05,sheen:.15});
+  SM.leaD=stMat("tex_04_cognac_leer",.3,{rough:.55,ns:.6,color:0x7a5a4c,sheen:.1});
+  SM.leaT=stMat("tex_04_cognac_leer",.3,{rough:.55,ns:.6,sheen:.1}); SM.leaT.color.setRGB(1.55,1.4,1.25); SM.leaH=stMat("tex_04_cognac_leer",.3,{rough:.85,ns:.8,env:.08}); SM.leaH.specularIntensity=.25; SM.leaH.color.setRGB(1.05,1.02,.98);
+  // Odessa shrunken calfskin (Weinheimer Leder): gepebbelde nerf, in de kleuren uit de collectie
+  SM.odessa={}; SM.ode=(hex)=>{ const k=String(hex).toLowerCase(); if(SM.odessa[k]) return SM.odessa[k]; const m=stMat("tex_10_odessa_grijs",.2,{rough:.6,ns:.9,sheen:.15,env:.15}); m.specularIntensity=.45;
+    m.color.set(hex).multiplyScalar(1.25); return (SM.odessa[k]=m); };
+  SM.body=()=>{ const L=(typeof SWLIB!=="undefined"?SWLIB:[]).filter(x=>x.g==="body"&&!x.off&&/^#[0-9a-f]{6}$/i.test(x.hex||"")); return L.length?L:SW.body.map(([k,nl,en,hex])=>({k,hex})); };
+  SM.bodyHex=k=>{ const al={ivoor:"ivoire",cognac:"goldcognac",bordeaux:"rouge",zwart:"noir",zand:"etoupe"}[k]||k, x=SM.body().find(b=>b.k===al||b.k===k); if(x) return x.hex; const o=(typeof ODESSA!=="undefined"?ODESSA:[]).find(b=>b[0]===al); return o?o[3]:"#ece2cf"; };
+  SM.kraft=new THREE.MeshStandardMaterial({color:0xc4a47a,roughness:.9});
+  SM.glass=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.05,transmission:.85,thickness:.02,ior:1.45,envMapIntensity:1});
+  SM.lin=stMat("tex_05_linnen",.2,{rough:.95,ns:.8,sheen:.5});
+  SM.jute=stMat("tex_06_jute_kleed",.6,{rough:.98,ns:1});
+  SM.trav=stMat("tex_07_travertin",.6,{rough:.82,ns:.25});
+  SM.kick=new THREE.MeshStandardMaterial({color:0x140d09,roughness:.9});
+  SM.steel=new THREE.MeshStandardMaterial({color:0x252320,metalness:.85,roughness:.42});
+  SM.chrome=new THREE.MeshStandardMaterial({color:0x8d8a86,metalness:1,roughness:.25});
+  SM.alu=new THREE.MeshStandardMaterial({color:0x3a3a3c,metalness:.7,roughness:.42});
+  SM.black=new THREE.MeshStandardMaterial({color:0x141414,roughness:.5});
+  SM.paper=new THREE.MeshStandardMaterial({color:0xeee7d8,roughness:.95});
+  SM.card=new THREE.MeshStandardMaterial({color:0xd8c6a4,roughness:.92});
+  SM.balsa=new THREE.MeshStandardMaterial({color:0xcfae80,roughness:.8});
+  SM.mat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.85,map:canvasTex(256,256,(g,w,h)=>{ g.fillStyle="#3f5a4a"; g.fillRect(0,0,w,h); g.strokeStyle="rgba(230,240,220,.35)"; g.lineWidth=1; for(let i=0;i<=w;i+=16){ g.beginPath(); g.moveTo(i,0); g.lineTo(i,h); g.stroke(); g.beginPath(); g.moveTo(0,i); g.lineTo(w,i); g.stroke(); } })});
+  SM.plant=new THREE.MeshStandardMaterial({color:0x475438,roughness:.75,side:THREE.DoubleSide}); SM.plant2=new THREE.MeshStandardMaterial({color:0x5b6a45,roughness:.75,side:THREE.DoubleSide});
+  SM.soil=new THREE.MeshStandardMaterial({color:0x2a1e16,roughness:1});
+  SM.led=new THREE.MeshBasicMaterial({color:new THREE.Color(1,.83,.6),toneMapped:false});
+  const wash=canvasTex(128,256,(g,w,h)=>{ const gr=g.createLinearGradient(0,0,0,h); gr.addColorStop(0,"rgba(255,206,150,.95)"); gr.addColorStop(.35,"rgba(255,196,140,.35)"); gr.addColorStop(1,"rgba(255,190,130,0)"); g.fillStyle=gr; g.fillRect(0,0,w,h);
+    const sg=g.createLinearGradient(0,0,w,0); sg.addColorStop(0,"rgba(0,0,0,1)"); sg.addColorStop(.15,"rgba(0,0,0,0)"); sg.addColorStop(.85,"rgba(0,0,0,0)"); sg.addColorStop(1,"rgba(0,0,0,1)"); g.globalCompositeOperation="destination-out"; g.fillStyle=sg; g.fillRect(0,0,w,h); });
+  wash.wrapS=wash.wrapT=THREE.ClampToEdgeWrapping;
+  SM.wash=new THREE.MeshBasicMaterial({map:wash,transparent:true,opacity:.5,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
+  return SM; }
+
+// ---- de kamer zelf: walnoot (panelen 60 cm), eiken vloer, microcement plafond
+{ const _tm3=themeMats; themeMats=function(t){ const m=_tm3(t); if(m.q3) return m; m.q3=1;
+    if(t==="walnoot"){ m.wall=stMat("tex_01_walnoot",1.2,{rough:.65,ns:.2,clear:.05,env:.35}); m.wall.map.repeat.set(1/1.2,1/3.6); m.wall.normalMap.repeat.set(1/1.2,1/3.6); m.floor=stMat("tex_12_visgraat",1.5274,{rough:.55,ns:.35,clear:.06,env:.3});
+      m.ceil=stMat("tex_03_microcement",2.0,{rough:.95,ns:.25,env:.2}); m.plinth=new THREE.MeshPhysicalMaterial({color:0x30241d,roughness:.65,clearcoat:.1}); m.noLamp=true; }
+    return m; }; }
+{ const _rs=roomShell; roomShell=function(k){ const n0=BP?BP.children.length:0; _rs(k); if(!BP||!themeMats(themeOf(k)).noLamp) return;
+    for(let i=BP.children.length-1;i>=n0;i--){ const o=BP.children[i]; if(o.isMesh&&(o.geometry.type==="CylinderGeometry"&&o.material===M.brass||o.geometry.type==="SphereGeometry"&&o.material.emissive&&o.material.emissiveIntensity>=2)){ BP.remove(o); const s=solids.indexOf(o); if(s>=0) solids.splice(s,1); } }
+    // ---- plinten en indirect licht opnieuw, zodat alles in elke hoek exact aansluit
+    studioMats(); const TM=themeMats(themeOf(k)), L=legOf(k), RH=ROOM_H, zN=L.zN, zS=L.zS, dz=(zN+zS)/2;
+    const jw=(typeof OBJS!=="undefined"?OBJS:[]).some(o=>o.space===k&&o.type==="studiewand"&&!o.off), xB=-15.0+(jw?JW.D:0), xF=-5.6;
+    for(let i=BP.children.length-1;i>=n0;i--){ const o=BP.children[i]; if(o.isMesh&&(o.material===M.cove||o.material===TM.plinth)){ BP.remove(o); const s=solids.indexOf(o); if(s>=0) solids.splice(s,1); } }
+    const g=new THREE.Group(); ADD(g);
+    // plint: donkere schaduwplint 8 cm, gelijk aan de voet van het maatwerk; lopen door tot in de hoeken (overlap = gesloten hoek)
+    if(!SM.plint) SM.plint=new THREE.MeshStandardMaterial({color:0x140d09,roughness:.85});
+    const PH=.08, PD=.014, pl=(w,d,x,z)=>{ const m=new THREE.Mesh(new THREE.BoxGeometry(w,PH,d),SM.plint); m.position.set(x,PH/2,z); m.receiveShadow=true; g.add(m); };
+    if(!jw) pl(PD,zN-zS,-15.0+PD/2,dz);
+    pl(xF-xB,PD,(xB+xF)/2,zN-PD/2); pl(xF-xB,PD,(xB+xF)/2,zS+PD/2);
+    { const dzc=(typeof DOOR_W!=="undefined")?0:0, d0=dz-1.42, d1=dz+1.42; if(d0>zS) pl(PD,d0-zS,xF-PD/2,(zS+d0)/2); if(zN>d1) pl(PD,zN-d1,xF-PD/2,(d1+zN)/2); }
+    // lichtlijn op 4,17 m, rondom, in verstek; daaronder lichtval op de wand, erboven op het plafond
+    if(!SM.washV){ const t=canvasTex(8,256,(c,w,h)=>{ const gr=c.createLinearGradient(0,0,0,h); gr.addColorStop(0,"rgba(255,206,150,1)"); gr.addColorStop(.12,"rgba(255,200,145,.55)"); gr.addColorStop(.45,"rgba(255,192,135,.16)"); gr.addColorStop(1,"rgba(255,190,130,0)"); c.fillStyle=gr; c.fillRect(0,0,w,h); }); t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;
+      SM.washV=new THREE.MeshBasicMaterial({map:t,transparent:true,opacity:.42,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,side:THREE.DoubleSide});
+      SM.washC=SM.washV.clone(); SM.washC.opacity=.3; }
+    const quad=(P,mat)=>{ const geo=new THREE.BufferGeometry(); geo.setAttribute("position",new THREE.Float32BufferAttribute(P.flat(),3)); geo.setAttribute("uv",new THREE.Float32BufferAttribute([0,1,1,1,1,0,0,0],2)); geo.setIndex([0,1,2,0,2,3]); geo.computeVertexNormals(); const m=new THREE.Mesh(geo,mat); m.renderOrder=2; g.add(m); };
+    const ly=RH-.03, wy=RH-1.05, cy=RH-.004, GD=.55, eps=.004;
+    // hoekpunten van de binnenomtrek (tegen de klok): achter-noord, voor-noord, voor-zuid, achter-zuid
+    const C=[[xB,zN],[xF,zN],[xF,zS],[xB,zS]], IN=[[xB+GD,zN-GD],[xF-GD,zN-GD],[xF-GD,zS+GD],[xB+GD,zS+GD]];
+    for(let i=0;i<4;i++){ const a=C[i], b=C[(i+1)%4], ai=IN[i], bi=IN[(i+1)%4], nx=Math.sign((ai[0]+bi[0])/2-(a[0]+b[0])/2), nz=Math.sign((ai[1]+bi[1])/2-(a[1]+b[1])/2), o=[nx*eps,nz*eps];
+      quad([[a[0]+o[0],ly,a[1]+o[1]],[b[0]+o[0],ly,b[1]+o[1]],[b[0]+o[0],wy,b[1]+o[1]],[a[0]+o[0],wy,a[1]+o[1]]],SM.washV);
+      quad([[a[0],cy,a[1]],[b[0],cy,b[1]],[bi[0],cy,bi[1]],[ai[0],cy,ai[1]]],SM.washC);
+      const len=Math.hypot(b[0]-a[0],b[1]-a[1]), sm=new THREE.Mesh(new THREE.BoxGeometry(len+.02,.022,.012),SM.led); sm.position.set((a[0]+b[0])/2+nx*.012,ly,(a[1]+b[1])/2+nz*.012); sm.rotation.y=Math.atan2(-(b[1]-a[1]),b[0]-a[0]); g.add(sm); }
+    roomLight(new THREE.PointLight(0xffe2c4,9,13,2),-12.2,RH-.4,dz); roomLight(new THREE.PointLight(0xffe2c4,7,13,2),-8.2,RH-.4,dz); }; }
+
+function washPlane(G,w,h,x,y,z,op=.5){ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),SM.wash.clone()); m.material.opacity=op; m.position.set(x,y-h/2,z); m.renderOrder=2; G.add(m); return m; }
+const BOOKC=[0xd9cbb0,0x8b5a3c,0x4a3428,0xb9a07c,0x6f4b36,0xe6dccb,0x2f2a26,0x9c7a55,0xc2b49a,0x5b4636];
+function books(G,x0,x1,y,z,seed,{stack=false}={}){ const r=qRng(seed), list=[]; let x=x0;
+  if(stack){ let yy=y; for(let i=0;i<3+(r()*3|0);i++){ const w=.22+r()*.08, d=.16+r()*.06, t=.025+r()*.02; list.push([x+(x1-x0)/2+(r()-.5)*.02,yy+t/2,z,w,t,d,(r()-.5)*.2,0]); yy+=t; } }
+  else while(x<x1-.03){ const t=.022+r()*.03, h=.2+r()*.1, d=.15+r()*.07; list.push([x+t/2,y+h/2,z-(.2-d)/2,t,h,d,0,0]); x+=t+.002; }
+  if(!stack&&list.length){ const L=list[list.length-1]; L[7]=-.18; L[0]+=.02; L[1]-=.004; }
+  const geo=rb(1,1,1,.04,1), mat=new THREE.MeshStandardMaterial({roughness:.8}), im=new THREE.InstancedMesh(geo,mat,list.length), M4=new THREE.Matrix4(), q=new THREE.Quaternion(), E=new THREE.Euler(), c=new THREE.Color();
+  list.forEach((b,i)=>{ E.set(0,b[6],b[7]); q.setFromEuler(E); M4.compose(new THREE.Vector3(b[0],b[1],b[2]),q,new THREE.Vector3(b[3],b[4],b[5])); im.setMatrixAt(i,M4); im.setColorAt(i,c.setHex(BOOKC[(r()*BOOKC.length)|0])); });
+  im.castShadow=true; im.receiveShadow=true; G.add(im); return im; }
+function vase(G,x,y,z,s,mat){ const pts=[[0,0],[.06,0],[.075,.04],[.07,.12],[.045,.2],[.04,.24],[.048,.26],[.044,.262],[0,.25]].map(p=>new THREE.Vector2(p[0]*s,p[1]*s)); return qAdd(G,new THREE.LatheGeometry(pts,32),mat,x,y,z); }
+function trailPlant(G,x,y,z,len,seed){ const r=qRng(seed), Q=qBuildMaterials(); qAdd(G,new THREE.LatheGeometry([[0,0],[.07,0],[.09,.12],[.085,.125],[.0,.11]].map(p=>new THREE.Vector2(p[0],p[1])),28),Q.ceramic,x,y,z);
+  const leaf=new THREE.CircleGeometry(.03,7); leaf.scale(1,1.5,1); const N=140, im=new THREE.InstancedMesh(leaf,SM.plant,N), M4=new THREE.Matrix4(), q=new THREE.Quaternion(), E=new THREE.Euler();
+  for(let i=0;i<N;i++){ const s=i%8, a=s/8*6.283+r()*.4, t=r(), rr=.07+t*.05+r()*.03, px=x+Math.cos(a)*rr, pz=z+Math.sin(a)*rr*.7+.02, py=y+.13-t*len*(.5+((s*37)%10)/22)+(t<.15?.05:0);
+    E.set(r()*1.2-.2,r()*6.28,r()*.8); q.setFromEuler(E); const sc=.7+r()*.6; M4.compose(new THREE.Vector3(px,py,pz),q,new THREE.Vector3(sc,sc,sc)); im.setMatrixAt(i,M4); }
+  im.castShadow=true; G.add(im); }
+function deskPlant(G,x,y,z,h,seed){ const r=qRng(seed), Q=qBuildMaterials(); qAdd(G,new THREE.LatheGeometry([[0,0],[.06,0],[.075,.13],[.07,.135],[0,.12]].map(p=>new THREE.Vector2(p[0],p[1])),28),Q.ceramic,x,y,z);
+  const leaf=new THREE.CircleGeometry(.045,8); leaf.scale(.55,1.6,1); leaf.translate(0,.06,0); const N=30, im=new THREE.InstancedMesh(leaf,SM.plant2,N), M4=new THREE.Matrix4(), q=new THREE.Quaternion(), E=new THREE.Euler();
+  for(let i=0;i<N;i++){ const a=r()*6.283, t=r(); E.set(-.3-t*.9,a,0,"YXZ"); q.setFromEuler(E); M4.compose(new THREE.Vector3(x+Math.cos(a)*.02,y+.12+t*h*.5,z+Math.sin(a)*.02),q,new THREE.Vector3(1,1+t*.4,1)); im.setMatrixAt(i,M4); }
+  im.castShadow=true; G.add(im); }
+function drawPlan(seed,dark=false){ return (g,w,h)=>{ const r=qRng(seed); g.fillStyle=dark?"#1d1f22":"#efe8da"; g.fillRect(0,0,w,h); const ink=dark?"rgba(220,226,232,.85)":"rgba(40,44,52,.75)", lw=Math.min(w,h)*.006;
+    g.strokeStyle=ink; g.lineWidth=lw; g.strokeRect(w*.04,h*.05,w*.92,h*.9);
+    const px=w*.08, py=h*.12, pw=w*.5, ph=h*.68; g.lineWidth=lw*2.2; g.strokeRect(px,py,pw,ph); g.lineWidth=lw*1.4;
+    const vx=px+pw*(.35+r()*.2), hy=py+ph*(.4+r()*.2); g.beginPath(); g.moveTo(vx,py); g.lineTo(vx,hy-ph*.08); g.moveTo(vx,hy+ph*.08); g.lineTo(vx,py+ph); g.moveTo(px,hy); g.lineTo(vx-pw*.1,hy); g.moveTo(vx+pw*.12,hy+ph*.15); g.lineTo(px+pw,hy+ph*.15); g.stroke();
+    g.lineWidth=lw*.8; for(let i=0;i<5;i++){ g.beginPath(); g.moveTo(px+pw*.62+i*pw*.06,py+ph*.06); g.lineTo(px+pw*.62+i*pw*.06,py+ph*.3); g.stroke(); }
+    g.beginPath(); g.arc(vx,hy+ph*.08,ph*.12,-Math.PI/2,0); g.stroke(); g.setLineDash([lw*3,lw*2]); g.beginPath(); g.moveTo(px-w*.02,py+ph*.75); g.lineTo(px+pw+w*.02,py+ph*.75); g.stroke(); g.setLineDash([]);
+    const sx=w*.64, sy=h*.2, sw=w*.28, sh=h*.4; g.lineWidth=lw*1.6; g.beginPath(); g.moveTo(sx,sy+sh); g.lineTo(sx,sy+sh*.3); g.lineTo(sx+sw*.5,sy); g.lineTo(sx+sw,sy+sh*.3); g.lineTo(sx+sw,sy+sh); g.closePath(); g.stroke();
+    g.lineWidth=lw*.8; g.beginPath(); g.moveTo(sx,sy+sh*.62); g.lineTo(sx+sw,sy+sh*.62); g.stroke(); g.strokeRect(sx+sw*.15,sy+sh*.72,sw*.18,sh*.28);
+    g.fillStyle=ink; for(let i=0;i<4;i++) g.fillRect(sx,h*.7+i*h*.045,sw*(.5+r()*.5),lw*1.2); g.fillRect(sx,h*.86,sw,lw*2); }; }
+
+// =====================================================================================
+//  A. INGEBOUWDE ACHTERWAND (maatwerk, wandvullend 12,2 m × 4,2 m, 45 cm diep)
+//     verzonken nissen 190 × 270 × 38 cm met walnoten latjes en LED onder elke plank,
+//     zwevend bureaublad 700 × 65 × 5 cm op twee ingebouwde ladeblokken
+// =====================================================================================
+const JW={D:.45,ND:.38,NW:1.9,NB:.8,NT:3.5,nx:[-2.55,2.55],deskW:7.0,deskD:.65,deskH:.76};
+OB.studiewand=(o,G)=>{ const S2=studioMats(), Q=S2.Q, L=legOf(o.space), W=L.zN-L.zS, H=ROOM_H, D=JW.D, KICK=.08;
+  const half=W/2, nl=JW.nx.map(c=>[c-JW.NW/2,c+JW.NW/2]);
+  // verticale segmenten tussen en naast de nissen (volle hoogte)
+  const xs=[-half,nl[0][0],nl[0][1],nl[1][0],nl[1][1],half];
+  for(let i=0;i<xs.length-1;i++){ const a=xs[i], b=xs[i+1], w=b-a, cx=(a+b)/2, niche=i===1||i===3;
+    if(!niche) sA(G,new THREE.BoxGeometry(w,H-KICK,D),S2.wal,cx,KICK+(H-KICK)/2,D/2,{solid:true,ux:cx,uy:KICK+(H-KICK)/2});
+    else { // onder en boven de nis
+      sA(G,new THREE.BoxGeometry(w,JW.NB-KICK,D),S2.wal,cx,KICK+(JW.NB-KICK)/2,D/2,{solid:true,ux:cx});
+      sA(G,new THREE.BoxGeometry(w,H-JW.NT,D),S2.wal,cx,JW.NT+(H-JW.NT)/2,D/2,{solid:true,ux:cx,uy:JW.NT});
+      // achterwand van latjes, zijkanten en bodem van de nis in donker walnoot
+      sA(G,new THREE.BoxGeometry(w,JW.NT-JW.NB,.02),S2.lat,cx,(JW.NB+JW.NT)/2,D-JW.ND-.01,{ux:cx,uy:JW.NB,cast:false});
+      for(const e of [-1,1]) sA(G,new THREE.BoxGeometry(.012,JW.NT-JW.NB,JW.ND),S2.walD,cx+e*(w/2-.006),(JW.NB+JW.NT)/2,D-JW.ND/2,{cast:false});
+      // vier zwevende planken (4 cm) met LED-strip aan de onderzijde, en een strip in de bovenkant van de nis
+      const step=(JW.NT-JW.NB)/5; for(let k=1;k<=4;k++){ const y=JW.NB+k*step; sA(G,sbox(w-.024,.04,JW.ND-.01,.003),S2.wal,cx,y,D-JW.ND/2,{along:"x",ux:cx});
+        qAdd(G,sbox(w-.1,.006,.012),S2.led,cx,y-.023,D-.05,{cast:false}); washPlane(G,w-.06,.44,cx,y-.03,D-JW.ND+.012,.42); }
+      qAdd(G,sbox(w-.1,.006,.012),S2.led,cx,JW.NT-.006,D-.05,{cast:false}); washPlane(G,w-.06,.5,cx,JW.NT-.01,D-JW.ND+.012,.5); } }
+  // travertin dorpel (3 cm) als bodem van elke nis: dezelfde steen als de zuilen
+  for(const c of JW.nx) sA(G,rb(JW.NW+.04,.03,JW.ND+.025,.004,2),S2.trav,c,JW.NB+.015,D-JW.ND/2+.0125,{ux:c,along:"x",solid:true});
+  // terugliggende plint (schaduwvoeg)
+  qAdd(G,new THREE.BoxGeometry(W,KICK,D-.012),S2.kick,0,KICK/2,(D-.012)/2,{cast:false});
+  // zwevend bureaublad met afgeronde voorkant, rust op twee ingebouwde ladeblokken onder de nissen
+  const DT=.05, dz=D+JW.deskD/2; sA(G,rb(JW.deskW,DT,JW.deskD,.012,3),S2.wal,0,JW.deskH-DT/2,dz,{solid:true,along:"x"});
+  for(const c of JW.nx){ const pw=1.0, pd=JW.deskD-.03, ph=JW.deskH-DT-KICK; sA(G,new THREE.BoxGeometry(pw,ph,pd),S2.wal,c,KICK+ph/2,D+pd/2,{solid:true,ux:c});
+    qAdd(G,new THREE.BoxGeometry(pw-.06,KICK,pd-.05),S2.kick,c,KICK/2,D+(pd-.05)/2,{cast:false});
+    for(let k=0;k<3;k++){ const dh=ph/3, y=KICK+dh*k+dh/2; sA(G,sbox(pw-.012,dh-.008,.02,.003),S2.wal,c,y,D+pd+.008,{ux:c,uy:y});
+      qAdd(G,sbox(.22,.008,.03,.004),Q.brass,c,y+dh/2-.03,D+pd+.03); } }
+  // dunne LED-lijn onder de voorrand van het blad (zacht licht op de laden)
+  qAdd(G,sbox(JW.deskW-.2,.005,.01),S2.led,0,JW.deskH-DT-.004,D+JW.deskD-.05,{cast:false});
+  // ---- inhoud van de nissen: links mijn opleiding (interieur en architectuur), rechts het leer
+  const step=(JW.NT-JW.NB)/5, sh=k=>JW.NB+(k?k*step+.02:.03), zc=D-JW.ND/2-.01;
+  { const cx=JW.nx[0];
+    // vak 0: opgerolde bouwtekeningen in een messing koker en een zwarte portfoliomap A2
+    qAdd(G,new THREE.CylinderGeometry(.075,.075,.34,32,1,true),Q.brass,cx-.55,sh(0)+.17,zc); qAdd(G,new THREE.CylinderGeometry(.074,.074,.006,32),Q.brass,cx-.55,sh(0)+.003,zc);
+    [[0,.0],[.035,.03],[-.03,.035],[.01,-.035],[-.035,-.02]].forEach(([dx,dz],i)=>qAdd(G,new THREE.CylinderGeometry(.022,.022,.5+i*.03,20),SM.paper,cx-.55+dx,sh(0)+.25+i*.015,zc+dz,{rz:(i-2)*.04}));
+    qAdd(G,sbox(.64,.46,.035,.006),SM.black,cx+.3,sh(0)+.23,zc-.08,{rx:-.08}); qAdd(G,sbox(.08,.03,.012,.004),Q.brass,cx+.3,sh(0)+.4,zc-.055,{rx:-.08});
+    // vak 1: witte maquette (gebouwmassa's op een sokkel), schaal 1:100
+    { const mq=new THREE.Group(); mq.position.set(cx,sh(1),zc); G.add(mq); const wh=new THREE.MeshStandardMaterial({color:0xf2efe8,roughness:.85});
+      qAdd(mq,sbox(.9,.02,.3,.003),S2.walD,0,.01,0); qAdd(mq,sbox(.88,.006,.28,.002),SM.balsa,0,.023,0);
+      [[-.3,.0,.22,.12,.14],[-.07,.02,.16,.28,.12],[.15,-.02,.2,.18,.16],[.34,.03,.12,.08,.12]].forEach(([x,z,w,h,d])=>qAdd(mq,sbox(w,h,d,.002),wh,x,.026+h/2,z));
+      for(let i=0;i<5;i++) qAdd(mq,new THREE.SphereGeometry(.018,10,8),SM.plant2,-.4+i*.2,.045,.11); }
+    // vak 3: materiaalstalenbord en een uitgewaaierde Flexa kleurwaaier
+    { const bd=new THREE.Group(); bd.position.set(cx-.42,sh(3),zc-.08); bd.rotation.x=-.1; bd.scale.setScalar(1.45); G.add(bd); qAdd(bd,sbox(.42,.3,.012,.003),SM.paper,0,.15,0);
+      [[S2.wal,-.12,.21],[S2.oak,0,.21],[S2.trav,.12,.21],[S2.lin,-.12,.09],[SM.ode(SM.bodyHex("ivoor")),0,.09],[SM.ode(SM.bodyHex("cognac")),.12,.09]].forEach(([m,x,y])=>sA(bd,sbox(.1,.1,.012,.002),m,x,y,.01)); }
+    { const fan=new THREE.Group(); fan.position.set(cx+.42,sh(3)+.02,zc); fan.scale.setScalar(1.5); G.add(fan); const cols=["#b5543f","#c98b3a","#d9b35c","#8d9a7b","#4f6b6a","#36495e","#6c2130","#9a8876","#d5bd98","#ece2cf"];
+      cols.forEach((c,i)=>{ const L=qAdd(fan,sbox(.05,.004,.24,.001),new THREE.MeshStandardMaterial({color:c,roughness:.7}),0,.004+i*.0045,0); L.geometry.translate(0,0,.1); L.rotation.y=-.9+i*.2; });
+      qAdd(fan,new THREE.CylinderGeometry(.008,.008,.06,12),Q.brass,0,.03,0); }
+    // vak 4: de Flexa Kleurprijs 2025 op een blok travertin, en drie naslagwerken
+    { const ax=cx+.25; sA(G,rb(.26,.14,.2,.006,2),S2.trav,ax,sh(4)+.07,zc,{ux:ax,along:"x"}); qAdd(G,sbox(.16,.3,.035,.006),new THREE.MeshPhysicalMaterial({color:0xe8eef0,roughness:.08,metalness:0,clearcoat:1,transparent:true,opacity:.55}),ax,sh(4)+.29,zc);
+      qAdd(G,new THREE.TorusGeometry(.045,.007,12,40),Q.brass,ax,sh(4)+.33,zc+.02);
+      makePanel(.12,.022,(g,w,h)=>{ g.fillStyle="#B08A4C"; g.fillRect(0,0,w,h); g.fillStyle="#2E1D12"; g.font=F(.011,"sans"); g.textAlign="center"; g.fillText("FLEXA KLEURPRIJS 2025",w/2,.015); g.textAlign="left"; },{x:ax,y:sh(4)+.07,z:zc+.101,parent:G,emissive:.08}); }
+    { const bk=[[.035,.32,.24,0x2f2a26],[.03,.3,.23,0xd9cbb0],[.04,.33,.25,0x6f4b36]]; let x=cx-.75; bk.forEach(([t,h,d,c])=>{ qAdd(G,rb(t,h,d,.004,1),new THREE.MeshStandardMaterial({color:c,roughness:.8}),x+t/2,sh(4)+h/2,zc); x+=t+.004; }); } }
+  { const cx=JW.nx[1], body=SM.body();
+    // vak 0: rollen Odessa-leer rechtop, in de collectiekleuren
+    body.slice(0,6).forEach((b,i)=>{ const x=cx-.75+i*.29, r=.085+(i%2)*.01; sA(G,new THREE.CylinderGeometry(r,r,.45,36),SM.ode(b.hex),x,sh(0)+.225,zc+(i%2?.04:-.03),{uy:i*.3}); qAdd(G,new THREE.TorusGeometry(r+.002,.005,6,36),S2.leaD,x,sh(0)+.32,zc+(i%2?.04:-.03),{rx:Math.PI/2}); });
+    // vak 1: netjes opgevouwen huiden, gestapeld per kleur
+    body.slice(0,7).forEach((b,i)=>{ const t=.022; sA(G,rb(.6,t,.27,.01,2),SM.ode(b.hex),cx-.45,sh(1)+t/2+i*t,zc,{ry:(i%2?.02:-.015)}); });
+    body.slice(3,8).forEach((b,i)=>{ const t=.022; sA(G,rb(.5,t,.25,.01,2),SM.ode(b.hex),cx+.42,sh(1)+t/2+i*t,zc,{ry:(i%2?-.02:.02)}); });
+    // vak 2: garenrek met gewaxt garen en drie patroonmallen van karton
+    { const rk=new THREE.Group(); rk.position.set(cx-.35,sh(2),zc); G.add(rk); sA(rk,sbox(.8,.03,.12,.004),S2.walD,0,.015,0);
+      THREADS.forEach((t,i)=>{ const x=-.33+i*.13; qAdd(rk,new THREE.CylinderGeometry(.004,.004,.1,8),Q.brass,x,.08,0); qAdd(rk,new THREE.CylinderGeometry(.03,.03,.08,24),new THREE.MeshStandardMaterial({color:t[3],roughness:.8}),x,.075,0); }); }
+    [[.25,.32,.03],[.38,.26,-.01],[.5,.2,-.04]].forEach(([x,h,r],i)=>{ const sh2=new THREE.Shape(); sh2.moveTo(-.12,0); sh2.lineTo(.12,0); sh2.lineTo(.1,h*.8); sh2.quadraticCurveTo(0,h,-.1,h*.8); sh2.closePath();
+      const m=qAdd(G,new THREE.ExtrudeGeometry(sh2,{depth:.002,bevelEnabled:false}),SM.kraft,cx+x,sh(2)+.005,zc-.1+i*.03,{rx:-.08,rz:r}); });
+    // vak 3: messing beslag op een schaal van travertin (gespen, D-ringen, staafjes, magneetsluitingen)
+    { const tx=cx-.3, HW=new THREE.Group(); HW.position.set(tx,sh(3),zc); HW.scale.setScalar(1.5); G.add(HW); }
+    { const tx=cx-.3; sA(G,rb(.75,.03,.3,.008,3),S2.trav,tx,sh(3)+.015,zc,{ux:tx,along:"x"});
+      for(let i=0;i<4;i++) qAdd(G,new THREE.TorusGeometry(.038,.007,10,32,Math.PI*1.3),Q.brass,tx-.28+i*.09,sh(3)+.04,zc-.07,{rx:-Math.PI/2});
+      for(let i=0;i<3;i++){ const b=new THREE.Group(); b.position.set(tx+.1+i*.09,sh(3)+.04,zc+.06); b.rotation.y=i*.3; b.scale.setScalar(1.6); G.add(b); qAdd(b,sbox(.045,.004,.035,.002),Q.brass,0,0,0); qAdd(b,sbox(.004,.004,.03,.001),Q.brass,0,.003,0); }
+      for(let i=0;i<4;i++) qAdd(G,new THREE.CylinderGeometry(.008,.008,.08,12),Q.brass,tx+.2+i*.035,sh(3)+.04,zc-.07,{rz:Math.PI/2});
+      for(let i=0;i<3;i++) qAdd(G,new THREE.CylinderGeometry(.018,.018,.006,24),Q.brass,tx-.22+i*.06,sh(3)+.034,zc+.08); }
+    // tas in wording: ivoor Odessa met bordeaux bies, nog zonder hengsels, op een houten tasvorm
+    { const wx=cx+.48, B=new THREE.Group(); B.position.set(wx,sh(3),zc); B.rotation.y=-.2; G.add(B); const iv=SM.ode(SM.bodyHex("ivoor")), bo=SM.ode(SM.bodyHex("bordeaux"));
+      sA(B,rb(.26,.035,.14,.01,2),S2.oak,0,.0175,0); const bw=.36, bh=.26, bd=.13; sA(B,rb(bw,bh,bd,.03,4),iv,0,.035+bh/2,0);
+      for(const e of [-1,1]) qAdd(B,new THREE.TorusGeometry(bh/2-.02,.006,8,40,Math.PI),bo,e*(bw/2-.003),.035+bh/2,0,{ry:Math.PI/2,rz:Math.PI/2});
+      qPiping(B,rectLoop(bw-.01,bd-.01,.035+bh,0,0,.03),bo,.006); for(let i=0;i<14;i++) qAdd(B,sbox(.006,.0015,.002,.0005),bo,-bw/2+.03+i*.022,.035+bh-.02,bd/2+.001); }
+    // vak 4: waaier met leerstalen in alle collectiekleuren
+    { const fan=new THREE.Group(); fan.position.set(cx,sh(4)+.01,zc); fan.scale.setScalar(1.6); G.add(fan); body.forEach((b,i)=>{ const L=sA(fan,sbox(.07,.004,.26,.001),SM.ode(b.hex),0,.004+i*.0045,0); L.geometry.translate(0,0,.1); L.rotation.y=-.95+i*(1.9/Math.max(1,body.length-1)); });
+      qAdd(fan,new THREE.CylinderGeometry(.009,.009,.07,12),Q.brass,0,.035,0); } }
+  // ---- op het bureau (y = bovenkant blad, z gemeten vanaf de wandvoorkant)
+  const y=JW.deskH, z0=D;
+  { const mx=-.55, mz=z0+.2; qAdd(G,sbox(.3,.012,.2,.004),S2.alu,mx,y+.006,mz); qAdd(G,sbox(.05,.36,.022,.006),S2.alu,mx,y+.19,mz-.06);
+    qAdd(G,sbox(.98,.44,.024,.008),S2.black,mx,y+.44,mz-.03);
+    makePanel(.95,.41,(g,w,h)=>{ drawPlan(5)(g,w*.62,h); g.fillStyle="#c9b9a0"; g.fillRect(w*.62,0,w*.38,h); const gr=g.createLinearGradient(w*.62,0,w,h); gr.addColorStop(0,"#8a6a4c"); gr.addColorStop(1,"#3a2a20"); g.fillStyle=gr; g.fillRect(w*.64,h*.06,w*.34,h*.5);
+      g.fillStyle="#efe7da"; g.fillRect(w*.67,h*.32,w*.12,h*.2); g.fillStyle="#5a3a28"; g.fillRect(w*.81,h*.38,w*.14,h*.14); g.fillStyle="#2b2018"; g.font=F(.022,"sans"); g.fillText(lang==="nl"?"Studie & portfolio":"Study & portfolio",w*.645,h*.68); g.font=F(.016,"sans"); g.fillStyle="#5c4a3a"; g.fillText(lang==="nl"?"Klik om te bekijken →":"Click to view →",w*.645,h*.78); },
+      {x:mx,y:y+.44,z:mz-.017,parent:G,emissive:.4,click:()=>openStudy()}); }
+  qAdd(G,sbox(.44,.018,.13,.004),S2.alu,-.55,y+.009,z0+.5); qAdd(G,sbox(.07,.03,.11,.012),S2.alu,-.2,y+.015,z0+.5);
+  { const LG=new THREE.Group(); LG.position.set(.55,y,z0+.36); LG.rotation.y=-.25; G.add(LG);
+    qAdd(LG,sbox(.36,.014,.25,.004),S2.alu,0,.007,0); const lid=new THREE.Group(); lid.position.set(0,.014,-.125); lid.rotation.x=-.32; LG.add(lid); qAdd(lid,sbox(.36,.24,.008,.004),S2.alu,0,.12,0);
+    makePanel(.33,.21,drawPlan(9,true),{x:0,y:.12,z:.0045,parent:lid,emissive:.35,click:()=>openStudy()}); }
+  // messing bureaulamp: ronde voet, staander, arm naar voren, kap naar beneden (werklicht 3000 K)
+  { const bx=-1.65, bz=z0+.12; qAdd(G,new THREE.LatheGeometry([[0,0],[.085,0],[.088,.006],[.07,.022],[.012,.026],[0,.026]].map(p=>new THREE.Vector2(p[0],p[1])),40),Q.brass,bx,y,bz);
+    qAdd(G,new THREE.CylinderGeometry(.008,.009,.42,14),Q.brass,bx,y+.235,bz); qAdd(G,new THREE.SphereGeometry(.016,14,10),Q.brass,bx,y+.45,bz);
+    qAdd(G,new THREE.CylinderGeometry(.007,.007,.3,12),Q.brass,bx,y+.45,bz+.15,{rx:Math.PI/2});
+    qAdd(G,new THREE.LatheGeometry([[.03,.11],[.04,.1],[.07,.03],[.085,0],[.083,0],[.068,.028],[.038,.098],[.028,.108]].map(p=>new THREE.Vector2(p[0],p[1])),40),Q.brass,bx,y+.31,bz+.3);
+    qAdd(G,new THREE.CircleGeometry(.078,28),SM.led,bx,y+.312,bz+.3,{rx:Math.PI/2,cast:false});
+    if(!isMobile()){ const Lt=new THREE.PointLight(0xffd6a6,0,2.6,2); Lt.position.set(bx,y+.25,bz+.32); G.add(Lt); lampLights.push(Lt); Lt.intensity=2.8*clamp(NIGHT*0.8+(1-DAY)*0.4,0,1); } }
+  { const px=-1.2, pz=z0+.2; qAdd(G,new THREE.CylinderGeometry(.045,.045,.12,28,1,true),Q.brass,px,y+.06,pz); qAdd(G,new THREE.CylinderGeometry(.044,.044,.004,28),Q.brass,px,y+.002,pz);
+    for(let i=0;i<6;i++){ const a=i*1.05; qAdd(G,new THREE.CylinderGeometry(.004,.004,.17,8),i%2?S2.black:S2.balsa,px+Math.cos(a)*.02,y+.1,pz+Math.sin(a)*.02,{rz:Math.cos(a)*.12,rx:Math.sin(a)*.12}); } }
+  books(G,-2.3,-2.0,y,z0+.25,31,{stack:true});
+  [[.95,z0+.42,.08,3],[1.25,z0+.36,-.12,7],[.62,z0+.48,.2,13]].forEach(([x,z,r,sd],i)=>{ const p=makePanel(.594,.42,drawPlan(sd),{x,y:y+.002+i*.0015,z,parent:G,emissive:.1}); p.mesh.rotation.set(-Math.PI/2,0,r); });
+  { const sb=new THREE.Group(); sb.position.set(1.6,y,z0+.45); sb.rotation.y=.3; G.add(sb); for(const s of [-1,1]) qAdd(sb,sbox(.15,.012,.21,.003),S2.paper,s*.076,.008,0,{rz:s*.05}); sA(sb,sbox(.31,.006,.215,.002),S2.leaD,0,.002,0);
+    makePanel(.13,.19,(g,w,h)=>{ g.fillStyle="#f3ede1"; g.fillRect(0,0,w,h); g.strokeStyle="rgba(60,50,40,.7)"; g.lineWidth=.0015; g.beginPath(); g.moveTo(w*.1,h*.8); g.lineTo(w*.5,h*.25); g.lineTo(w*.9,h*.8); g.closePath(); g.stroke(); g.strokeRect(w*.25,h*.55,w*.2,h*.25); },{x:.077,y:.0145,z:0,parent:sb,emissive:.08}).mesh.rotation.x=-Math.PI/2; }
+  [[S2.wal,1.95],[S2.oak,2.12],[S2.trav,2.29],[S2.lin,2.46]].forEach(([m,x],i)=>sA(G,sbox(.15,.02,.15,.003),m,x,y+.01,z0+.52,{ry:(i-1.5)*.08}));
+  { const mq=new THREE.Group(); mq.position.set(2.15,y,z0+.25); mq.rotation.y=-.2; G.add(mq); qAdd(mq,sbox(.4,.015,.3,.002),S2.balsa,0,.0075,0);
+    qAdd(mq,sbox(.18,.12,.14,.002),S2.card,-.08,.075,-.04); qAdd(mq,sbox(.12,.2,.1,.002),S2.card,.1,.115,-.06); qAdd(mq,sbox(.22,.006,.12,.001),S2.balsa,-.04,.14,-.03); qAdd(mq,sbox(.08,.06,.08,.002),S2.paper,.12,.045,.08);
+    for(let i=0;i<4;i++) qAdd(mq,new THREE.CylinderGeometry(.004,.004,.06,6),S2.balsa,-.15+i*.04,.045,.1); }
+  deskPlant(G,3.1,y,z0+.3,.4,41);
+  // ---- linnen kuipstoel op vijfteen voet, met de rug naar de bezoeker
+  { const C=new THREE.Group(); C.position.set(-.45,0,D+JW.deskD+.55); C.rotation.y=Math.PI+.12; G.add(C);
+    for(let i=0;i<5;i++){ const a=i/5*6.283, leg=new THREE.Group(); leg.rotation.y=-a; C.add(leg); qAdd(leg,rb(.3,.03,.045,.012,3),SM.chrome,.15,.075,0,{rz:.08}); qAdd(leg,new THREE.SphereGeometry(.026,14,10),S2.black,.29,.03,0); qAdd(leg,sbox(.03,.03,.03,.008),SM.chrome,.29,.055,0); }
+    qAdd(C,new THREE.CylinderGeometry(.03,.04,.06,24),SM.chrome,0,.1,0); qAdd(C,new THREE.CylinderGeometry(.022,.022,.26,20),SM.chrome,0,.25,0); qAdd(C,new THREE.CylinderGeometry(.09,.06,.03,24),S2.steel,0,.385,0);
+    // zitkussen (gedraaid profiel) en kuiprug (gedeeltelijk gedraaid, dik profiel met afgeronde bovenrand)
+    sA(C,new THREE.LatheGeometry([[0,0],[.25,0],[.275,.012],[.285,.045],[.28,.075],[.26,.095],[.2,.1],[0,.1]].map(p=>new THREE.Vector2(p[0],p[1])),48),S2.lin,0,.4,0);
+    const prof=[[.27,0],[.3,.02],[.305,.2],[.3,.34],[.285,.37],[.265,.37],[.25,.35],[.245,.2],[.25,.02]].map(p=>new THREE.Vector2(p[0],p[1]));
+    const back=sA(C,new THREE.LatheGeometry(prof,56,Math.PI*.22,Math.PI*1.56),S2.lin,0,.43,0); back.scale.set(1,1,.92);
+    C.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } }); }
+  return {top:3.6,size:2.4}; };
+// camerastandpunt bij de studiewand: tussen werkbank en bureau, met de stoel in beeld
+{ const _os=objStation0; objStation0=function(o,dist){ if(o.type!=="studiewand"||o.space==="hall") return _os(o,dist); const X=XF[o.space], A=AREAS[o.space]||AREAS.r, nx=Math.sin(o.ry||0), nz=Math.cos(o.ry||0);
+    const lx=o.x+nx*(JW.D+.3), lz=o.z+nz*(JW.D+.3), ex=clamp(o.x+nx*4.1,A.x[0],A.x[1]), ez=clamp(o.z+nz*4.1,A.z[0],A.z[1]); return {eye:X.toW(ex,ez).map(v=>+v.toFixed(2)),look:X.toW(lx,lz).map(v=>+v.toFixed(2))}; }; }
+// wandobjecten op de achterwand van Over mij komen op de voorkant van het maatwerk (of in een nis)
+{ const _po=placeObj; placeObj=function(o,G){ _po(o,G); if(o.space!=="hall"&&o.mount==="wall"&&(o.wall|0)===0){ const jw=OBJS.find(x=>x.space===o.space&&x.type==="studiewand"&&!x.off); if(!jw) return;
+      const lx=(jw.z||0)-(o.u||0), y=o.y||2, inN=JW.nx.some(c=>Math.abs(lx-c)<JW.NW/2-.05)&&y>JW.NB&&y<JW.NT; G.position.x+=inN?JW.D-JW.ND:JW.D; } }; }
+
+// =====================================================================================
+//  B. LEERWERKBANK 340 × 130 × 92 cm: massief eiken blad (8 cm) op vierkante poten met pen-gatverbinding,
+//     ladeblok links, lattenbodem met opgerolde huiden, bovenop leerhuid, snijmat, gereedschap, garen, stikpony,
+//     en twee echte Elizian-stukken
+// =====================================================================================
+function hideShape(seed,w,d){ const r=qRng(seed), s=new THREE.Shape(), N=36; for(let i=0;i<=N;i++){ const a=i/N*6.283, k=1+(r()-.5)*.1+.07*Math.sin(a*3+1)+.05*Math.cos(a*5)+(Math.abs(Math.sin(a))>.92?-.08:0); const x=Math.cos(a)*w/2*k, y=Math.sin(a)*d/2*k; i?s.lineTo(x,y):s.moveTo(x,y); } return s; }
+OB.werkbank=(o,G)=>{ const S2=studioMats(), Q=S2.Q, W=3.4, D=1.3, H=.92, T=.09, LG=.12, y=H, ivo=SM.ode(SM.bodyHex("ivoor")), bor=SM.ode(SM.bodyHex("bordeaux")), cog=SM.ode(SM.bodyHex("cognac"));
+  // ---- onderstel en blad (massief eiken)
+  sA(G,rb(W,T,D,.006,3),S2.oak,0,H-T/2,0,{solid:true,along:"x"});
+  for(const [x,z] of [[-W/2+.12,-D/2+.12],[W/2-.12,-D/2+.12],[-W/2+.12,D/2-.12],[W/2-.12,D/2-.12]]){ sA(G,rb(LG,H-T,LG,.006,2),S2.oak,x,(H-T)/2,z,{solid:true,ux:x,uz:z});
+    qAdd(G,sbox(.03,.03,.012,.002),S2.walD,x,H-T-.05,z+(z>0?LG/2:-LG/2)); }
+  for(const z of [-D/2+.12,D/2-.12]) sA(G,sbox(W-.36,.1,.045,.004),S2.oak,0,H-T-.06,z,{along:"x"});
+  for(const x of [-W/2+.12,W/2-.12]){ sA(G,sbox(.045,.1,D-.36,.004),S2.oak,x,H-T-.06,0,{along:"z"}); sA(G,sbox(.045,.07,D-.36,.004),S2.oak,x,.16,0,{along:"z"}); }
+  sA(G,sbox(W-.36,.07,.045,.004),S2.oak,0,.16,-D/2+.12,{along:"x"});
+  for(let i=0;i<9;i++) sA(G,sbox(W-.42,.022,.1,.003),S2.oak,0,.205,-D/2+.2+i*.112,{along:"x"});
+  // ---- ladeblok links: open kast met drie laden die je met een klik uitschuift
+  { const cx=-W/2+.12+.42, CW=.78, CD=D-.3, y0=.24, CH=.56, fz=CD/2;
+    sA(G,sbox(CW,.02,CD,.002),S2.oak,cx,y0+.01,0); sA(G,sbox(CW,.02,CD,.002),S2.oak,cx,y0+CH-.01,0); for(const e of [-1,1]) sA(G,sbox(.02,CH,CD,.002),S2.oak,cx+e*(CW/2-.01),y0+CH/2,0,{solid:true}); sA(G,sbox(CW,CH,.02,.002),S2.oak,cx,y0+CH/2,-CD/2+.01);
+    const dh=(CH-.04)/3, contents=[
+      DR=>{ // garen, naalden en een priem
+        THREADS.slice(0,5).forEach((t,i)=>qAdd(DR,new THREE.CylinderGeometry(.028,.028,.07,20),new THREE.MeshStandardMaterial({color:t[3],roughness:.8}),-.25+i*.1,.045,.05,{rz:Math.PI/2}));
+        qAdd(DR,sbox(.16,.01,.05,.002),SM.kraft,.15,.015,-.15); },
+      DR=>{ // stalen beslag en gespen
+        for(let i=0;i<6;i++) qAdd(DR,new THREE.TorusGeometry(.024,.005,10,28,Math.PI*1.3),Q.brass,-.25+i*.09,.02,-.05,{rx:-Math.PI/2}); for(let i=0;i<5;i++) qAdd(DR,new THREE.CylinderGeometry(.007,.007,.06,10),Q.brass,-.2+i*.1,.016,.12,{rz:Math.PI/2}); },
+      DR=>{ // leerresten in de collectiekleuren
+        SM.body().slice(0,6).forEach((b,i)=>sA(DR,sbox(.22,.004,.16,.001),SM.ode(b.hex),-.2+(i%3)*.2,.012+(i>2?.006:0),-.12+(i>2?.22:0),{ry:(i-2)*.1})); } ];
+    for(let k=0;k<3;k++){ const yy=y0+.02+dh*k, DR=new THREE.Group(); DR.position.set(cx,yy,0); G.add(DR); const dw=CW-.05, dd=CD-.06;
+      sA(DR,sbox(dw,.012,dd,.002),S2.oak,0,.006,0); for(const e of [-1,1]) sA(DR,sbox(.014,dh-.03,dd,.002),S2.oak,e*(dw/2-.007),(dh-.03)/2,0); sA(DR,sbox(dw,dh-.03,.014,.002),S2.oak,0,(dh-.03)/2,-dd/2+.007);
+      sA(DR,sbox(CW-.03,dh-.008,.022,.003),S2.oak,0,dh/2-.004,fz-.01,{along:"x",ux:cx,uy:yy});
+      qAdd(DR,rb(.12,.014,.022,.006,3),Q.brass,0,dh/2+.02,fz+.012); for(const e of [-1,1]) qAdd(DR,new THREE.CylinderGeometry(.005,.005,.018,10),Q.brass,e*.048,dh/2+.02,fz,{rx:Math.PI/2});
+      contents[k](DR);
+      let open=0, target=0, raf=0; const stepF=()=>{ open+=(target-open)*.16; DR.position.z=open*dd*.7; if(Math.abs(target-open)>.002) raf=requestAnimationFrame(stepF); else { open=target; DR.position.z=open*dd*.7; } };
+      const toggle=()=>{ target=target?0:1; cancelAnimationFrame(raf); raf=requestAnimationFrame(stepF); };
+      DR.traverse(m=>{ if(m.isMesh){ m.userData.drawer=toggle; m.userData.root=G; clickables.push(m); } }); } }
+  // ---- opgerolde huiden Odessa-leer op de lattenbodem (collectiekleuren)
+  SM.body().slice(0,5).forEach((b,i)=>{ const rr=.1+(i%3)*.012, Lh=.95+(i%2)*.15, x=-.05+i*.28, z=(i%2?-.2:.18); const c=sA(G,new THREE.CylinderGeometry(rr,rr,Lh,40),SM.ode(b.hex),x+.25,.216+rr,z,{rz:Math.PI/2}); c.rotation.y=(i-2)*.04;
+    qAdd(G,new THREE.TorusGeometry(rr+.002,.004,6,36),S2.leaD,x+.25+Lh*.3,.216+rr,z,{ry:Math.PI/2}); });
+  // de spullen op het blad zijn losse items (type werkstuk), zodat ze in beheer te verplaatsen zijn
+  return {top:H+.55,size:2.2}; };
+
+// ---- spullen op de werkbank: elk een eigen item (verplaatsen, draaien, verbergen in beheer)
+function benchItems(G,y,only,o){ const S2=studioMats(), Q=S2.Q, ivo=SM.ode(SM.bodyHex("ivoor")), bor=SM.ode(SM.bodyHex("bordeaux")), cog=SM.ode(SM.bodyHex("cognac")), want=k=>only===k;
+  // ---- bovenop: uitgespreide huid in ivoor Odessa (de huid uit de collectie), met zachte rand
+  if(want("huid")) { const g=new THREE.ExtrudeGeometry(hideShape(5,1.3,.9),{depth:.003,bevelEnabled:true,bevelThickness:.002,bevelSize:.008,bevelSegments:2,curveSegments:2}); g.rotateX(-Math.PI/2);
+    const hd=sA(G,g,ivo,-.95,y+.003,.08,{ry:.12,cast:false}); hd.receiveShadow=false; }
+  // uitgesneden patroondelen op de huid: kraft mallen en gesneden panelen, een bordeaux bies
+  if(want("huid")) { const panel=(w,h,r)=>{ const s=new THREE.Shape(); s.moveTo(-w/2,-h/2); s.lineTo(w/2,-h/2); s.lineTo(w/2,h/2-r); s.quadraticCurveTo(w/2,h/2,w/2-r,h/2); s.lineTo(-w/2+r,h/2); s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r); s.closePath(); const g=new THREE.ExtrudeGeometry(s,{depth:.0015,bevelEnabled:false,curveSegments:8}); g.rotateX(-Math.PI/2); return g; };
+    qAdd(G,panel(.34,.26,.06),SM.kraft,-1.15,y+.007,.1,{ry:.1}); sA(G,panel(.34,.26,.06),ivo,-.72,y+.008,.18,{ry:-.06}); sA(G,panel(.3,.12,.03),ivo,-.75,y+.0095,-.1,{ry:.04});
+    sA(G,sbox(.6,.004,.012,.001),bor,-.9,y+.009,-.22,{ry:.05,along:"x"}); }
+  // ---- werkplek rechts: travertin stempelsteen, snijmat, gereedschap
+  if(want("steen")) { const tx=.95, tz=.15; sA(G,rb(.4,.035,.3,.006,2),S2.trav,tx,y+.0175,tz,{ux:tx,uz:tz,along:"x",solid:true}); }
+  if(want("mat")){ sA(G,sbox(.75,.004,.5,.001),S2.mat,.22,y+.002,.15,{ry:-.04,cast:false}); qAdd(G,sbox(.6,.002,.03,.0005),Q.brass,.24,y+.0055,.44,{ry:-.04}); }
+  // gereedschap: halvemaanmes, priem, stikbeitels (4 en 2 tanden), poly-hamer, kantensnijder, verdeler
+  if(want("mat")) { const wood=S2.oak, steel=SM.chrome, at=(x,z,r)=>{ const g=new THREE.Group(); g.position.set(x,y+.006,z); g.rotation.y=r; G.add(g); return g; };
+    const handle=(g,len,r)=>sA(g,new THREE.LatheGeometry([[0,0],[r*.7,0],[r,len*.25],[r*.95,len*.8],[r*.6,len],[0,len]].map(p=>new THREE.Vector2(p[0],p[1])),20),S2.oak,0,r,0,{rz:-Math.PI/2});
+    { const g=at(.05,.12,.5); const b=qAdd(g,new THREE.CircleGeometry(.06,32,0,Math.PI),steel,0,.002,0,{rx:-Math.PI/2}); b.material=steel; qAdd(g,new THREE.CylinderGeometry(.006,.006,.03,10),steel,0,.006,.035,{rx:Math.PI/2}); const h=new THREE.Group(); h.position.set(0,0,.05); h.rotation.y=-Math.PI/2; g.add(h); handle(h,.1,.014); }
+    { const g=at(.3,.3,-.25); handle(g,.1,.016); qAdd(g,new THREE.ConeGeometry(.003,.05,8),steel,.125,.016,0,{rz:-Math.PI/2}); }
+    for(const [x,z,r,n] of [[.38,.05,.2,4],[.5,.1,.35,2]]){ const g=at(x,z,r); handle(g,.09,.013); qAdd(g,sbox(.04,.004,.006*n+.006,.001),steel,.11,.013,0); for(let i=0;i<n;i++) qAdd(g,sbox(.012,.003,.003,.0005),steel,.136,.013,-(n-1)*.003+i*.006); }
+    { const g=at(.62,.32,-.6); qAdd(g,new THREE.CylinderGeometry(.032,.032,.11,28),new THREE.MeshStandardMaterial({color:0xece6dc,roughness:.55}),0,.032,0,{rx:Math.PI/2}); sA(g,new THREE.CylinderGeometry(.012,.01,.26,14),wood,.14,.03,0,{rz:Math.PI/2}); }
+    { const g=at(.1,.36,.1); handle(g,.09,.012); qAdd(g,new THREE.CylinderGeometry(.002,.002,.04,6),steel,.11,.012,0,{rz:Math.PI/2}); }
+    { const g=at(.55,-.06,.9); for(const e of [-1,1]) qAdd(g,sbox(.1,.004,.006,.001),steel,.05,.006,e*.012,{ry:e*.12}); qAdd(g,new THREE.CylinderGeometry(.01,.01,.01,16),steel,0,.006,0); } }
+  // ---- achterzijde: gereedschapsblok, garen met naalden, lijm en kantenverf, binderclips
+  if(want("blok")) { const hx=-.15, hz=-.48; sA(G,sbox(.3,.16,.14,.008),S2.walD,hx,y+.08,hz,{along:"x",ux:hx}); for(let i=0;i<6;i++){ const xx=hx-.11+i*.045; sA(G,new THREE.CylinderGeometry(.009,.008,.12,12),i%3?S2.oak:S2.walD,xx,y+.2,hz+(i%2?.03:-.03),{rz:(i-2.5)*.05}); qAdd(G,new THREE.CylinderGeometry(.0025,.0025,.05,6),SM.chrome,xx,y+.28,hz+(i%2?.03:-.03)); } }
+  if(want("garen")) THREADS.filter(t=>["ivoor","cognac","bordeaux","goud"].includes(t[0])).forEach((t,i)=>{ const x=.2+i*.085, z=-.5; qAdd(G,new THREE.CylinderGeometry(.028,.028,.09,24),new THREE.MeshStandardMaterial({color:t[3],roughness:.85}),x,y+.054,z); sA(G,new THREE.CylinderGeometry(.034,.034,.008,24),S2.walD,x,y+.004,z); sA(G,new THREE.CylinderGeometry(.034,.034,.008,24),S2.walD,x,y+.104,z); qAdd(G,new THREE.CylinderGeometry(.0012,.0012,.06,4),SM.chrome,x+.02,y+.13,z,{rz:.3}); });
+  if(want("potjes")) for(const [x,c] of [[.6,0x2b1a14],[.68,0x6c2130]]){ qAdd(G,new THREE.CylinderGeometry(.03,.03,.06,24),SM.glass,x,y+.03,-.5); qAdd(G,new THREE.CylinderGeometry(.028,.028,.04,24),new THREE.MeshStandardMaterial({color:c,roughness:.3}),x,y+.021,-.5); qAdd(G,new THREE.CylinderGeometry(.031,.031,.015,24),SM.black,x,y+.067,-.5); }
+  if(want("clips")) for(let i=0;i<3;i++){ const g=new THREE.Group(); g.position.set(-.55+i*.05,y+.012,.27); g.rotation.y=.2*i; G.add(g); qAdd(g,sbox(.025,.012,.02,.003),SM.black,0,0,0); qAdd(g,new THREE.TorusGeometry(.01,.0015,6,16,Math.PI),SM.chrome,0,.01,0); }
+  // ---- een echt Elizian-stuk (productfoto, kies het product in beheer)
+  if(only==="tas"){ const id=(o&&o.product)||"b2", b=bagById(id), url=(b&&b.img)||"assets/bag_mini.webp", w=clamp(+(o&&o.w)||.36,.15,.8); const p=flatImg(url,w,.36); p.position.set(0,y+.002,0); G.add(p); billboards.push(p); contactShadow(G,y+.003,w*.9,.22,0,0); if(b){ p.userData.item=id; p.userData.root=G.parent||G; clickables.push(p); } }
+}
+const WERKSTUK={huid:{l:"Leerhuid met patroondelen",c:[-.95,.02]},mat:{l:"Snijmat met gereedschap",c:[.3,.2]},steen:{l:"Travertin stempelsteen",c:[.95,.15]},blok:{l:"Gereedschapsblok",c:[-.15,-.48]},
+  garen:{l:"Garenklossen",c:[.33,-.5]},potjes:{l:"Lijm en kantenverf",c:[.64,-.5]},clips:{l:"Binderclips",c:[-.5,.27]},tas:{l:"Tas uit de collectie",c:[0,0]}};
+OB.werkstuk=(o,G)=>{ const W=WERKSTUK[o.kind]||WERKSTUK.huid, I=new THREE.Group(); I.position.set(-W.c[0],0,-W.c[1]); G.add(I); benchItems(I,0,WERKSTUK[o.kind]?o.kind:"huid",o); return {top:.5,size:.6}; };
+// werkstukken liggen op 'lift' meter hoogte (standaard het werkblad, 0,92 m)
+{ const _po2=placeObj; placeObj=function(o,G){ _po2(o,G); if(o.type==="werkstuk") G.position.y=o.lift==null||o.lift===""?.92:clamp(+o.lift||0,0,2.5); }; }
+// slepen in beheer: het vlak waarop je sleept ligt op de hoogte van het werkstuk
+{ const _hs=hitSpot; hitSpot=function(cx,cy,mount,space,half){ const id=objMode&&objMode.id, o=id&&OBJS.find(x=>x.id===id);
+    if(!o||o.type!=="werkstuk"||mount!=="floor"||space==="hall") return _hs(cx,cy,mount,space,half);
+    const lift=o.lift==null||o.lift===""?.92:+o.lift||0, rr=screenRay(cx,cy), Gr=RG[space]; if(!Gr) return null; Gr.updateMatrixWorld(true); const im=new THREE.Matrix4().copy(Gr.matrixWorld).invert(), r2=rr.clone().applyMatrix4(im), A=AREAS[space]||AREAS.r;
+    const d=r2.direction, og=r2.origin; if(Math.abs(d.y)<1e-4) return null; const t=(lift-og.y)/d.y; if(t<=0) return null; return {x:+clamp(og.x+d.x*t,A.x[0],A.x[1]).toFixed(3),z:+clamp(og.z+d.z*t,A.z[0],A.z[1]).toFixed(3)}; }; }
+// beheer: soort en hoogte kiezen
+{ const _oh=objHTML; objHTML=function(id){ let h=_oh(id); const i=draft.objects.findIndex(o=>o.id===id), o=draft.objects[i]; if(!o||o.type!=="werkstuk") return h; const P="objects."+i;
+    let x=`<div class="row"><div><label>Wat ligt er</label><select data-p="${P}.kind" data-rr="1">${Object.entries(WERKSTUK).map(([k,v])=>`<option value="${k}"${(o.kind||"huid")===k?" selected":""}>${v.l}</option>`).join("")}</select></div><div><label>Hoogte (m) · werkblad = 0,92</label><input data-p="${P}.lift" data-num="2" value="${o.lift??.92}"></div></div>`;
+    if(o.kind==="tas") x+=`<h5 class="adm-h5">Welke tas</h5>`+pickHTML(P+".product",o.product?[o.product]:[],{radio:true,none:"Mini Atelier (standaard)"});
+    const at=h.indexOf("</label>"); return at>=0?h.slice(0,at+8)+x+h.slice(at+8):x+h; }; }
+OBJ_TYPES.werkstuk={l:"Werkstuk op de werkbank",m:"floor",d:"Een los voorwerp op de werkbank: leerhuid, snijmat met gereedschap, stempelsteen, gereedschapsblok, garen, potjes, clips of een tas uit de collectie. Verplaats het over het blad; de hoogte staat standaard op het werkblad (0,92 m)."};
+OBJ_NEW.werkstuk={kind:"huid",lift:.92};
+
+// ---- leren werkkruk (Ø 42, zithoogte 68): gedraaid kussen met bies, zwart stalen poten, messing voetring
+OB.kruk=(o,G)=>{ const S2=studioMats(), Q=S2.Q;
+  sA(G,new THREE.LatheGeometry([[0,0],[.19,0],[.205,.012],[.21,.04],[.2,.065],[.17,.075],[0,.078]].map(p=>new THREE.Vector2(p[0],p[1])),48),S2.lea,0,.6,0);
+  qAdd(G,new THREE.TorusGeometry(.207,.006,8,56),S2.leaD,0,.64,0,{rx:Math.PI/2}); qAdd(G,new THREE.CylinderGeometry(.14,.14,.02,32),S2.steel,0,.592,0);
+  for(let i=0;i<4;i++){ const a=i/4*6.283+.4, l=qAdd(G,new THREE.CylinderGeometry(.011,.013,.62,12),S2.steel,Math.cos(a)*.155,.3,Math.sin(a)*.155); l.rotation.set(Math.sin(a)*-.16,0,Math.cos(a)*.16); }
+  qAdd(G,new THREE.TorusGeometry(.19,.008,10,56),Q.brass,0,.24,0,{rx:Math.PI/2}); G.traverse(m=>{ if(m.isMesh) solids.push(m); }); return {top:1.1,size:.45}; };
+
+// ---- vloerkleed 550 × 400, naturel wol-jute
+OB.vloerkleed=(o,G)=>{ const w=clamp(+o.w||5.4,1,8), d=clamp(+o.d||3.6,1,7);
+  // handgeweven wollen kleed in zand en ivoor met een cognac bies (door ChatGPT gerenderd, het hele kleed in één beeld)
+  if(!SM.rug){ const t=loader.load(ST_DIR+"tex_11_vloerkleed.webp"); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; const n=loader.load(ST_DIR+"tex_11_vloerkleed_n.jpg"); n.anisotropy=maxAniso;
+    SM.rug=new THREE.MeshStandardMaterial({map:t,normalMap:n,normalScale:new THREE.Vector2(.8,.8),roughness:.97,alphaTest:.5,envMapIntensity:.1}); }
+  const g=new THREE.PlaneGeometry(w,d); g.rotateX(-Math.PI/2); const m=new THREE.Mesh(g,SM.rug); m.position.y=.008; m.receiveShadow=true; G.add(m);
+  const e=new THREE.Mesh(new THREE.PlaneGeometry(w*.985,d*.94).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.18,depthWrite:false})); e.position.y=.002; G.add(e);
+  return {top:.4,size:Math.min(w,d)}; };
+
+// ---- schilderijlampjes boven de borden (lijsten hebben er al een)
+function pictureLight(o,G){ if(G.userData.pLight||o.space==="hall"||o.board==="edu"||themeOf(o.space)!=="walnoot") return; G.userData.pLight=1; studioMats(); const Q=qBuildMaterials();
+  G.updateMatrixWorld(true); const bb=new THREE.Box3().setFromObject(G); if(bb.isEmpty()) return; const inv=new THREE.Matrix4().copy(G.matrixWorld).invert(), lo=new THREE.Vector3(1e9,1e9,1e9), hi=new THREE.Vector3(-1e9,-1e9,-1e9), v=new THREE.Vector3();
+  for(const x of [bb.min.x,bb.max.x]) for(const y of [bb.min.y,bb.max.y]) for(const z of [bb.min.z,bb.max.z]){ v.set(x,y,z).applyMatrix4(inv); lo.min(v); hi.max(v); }
+  const w=clamp((hi.x-lo.x)*.38,.3,.65), cx=(lo.x+hi.x)/2, top=hi.y+.1;
+  qAdd(G,rb(w,.035,.05,.012,3),Q.brass,cx,top,.16); qAdd(G,sbox(.03,.03,.14,.006),Q.brass,cx,top-.005,.08); qAdd(G,sbox(.04,.05,.012,.004),Q.brass,cx,top-.02,.006);
+  qAdd(G,sbox(w-.02,.004,.02,.001),SM.led,cx,top-.019,.165,{cast:false});
+  washPlane(G,(hi.x-lo.x)*.95,Math.min(1.6,(hi.y-lo.y)*.9+.1),cx,top-.02,.012,.3); }
+for(const k of ["tekst","studie"]){ const _f=OB[k]; OB[k]=async(o,G)=>{ const info=await _f(o,G); try{ pictureLight(o,G); if(o.space!=="hall"&&themeOf(o.space)==="walnoot") G.traverse(m=>{ if(m.isMesh&&m.material&&m.material.isMeshBasicMaterial&&m.material.map&&!m.material.transparent) m.material.color.setHex(0xcdc4b4); }); }catch(e){} return info; }; }
+
+// zuilen in walnoot-kamers krijgen echte travertin (ongepolijst, horizontale aders)
+{ const _z=OB.zuil; OB.zuil=(o,G)=>{ const info=_z(o,G); if(o.space!=="hall"&&themeOf(o.space)==="walnoot"){ const S2=studioMats(); G.traverse(m=>{ if(!m.isMesh) return; if(m.material===M.marble||m.material===M.stone||m.material===M.stoneTrim||m.material===M.flute){ m.geometry=stUV(m.geometry.clone(),"x"); m.material=S2.trav; } else if(m.material===M.darkTop){ m.geometry=stUV(m.geometry.clone(),"x"); m.material=S2.wal; } }); } return info; }; }
+OBJ_TYPES.studiewand={l:"Ingebouwde studiewand",m:"floor",d:"Wandvullend walnoten maatwerk tegen de achterwand: twee verzonken, verlichte boekennissen en een zwevend bureau met monitor, laptop, lamp, tekeningen en maquette. Klik op het scherm opent Studie & portfolio. Borden op deze wand komen vanzelf op de voorkant van het maatwerk."};
+OBJ_TYPES.werkbank={l:"Leren werkbank",m:"floor",d:"Eiken werkbank (340 × 130 cm) met een huid Odessa-leer uit de collectie, patroondelen, travertin stempelsteen, gereedschap, garen, drie laden die uitschuiven en twee stukken uit de collectie."};
+OBJ_TYPES.kruk={l:"Leren werkkruk",m:"floor",d:"Ronde kruk met cognac leren zitting, zwart stalen poten en messing voetring."};
+OBJ_TYPES.vloerkleed={l:"Vloerkleed",m:"floor",d:"Handgeweven wollen kleed in zand en ivoor met een cognac bies, 540 × 360 cm."};
+Object.assign(OBJ_NEW,{studiewand:{},werkbank:{},kruk:{},vloerkleed:{w:5.4,d:3.6}});
+Object.assign(CAPS,{werkbank:{nl:{n:"Over mij · Atelier",t:"Mijn werkbank",p:"Hier ontstaat elke tas: patroon tekenen, snijden, kanten afwerken en alles met de hand stikken, steek voor steek."},en:{n:"About · Atelier",t:"My workbench",p:"This is where every bag begins: drawing the pattern, cutting, finishing the edges and stitching everything by hand, stitch by stitch."}},
+  studiewand:{nl:{n:"Over mij · Studie",t:"Mijn bureau",p:"Hier werk ik aan mijn studie Built Environment: plattegronden, doorsneden en maquettes. Klik op het scherm voor mijn studie en portfolio."},en:{n:"About · Studies",t:"My desk",p:"Where I work on my Built Environment studies: floor plans, sections and models. Click the screen for my studies and portfolio."}}});
+Object.assign(CAP_T,{werkbank:["about","werk"],studiewand:["about","studie"]});
+
+// ---- eenmalige herinrichting van Over mij (blijft staan zodra Elise opslaat: vlag about2)
+const ABOUT2_ADD=[{id:"a2_rug",space:"about",type:"vloerkleed",mount:"floor",x:-9.6,z:-9.1,ry:1.5708,w:5.4,d:3.6},
+  {id:"a2_desk",space:"about",type:"studiewand",mount:"floor",x:-15.0,z:-9.1,ry:1.5708,cap:"studiewand"},
+  {id:"a2_bench",space:"about",type:"werkbank",mount:"floor",x:-9.6,z:-9.1,ry:1.5708,cap:"werkbank"},
+  {id:"a2_stool",space:"about",type:"kruk",mount:"floor",x:-8.3,z:-9.45,ry:0}].concat(
+  [["huid",-.95,.02,0],["mat",.3,.2,0],["steen",.95,.15,0],["blok",-.15,-.48,0],["garen",.33,-.5,0],["potjes",.64,-.5,0],["clips",-.5,.27,0],["tas",1.28,-.32,0,"b2"],["tas",.9,-.42,0,"b3"]]
+    .map(([kind,lx,lz,r,prod],i)=>({id:"a2_ws_"+kind+(prod?"_"+prod:""),space:"about",type:"werkstuk",mount:"floor",kind,lift:.92,x:+(-9.6+lz).toFixed(3),z:+(-9.1-lx).toFixed(3),ry:1.5708+r,...(prod?{product:prod}:{})})));
+const ABOUT2_MOVE={a_story:{wall:0,u:-9.1,y:2.45},a_a5:{wall:0,u:-6.55,y:2.16,h:.4,frame:"gold"},a_study:{wall:2,u:-11.35,y:2.0},a_a1:{wall:2,u:-9.35,y:2.0},a_a2:{wall:2,u:-8.0,y:2.0},a_edu:{wall:2,u:-8.67,y:3.3},
+  a_vision:{wall:3,u:-10.6,y:2.2},a_a6:{wall:3,u:-7.5,y:2.05},a_a3:{x:-13.45,z:-4.25},a_a4:{x:-13.45,z:-13.95},dc_ab_pl2:{x:-6.5,z:-3.7,s:1.25},dc_ab_pl1:{x:-6.5,z:-14.55,s:1.1}};
+const ABOUT2_DROP=new Set(["dc_ab_bank","dc2_ab_chair","dc2_ab_lamp"]);
+function about2(list,d){ if((d&&d.about2)||!ROOMKEYS.includes("about")) return list; const ids=new Set(list.map(o=>o.id));
+  return list.filter(o=>!(o.space==="about"&&(ABOUT2_DROP.has(o.id)||o.type==="bank"||o.type==="fauteuil"||o.type==="vloerlamp"))).map(o=>o.space==="about"&&ABOUT2_MOVE[o.id]?{...o,...ABOUT2_MOVE[o.id]}:o)
+    .concat(ABOUT2_ADD.filter(o=>!ids.has(o.id)).map(o=>_c(o))); }
+{ const _of=objsFrom; objsFrom=d=>about2(_of(d),d); OBJS=objsFrom(EARLY); }
+{ const _cc=currentContent; currentContent=function(){ return {..._cc(),about2:true}; }; }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
