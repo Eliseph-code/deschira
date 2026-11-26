@@ -6082,6 +6082,36 @@ const c8Scan=()=>OBJS.forEach(o=>{ if(o.type==="rondvitrine"&&OBJ_REG[o.id]&&OBJ
 { const v=new THREE.Vector3(), tick=()=>{ requestAnimationFrame(tick); if(!C8P.length) return; camera.getWorldPosition(v);
     for(let i=C8P.length-1;i>=0;i--){ const {G,piv}=C8P[i]; if(!G.parent){ C8P.splice(i,1); continue; } const l=G.worldToLocal(v.clone()), a=Math.atan2(l.x,l.z), r=piv.rotation.y, d=Math.atan2(Math.sin(a-r),Math.cos(a-r)); piv.rotation.y=r+Math.max(-.12,Math.min(.12,d)); } };
   requestAnimationFrame(tick); }
+
+// =====================================================================================
+// C9 — telefoon: ontwerppaneel bij de vitrine in- en uitschuiven (knop + tik buiten het paneel)
+// =====================================================================================
+const c9Mob=()=>innerWidth<=760;
+const c9Btn=document.createElement("button"); c9Btn.type="button"; c9Btn.className="c9-grip"; c9Btn.innerHTML=`<i></i><span></span>`; siteEl.appendChild(c9Btn);
+function c9Label(){ const min=siteEl.classList.contains("po-min"), nl=lang!=="en"; c9Btn.querySelector("span").textContent=min?(nl?"▴  Ontwerp je tas":"▴  Design your bag"):(nl?"▾  Inschuiven":"▾  Slide down"); c9Btn.setAttribute("aria-expanded",String(!min)); }
+function c9Min(on){ siteEl.classList.toggle("po-min",!!on); c9Label(); c9Off(); }
+function c9Off(){ if(!C5.dock) return; if(c9Mob()&&siteEl.classList.contains("po-min")){ camera.clearViewOffset(); camera.updateProjectionMatrix(); } else c5Offset(); }
+["pointerdown","mousedown","touchstart","wheel"].forEach(ev=>c9Btn.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+c9Btn.addEventListener("click",e=>{ e.stopPropagation(); c9Min(!siteEl.classList.contains("po-min")); });
+// tik buiten het paneel (in de 3D-ruimte) → inschuiven
+document.addEventListener("pointerdown",e=>{ if(!c9Mob()||!C5.dock||!siteOpen||siteEl.classList.contains("po-min")) return; const t=e.target;
+  if(siteEl.contains(t)||t.closest(".modal,#c8Nav,.ham-btn,.topbar,header,nav")) return; c9Min(true); },true);
+// nieuw aanmeren = uitgeklapt; ontwerp-acties vanuit de vitrine laten het paneel ingeschoven
+{ const _d=c5Dock; c5Dock=function(){ const fresh=!C5.dock; _d.apply(this,arguments); if(fresh) siteEl.classList.remove("po-min"); c9Label(); c9Off(); }; }
+{ const _u=c5Undock; c5Undock=function(c){ siteEl.classList.remove("po-min"); return _u(c); }; }
+{ const _o=c5Offset; c5Offset=function(){ _o(); if(C5.dock&&c9Mob()&&siteEl.classList.contains("po-min")){ camera.clearViewOffset(); camera.updateProjectionMatrix(); } }; }
+{ const _cs=closeSite; closeSite=function(){ siteEl.classList.remove("po-min"); return _cs.apply(this,arguments); }; }
+addEventListener("ep-lang",c9Label); c9Label();
+{ const st=document.createElement("style"); st.textContent=`
+  .c9-grip{display:none}
+  @media (max-width:760px){
+    .site-win.po-dock{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+    .site-win.po-dock .c9-grip{display:flex;position:absolute;left:50%;top:-44px;transform:translateX(-50%);height:44px;min-width:190px;padding:0 20px;align-items:center;justify-content:center;gap:8px;flex-direction:column;
+      background:var(--sw-brown);color:#F6EFE3;border:0;border-radius:14px 14px 0 0;font:500 12px/1 Jost,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 -8px 22px rgba(30,15,8,.28);cursor:pointer;pointer-events:auto}
+    .site-win.po-dock .c9-grip i{display:block;width:36px;height:4px;border-radius:2px;background:rgba(246,239,227,.55)}
+    .site-win.po-dock.open.po-min{transform:translateY(100%)}
+    .site-win.po-dock .sw-handle{display:none}
+    body.site-open .site-win.po-dock~#c8Nav{left:50%} }`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
