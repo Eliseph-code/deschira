@@ -4002,7 +4002,7 @@ function syncObjects(){ if(!objsBuilt) return Promise.resolve(); objBusy=objBusy
 
 // ---- rondleiding: een kijkpunt voor elk item, in de volgorde rond de zaal en door elke kamer
 function objWorld(o){ if(o.space==="hall"){ if(o.mount==="wall"){ const [x,z]=onC(o.th,ROT.R); return {x,z}; } return {x:o.x,z:o.z}; } const X=XF[o.space]; if(o.mount==="wall"){ const W=WALLS_L(o.space)[o.wall|0]; const lx=W.ax==="z"?W.x:o.u, lz=W.ax==="z"?o.u:W.z, [x,z]=X.toW(lx,lz); return {x,z,lx,lz}; } const [x,z]=X.toW(o.x,o.z); return {x,z,lx:o.x,lz:o.z}; }
-function objTopY(o){ if(o.mount==="wall") return o.y||2.2; if(o.type==="zuil") return clamp(+o.h||(o.style==="zuil"?1.36:1.13),.3,2.4)+.3; if(o.type==="ezel") return 1.4; if(o.type==="atelier") return 1.15; if(o.type==="bank") return .7; return 1.2; }
+function objTopY(o){ if(o.mount==="wall") return o.y||2.2; if(o.type==="zuil") return clamp(+o.h||(o.style==="zuil"?1.36:1.13),.3,2.4)+.3; if(o.type==="ezel") return 1.4; if(o.type==="atelier") return 1.15; if(o.type==="atelierwand") return 2.3; if(o.type==="rondvitrine") return 1.35; if(o.type==="bank") return .7; return 1.2; }
 function objHgt(o){ if(o.mount!=="wall") return o.type==="zuil"?clamp(+o.h||1.2,.3,2.4)+.6:1.8; if(o.type==="etalage") return o.h||2.1; if(o.type==="tekst") return o.board&&BOARDS[o.board]?BOARDS[o.board].h:(o.h||2.1); return (o.h||1.2)+.5; }
 function objStation(o){ const R=ROT.R, sz=(OBJ_REG[o.id]&&OBJ_REG[o.id].size)||(o.w||(o.type==="etalage"?2.6:1)), fit=(objHgt(o)/2+.3)/Math.tan(rad(camera.fov*.42)), dist=clamp(Math.max(2.4+sz*.55,fit),2.8,7);
   const st=objStation0(o,dist), dx=st.eye[0]-st.look[0], dz=st.eye[1]-st.look[1], dd=Math.hypot(dx,dz)||dist; st.pitch=clamp(deg(Math.atan2(objTopY(o)-EYE,dd)),-14,16); return st; }
@@ -4010,7 +4010,7 @@ function objStation0(o,dist){ const R=ROT.R;
   if(o.space==="hall"){ if(o.mount==="wall") return {eye:P2(o.th,R-dist),look:P2(o.th,R)}; const f=[Math.sin(o.ry||0),Math.cos(o.ry||0)], d2=o.type==="podium"?3.4:2.6; return {eye:[+(o.x+f[0]*d2).toFixed(2),+(o.z+f[1]*d2).toFixed(2)],look:[o.x,o.z]}; }
   const X=XF[o.space], A=AREAS[o.space]||AREAS.r, Lg=legOf(o.space); let lx,lz,nx,nz;
   if(o.mount==="wall"){ const W=WALLS_L(o.space)[o.wall|0]; lx=W.ax==="z"?W.x:o.u; lz=W.ax==="z"?o.u:W.z; nx=Math.sin(W.ry); nz=Math.cos(W.ry); } else { lx=o.x; lz=o.z; nx=Math.sin(o.ry||0); nz=Math.cos(o.ry||0); }
-  const d2=o.mount==="wall"?dist:(o.type==="podium"?3.2:o.type==="atelier"?3.6:2.4); let ex=clamp(lx+nx*d2,A.x[0],A.x[1]), ez=clamp(lz+nz*d2,A.z[0],A.z[1]);
+  const d2=o.mount==="wall"?dist:(o.type==="podium"?3.2:o.type==="atelier"?3.6:o.type==="atelierwand"?4.2:o.type==="rondvitrine"?2.7:2.4); let ex=clamp(lx+nx*d2,A.x[0],A.x[1]), ez=clamp(lz+nz*d2,A.z[0],A.z[1]);
   // staat het item met zijn voorkant dicht tegen een wand, kijk dan vanuit het midden van de kamer
   if(o.mount!=="wall"&&Math.hypot(ex-lx,ez-lz)<d2*.75){ const cx=(A.x[0]+A.x[1])/2, cz=(A.z[0]+A.z[1])/2, vx=cx-lx, vz=cz-lz, vl=Math.hypot(vx,vz)||1; ex=clamp(lx+vx/vl*d2,A.x[0],A.x[1]); ez=clamp(lz+vz/vl*d2,A.z[0],A.z[1]); }
   return {eye:X.toW(ex,ez).map(v=>+v.toFixed(2)),look:X.toW(lx,lz).map(v=>+v.toFixed(2))}; }
@@ -5397,6 +5397,401 @@ function about2(list,d){ if((d&&d.about2)||!ROOMKEYS.includes("about")) return l
     .concat(ABOUT2_ADD.filter(o=>!ids.has(o.id)).map(o=>_c(o))); }
 { const _of=objsFrom; objsFrom=d=>about2(_of(d),d); OBJS=objsFrom(EARLY); }
 { const _cc=currentContent; currentContent=function(){ return {..._cc(),about2:true}; }; }
+
+// =====================================================================================
+// C2 — COLLECTIE ALS GROT-ATELIER (ontwerp met ChatGPT, gesprek "Ontwerp collectiekamer render")
+// gebeeldhouwde travertijnwanden, licht plafond met lichtlijn, gepolijste vloer,
+// ronde Hermès-vitrines met zwevende tassen, atelierwand achterin en een 'levende vitrine'
+// die live meekleurt met wat de bezoeker kiest.
+// =====================================================================================
+THEMES.grot={l:"Grot-atelier: gebeeldhouwd travertijn met warm lijnlicht (collectie)"};
+{ const fix=a=>{ const s=(a||[]).find(s=>s.id==="coll"); if(s&&!(EARLY&&EARLY.coll2)) s.theme="grot"; }; fix(SPACES0); fix(SPACES); }
+const C2={ noise:new ImprovedNoise(), mob:isMobile() };
+// meters als UV, zodat foto-texturen met stMat op ware schaal liggen
+function c2UV(geo,sx,sy){ const uv=geo.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,uv.getX(i)*sx,uv.getY(i)*sy); uv.needsUpdate=true; return geo; }
+function c2Mats(){ if(C2.m) return C2.m; const Q=qBuildMaterials(), m={};
+  const rep=(t,r)=>{ [t.map,t.normalMap,t.roughnessMap].forEach(x=>x.repeat.set(r,r)); return t; };
+  const tv=rep(qTravertine(71,{base:"#DDD0BA",light:"#EEE6D7",dark:"#C9B89E",cool:"#D8D0C4"}),1/2.2);
+  const lit=(o,e)=>({...o,emissive:0xffe6c8,emissiveMap:o.map,emissiveIntensity:e});
+  m.wall=new THREE.MeshStandardMaterial({...lit(tv,.3),roughness:1,normalScale:new THREE.Vector2(.9,.9),envMapIntensity:.1});
+  m.skin=new THREE.MeshStandardMaterial({...lit(tv,.3),roughness:1,normalScale:new THREE.Vector2(1.2,1.2),envMapIntensity:.1,vertexColors:true});
+  const fv=rep(qTravertine(83,{base:"#D6C9B4",light:"#E6DCCB",dark:"#C2B198",cool:"#D2CABE"}),1/1.8);
+  m.floor=new THREE.MeshPhysicalMaterial({...lit(fv,.12),roughness:.55,clearcoat:.45,clearcoatRoughness:.12,normalScale:new THREE.Vector2(.25,.25),envMapIntensity:.5});
+  { const p=qPlaster(61,{base:"#E2D7C5",light:"#ECE3D4",dark:"#CDBFA9",contrast:.45}); m.ceil=new THREE.MeshStandardMaterial({...lit(p,.34),color:0xfff1dc,roughness:1,normalScale:new THREE.Vector2(.35,.35)}); m.ceil.emissive.set(0xffe9cc); }
+  const sv=rep(qTravertine(91,{base:"#DCCDB4",light:"#ECE2D0",dark:"#C5B296",cool:"#D5CCBF",size:512}),1/1.2);
+  m.stone=new THREE.MeshPhysicalMaterial({...lit(sv,.16),roughness:.75,clearcoat:.15,clearcoatRoughness:.3,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.25});
+  m.ivory=new THREE.MeshPhysicalMaterial({color:0xf0ede5,roughness:.38,clearcoat:.25,clearcoatRoughness:.3,envMapIntensity:.4});
+  m.gold=Q.brass.clone(); m.gold.color.set(0xead8ab); m.gold.roughness=.3; m.gold.envMapIntensity=1.7; m.gold.metalness=.85; m.gold.emissive=new THREE.Color(0xa88d5c); m.gold.emissiveIntensity=.62;
+  m.glass=Q.glass.clone(); m.glass.opacity=.07; m.glass.envMapIntensity=2;
+  m.wire=new THREE.MeshStandardMaterial({color:0xb7a58c,metalness:1,roughness:.28});
+  m.led=new THREE.MeshBasicMaterial({color:new THREE.Color(1,.86,.66),toneMapped:false});
+  m.up=new THREE.MeshBasicMaterial({color:new THREE.Color(1,.93,.82),toneMapped:false});
+  m.down=new THREE.MeshBasicMaterial({color:new THREE.Color(1,.9,.76),toneMapped:false});
+  m.beam=new THREE.MeshBasicMaterial({map:canvasTex(8,256,(g,w,h)=>{ const gr=g.createLinearGradient(0,0,0,h); gr.addColorStop(0,"rgba(255,226,186,.9)"); gr.addColorStop(.35,"rgba(255,224,184,.25)"); gr.addColorStop(1,"rgba(255,224,184,.05)"); g.fillStyle=gr; g.fillRect(0,0,w,h); }),
+    transparent:true,opacity:.06,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,side:THREE.DoubleSide});
+  m.floorGlow=new THREE.MeshBasicMaterial({map:canvasTex(8,128,(g,w,h)=>{ const gr=g.createLinearGradient(0,0,0,h); gr.addColorStop(0,"rgba(255,214,163,.95)"); gr.addColorStop(.4,"rgba(255,210,160,.3)"); gr.addColorStop(1,"rgba(255,210,160,0)"); g.fillStyle=gr; g.fillRect(0,0,w,h); }),
+    transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
+  m.pool=new THREE.MeshBasicMaterial({map:glowTex(),transparent:true,opacity:.5,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
+  m.niche=(()=>{ const t=canvasTex(64,256,(g,w,h)=>{ const gr=g.createLinearGradient(0,0,0,h); gr.addColorStop(0,"#fbf4e8"); gr.addColorStop(.25,"#f2e8d8"); gr.addColorStop(1,"#e2d4bd"); g.fillStyle=gr; g.fillRect(0,0,w,h); });
+    return new THREE.MeshStandardMaterial({color:0xf0ede5,roughness:.9,emissive:0xffffff,emissiveMap:t,emissiveIntensity:.62}); })();
+  m.bord=qLeather(0x692719,{clear:.12}); m.cream=qLeather(0xe9dfcd,{clear:.1});
+  m.pearl=new THREE.MeshPhysicalMaterial({color:0xf6f0e6,roughness:.18,clearcoat:1,clearcoatRoughness:.08,sheen:1,sheenColor:new THREE.Color(0xffe8f0),envMapIntensity:1.4});
+  return (C2.m=m); }
+{ const _tm=themeMats; themeMats=function(t){ if(t!=="grot") return _tm(t); if(TMATS.grot) return TMATS.grot; const c=c2Mats();
+    return (TMATS.grot={wall:c.wall,floor:c.floor,ceil:c.ceil,plinth:new THREE.MeshStandardMaterial({color:0xcbbba2,roughness:.9}),light:[0xffd6a3,16],spot:[0xffe2c1,30],noLamp:true,q:1,q3:1}); }; }
+
+// ---- gebeeldhouwde wand: een raster dat naar binnen uitbolt (fBm-ruis), met gaten voor deur/atelier.
+// Licht is in de hoekpuntkleur 'gebakken': bovenaan warm strijklicht, onderaan de vloerlijn, holtes donkerder.
+function caveSkin(W,H,{holes=[],seed=0,step=.07,ext=.4}={}){ const N=C2.noise, nx=Math.ceil((W+ext*2)/step), ny=Math.ceil(H/step), pos=[], col=[], uv=[], idx=[], D=[];
+  const fbm=(x,y)=>{ let s=0,a=1,f=1,n=0; for(let o=0;o<4;o++){ s+=a*N.noise(x*f*.42,y*f*.55,seed+o*7.3); n+=a; a*=.5; f*=2.1; } return s/n; };
+  const nearHole=(x,y)=>{ let d=9; for(const h of holes){ const dx=Math.max(h[0]-x,0,x-h[1]), dy=Math.max((h[2]||0)-y,0,y-h[3]); d=Math.min(d,Math.hypot(dx,dy)); } return d; };
+  const inHole=(x,y)=>holes.some(h=>x>h[0]&&x<h[1]&&y>(h[2]||0)&&y<h[3]);
+  for(let j=0;j<=ny;j++) for(let i=0;i<=nx;i++){ const x=-ext+i*(W+ext*2)/nx, y=j*H/ny;
+    const big=fbm(x,y), fine=N.noise(x*3.1,y*3.6,seed+50)*.5+N.noise(x*7,y*8,seed+90)*.25;
+    let d=.04+.34*Math.pow(qCl(.5+big*1.6),1.35)+.035*fine;
+    const tb=qCl((y-.12)/.35), tt=qCl((H-.06-y)/.4), th=qCl((nearHole(x,y)-.04)/.45);
+    d=lerp(.06,d,tb); d=lerp(.1,d,tt); d=lerp(.03,d,th); d=Math.max(.02,d); D.push(d);
+    pos.push(x,y,d); uv.push(x,y);
+    const ao=.9+.2*qCl((d-.04)/.34), wash=1+.42*Math.exp(-(H-y)/.9)+.3*Math.exp(-y/.3); const v=Math.min(1.5,ao*wash); col.push(v,v*.955,v*.88); }
+  const row=nx+1; for(let j=0;j<ny;j++) for(let i=0;i<nx;i++){ const a=j*row+i, b=a+1, c=a+row, e=c+1, cx=-ext+(i+.5)*(W+ext*2)/nx, cy=(j+.5)*H/ny; if(inHole(cx,cy)) continue; idx.push(a,b,e,a,e,c); }
+  const g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3)); g.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2)); g.setAttribute("color",new THREE.Float32BufferAttribute(col,3)); g.setIndex(idx); g.computeVertexNormals();
+  // onderkanten van uitstulpingen vangen minder licht
+  const nm=g.attributes.normal, cl=g.attributes.color; for(let i=0;i<cl.count;i++){ const ny2=nm.getY(i), lam=Math.max(0,ny2*.72+nm.getZ(i)*.62+nm.getX(i)*.3), k=(.58+.62*lam)*(ny2<0?1+ny2*.25:1); cl.setXYZ(i,cl.getX(i)*k,cl.getY(i)*k,cl.getZ(i)*k); }
+  return g; }
+{ const _rs=roomShell; roomShell=function(k){ _rs(k); if(themeOf(k)!=="grot"||!BP) return; const c=c2Mats(), L=legOf(k), RH=ROOM_H, zN=L.zN, zS=L.zS, dz=L.dz, xB=-15.0, xF=-5.6, Wz=zN-zS, Wx=xF-xB, st=C2.mob?.12:.07;
+  const at=(OBJS||[]).find(o=>o.space===k&&o.type==="atelierwand"&&!o.off), sk=(W,holes,seed,x,z,ry)=>{ const m=new THREE.Mesh(caveSkin(W,RH,{holes,seed,step:st}),c.skin); m.position.set(x,0,z); m.rotation.y=ry; m.receiveShadow=true; ADD(m); solids.push(m); return m; };
+  // achterwand (x=xB, kijkt naar +x; lokale x loopt van zN naar zS)
+  const aw=(C2.AW||4)/2+.45, ah=at?[[zN-at.z-aw,zN-at.z+aw,0,(C2.AH||3.4)+(C2.TOP||.6)+.05]]:[]; sk(Wz,ah,1.3,xB,zN,Math.PI/2);
+  sk(Wz,[[dz-zS-1.75,dz-zS+1.75,0,3.3]],4.1,xF,zS,-Math.PI/2);   // deurwand
+  const nh=side=>C2.NICHES.filter(n=>n.side===side).map(n=>{ const lx=side==='N'?xF-n.x:n.x-xB; return [lx-.34,lx+.34,1.12,1.78]; });
+  sk(Wx,nh('N'),7.7,xF,zN,Math.PI);                                // noordwand
+  sk(Wx,nh('S'),9.9,xB,zS,0);                                      // zuidwand
+  c2Thread(); C2.NICHES.forEach((n,i)=>c2Niche(n,i,n.side==='N'?zN:zS));
+  // vloerlijn: verborgen led in de voet van de rots, met zachte gloed over de vloer
+  const strip=(len,x,z,ry)=>{ const s=new THREE.Mesh(new THREE.BoxGeometry(len,.012,.025),c.led); s.position.set(x,.006,z); s.rotation.y=ry; ADD(s);
+    // gloed: vlak op de vloer, helder tegen de rots, naar binnen uitlopend (lokale +z van de strip wijst de kamer in)
+    const gl=new THREE.Mesh(new THREE.PlaneGeometry(len,.6),c.floorGlow); const H2=new THREE.Group(); H2.position.set(x,.004,z); H2.rotation.y=ry; gl.rotation.x=-Math.PI/2; gl.position.z=.3; gl.renderOrder=2; H2.add(gl); ADD(H2); };
+  strip(Wz-.3,xB+.09,(zN+zS)/2,Math.PI/2); strip(Wx-.3,(xB+xF)/2,zN-.09,Math.PI); strip(Wx-.3,(xB+xF)/2,zS+.09,0);
+  { const a=dz-1.75-zS, b=zN-(dz+1.75); strip(a-.15,xF-.09,zS+a/2,-Math.PI/2); strip(b-.15,xF-.09,zN-b/2,-Math.PI/2); }
+  { const I=.45, y=RH-.006, cs=(len,x,z,ry)=>{ const m=new THREE.Mesh(new THREE.BoxGeometry(len,.01,.03),c.led); m.position.set(x,y,z); m.rotation.y=ry; ADD(m); };
+    cs(Wz-I*2,xB+I,(zN+zS)/2,Math.PI/2); cs(Wz-I*2,xF-I,(zN+zS)/2,Math.PI/2); cs(Wx-I*2,(xB+xF)/2,zN-I,0); cs(Wx-I*2,(xB+xF)/2,zS+I,0); }
+  // strijklicht van boven langs de lange wanden: laat het reliëf van de rots lezen
+  roomLight(new THREE.PointLight(0xffd6a3,6,6.5,2),-10.3,RH-.35,zN-.75); roomLight(new THREE.PointLight(0xffd6a3,6,6.5,2),-10.3,RH-.35,zS+.75); roomLight(new THREE.PointLight(0xffdcb0,5,6,2),xB+.9,RH-.35,(zN+zS)/2);
+}; }
+
+// ---- ronde vitrine: travertijn sokkel met lichtschijf, glazen cilinder, gouden kap met downlight, tas aan een draad
+OBJ_TYPES.rondvitrine={l:"Ronde vitrine (zwevende tas)",m:"floor",d:"Ronde glazen vitrine met gouden kap en verlichte sokkel. Eén product hangt in het midden. Zet 'levend' aan en de tas kleurt mee met wat de bezoeker in het atelier kiest."};
+OBJ_NEW.rondvitrine={picks:[],cols:[]};
+function c2Plaque(G,txt,y,z){ const p=makePanel(.42,.07,(g,w,h)=>{ g.fillStyle="#C3A367"; g.fillRect(0,0,w,h); g.fillStyle="#3b2416"; g.font=F(.03,"sans"); g.textAlign="center"; g.fillText(txt.toUpperCase(),w/2,.045); g.textAlign="left"; },{x:0,y,z,ry:0,parent:G,emissive:.1}); return p; }
+OB.rondvitrine=(o,G)=>{ const c=c2Mats(), live=!!o.live, b=live?bagById(cfg.model)||COLL[0]:bagById(objProducts(o)[0]), w0=Math.min(.72,c2RealW(b)*1.7), R=.4, PH=.44, GH=1.46, CH=.2, top=PH+GH;
+  const cyl=(r1,r2,h,mat,y,seg=72,open=false)=>{ const g=c2UV(new THREE.CylinderGeometry(r1,r2,h,seg,1,open),2*Math.PI*r1,h); return qAdd(G,g,mat,0,y,0); };
+  cyl(R+.02,R+.05,PH-.03,c.stone,(PH-.03)/2); qAdd(G,new THREE.TorusGeometry(R+.02,.008,8,96),c.gold,0,PH-.03,0,{rx:Math.PI/2,cast:false});
+  const up=qAdd(G,new THREE.CircleGeometry(R-.01,72),c.up,0,PH-.028,0,{rx:-Math.PI/2,cast:false});
+  cyl(R,R,GH,c.glass,PH+GH/2,96,true).castShadow=false;
+  qAdd(G,new THREE.TorusGeometry(R,.006,8,96),c.gold,0,PH,0,{rx:Math.PI/2,cast:false}); qAdd(G,new THREE.TorusGeometry(R,.006,8,96),c.gold,0,top,0,{rx:Math.PI/2,cast:false});
+  cyl(R+.05,R+.05,CH,c.gold,top+CH/2); qAdd(G,new THREE.CircleGeometry(R-.04,72),c.down,0,top-.002,0,{rx:Math.PI/2,cast:false});
+  { const bm=new THREE.Mesh(new THREE.CylinderGeometry(R-.06,R-.02,GH-.02,48,1,true),c.beam); bm.position.y=PH+GH/2; bm.renderOrder=3; G.add(bm); }
+  { const pool=new THREE.Mesh(new THREE.PlaneGeometry(R*4,R*4),c.pool); pool.rotation.x=-Math.PI/2; pool.position.y=.006; pool.renderOrder=2; G.add(pool); }
+  const cy=PH+.98, wire=qAdd(G,new THREE.CylinderGeometry(.0012,.0012,1,6),c.wire,0,0,0,{cast:false});
+  const setWire=h=>{ const y0=cy+h/2-.02; wire.scale.y=Math.max(.05,top-y0); wire.position.y=(top+y0)/2; };
+  const g=new THREE.PlaneGeometry(1,1); g.translate(0,.5,0);
+  const p=new THREE.Mesh(g,new THREE.MeshBasicMaterial({alphaTest:.5,side:THREE.DoubleSide,color:0xffffff,toneMapped:false})); p.castShadow=true; G.add(p); billboards.push(p);
+  const fit=(ww,hh)=>{ p.position.y=cy-hh/2; setWire(hh); };
+  if(live){ if(!C2.init){ C2.init=1; const lum=h=>{ const c=new THREE.Color(h); return c.r*.3+c.g*.59+c.b*.11; }; const bl=(SW.body||[]).slice().sort((a,b)=>lum(b[3])-lum(a[3]))[0]; if(bl) cfg.body=bl[0]; const ac=(SW.acc||[]).find(x=>/bord|rouge|wijn|wine/i.test(x[0]+x[1])); if(ac) cfg.acc=ac[0]; } p.position.y=cy-.2; cfgPlanes.push(p); const sc0=p.scale; C2.livePlane=p; p.onBeforeRender=()=>{ if(!p.userData.big||p.userData.big!==p.scale.x){ if(p.scale.x<.7){ p.scale.multiplyScalar(1.3); } p.userData.big=p.scale.x; } if(!cfgPlanes.includes(p)) cfgPlanes.push(p); if(p.userData.h!==p.scale.y){ p.userData.h=p.scale.y; fit(p.scale.x,p.scale.y); } }; C2.liveUp=up; setTimeout(()=>{ if(!cfgPlanes.includes(p)) cfgPlanes.push(p); showCfg3D(); },50);
+    c2Plaque(G,lang==="nl"?"Jouw ontwerp · kies aan de atelierwand":"Your design · choose at the atelier wall",.26,R+.055);
+    G.traverse(m=>{ if(m.isMesh&&!m.userData.click){ m.userData.drawer=m.userData.click=()=>openCfg(); m.userData.root=G; clickables.push(m); } }); }
+  else if(b&&b.img){ p.userData.item=b.id; loader.load(b.img,t=>{ t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; p.material.map=t; p.material.needsUpdate=true; const asp=t.image.width/t.image.height; let ww=w0, hh=ww/asp; if(hh>.9){ hh=.9; ww=hh*asp; } p.scale.set(ww,hh,1); fit(ww,hh); });
+    c2Plaque(G,L(b).t,.26,R+.055); G.traverse(m=>{ if(m.isMesh){ m.userData.item=b.id; m.userData.root=G; clickables.push(m); } }); }
+  else p.visible=false;
+  return {top:top+CH+.4,size:R*2+.2}; };
+
+// ---- atelierwand = ontwerpvitrine: de tas die je bewerkt staat op ware grootte in het midden;
+// rondom genummerde vakken gelijk aan de afspraakkaart: 1 model · 2 leer · 3 details · 4 garen · 5 beslag.
+// Gekozen stalen springen naar voren op een gouden plaatje; boven de tas staat je ontwerp met 'Vraag aan' en 'Download ontwerp'.
+OBJ_TYPES.atelierwand={l:"Ontwerpvitrine (personaliseren)",m:"floor",d:"Verlichte nis met in het midden de tas die de bezoeker ontwerpt, en eromheen genummerde vakken: model, leer, details, garen en beslag. Klik op een staal en de tas verandert direct mee; de afspraakkaart is te downloaden."};
+OBJ_NEW.atelierwand={};
+C2.AW=5.2; C2.AH=3.4; C2.TOP=.62;
+const c2nl=()=>lang==="nl";
+const c2RealW=b=>b?(b.dims&&+b.dims.w?b.dims.w/100:(+b.w||.35)):.35;   // ware breedte in meters
+function c2Sw(hex){ const m=qLeather(new THREE.Color(hex).getHex(),{clear:.1}); m.emissive=new THREE.Color(hex).convertSRGBToLinear().multiplyScalar(.55); m.emissiveIntensity=1; return m; }
+function c2Redraw(p){ if(!p) return; const g=p.c.getContext("2d"); g.clearRect(0,0,p.c.width,p.c.height); g.save(); g.scale(PX,PX); p.draw(g,p.c.width/PX,p.c.height/PX); g.restore(); p.t.needsUpdate=true; }
+function c2Sync(){ const S2=C2.sel; if(!S2) return; for(const grp of ["model","body","acc","thread","hw"]) for(const [k,it] of Object.entries(S2[grp]||{})){ const on=cfg[grp]===k; it.plate.visible=on; it.m.position.z=it.z0+(on?.03:0); }
+  (C2.redraw||[]).forEach(c2Redraw); }
+function c2Pick(group,k,lab){ cfg[group]=k; if(group!=="thread"){ try{ cfgUI(); }catch(e){} renderCfg(); } else c2Sync(); toast((c2nl()?"Gekozen: ":"Chosen: ")+lab); }
+{ const _rc=renderCfg; renderCfg=async function(){ try{ await _rc(); }catch(e){} c2Sync(); if(C2.livePlane) showCfg3D(); }; }
+// jouw ontwerp in dezelfde vorm als de pre-order route (en dus dezelfde afspraakkaart)
+function c2ToPO(){ Object.assign(PO,{model:cfg.model,body:cfg.body,acc:cfg.acc,thread:cfg.thread||"bordeaux",hw:cfg.hw}); }
+function c2Summary(){ c2ToPO(); const b=bagById(cfg.model); return [b?L(b).t:"",poName("body",PO.body),poName("acc",PO.acc),poName("thread",PO.thread),poName("hw",PO.hw)].filter(Boolean).map(t=>t.replace(/\s*\(.*\)$/,"")).join(" · "); }
+function c2Request(){ c2ToPO(); openForm("custom",PO.model,"coll"); setTimeout(()=>{ const m=document.getElementById("f-msg"); if(m) m.value=poMsg(); },60); }
+async function c2Download(){ c2ToPO(); const nl=c2nl(); let c=document.getElementById("poCanvas"), own=false; if(!c){ c=document.createElement("canvas"); c.width=1200; c.height=760; c.id="poCanvas"; c.style.display="none"; document.body.appendChild(c); own=true; }
+  poDraw(); poTok++; const W=c.width, g=c.getContext("2d"); try{ const im=await poImage(); if(im){ const iw=im.width||im.naturalWidth, ih=im.height||im.naturalHeight, s=Math.min(330/iw,300/ih); g.save(); g.shadowColor="rgba(60,30,15,.28)"; g.shadowBlur=24; g.shadowOffsetY=12; g.drawImage(im,W-120-iw*s,58,iw*s,ih*s); g.restore(); } }catch(e){}
+  let url=""; try{ url=c.toDataURL("image/png"); }catch(e){} if(own) c.remove();
+  let ov=document.getElementById("c2Card"); if(!ov){ ov=document.createElement("div"); ov.id="c2Card"; ov.setAttribute("role","dialog"); ov.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(30,18,12,.72);display:flex;align-items:center;justify-content:center;padding:4vw";
+    ov.addEventListener("click",e=>{ if(e.target===ov||e.target.closest("[data-c2x]")) ov.remove(); }); document.body.appendChild(ov); }
+  ov.innerHTML=`<div style="background:#F0EDE5;max-width:min(920px,100%);width:100%;padding:18px;border:1px solid #C3A367;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative">
+    <button type="button" data-c2x aria-label="${nl?"Sluiten":"Close"}" style="position:absolute;top:6px;right:10px;background:none;border:0;font-size:28px;color:#692719;cursor:pointer">×</button>
+    <img src="${url}" alt="${nl?"Afspraakkaart":"Appointment card"}" style="width:100%;display:block">
+    <p style="font:14px/1.5 Jost,Arial,sans-serif;color:#6b5536;margin:12px 4px">${nl?"Dit is geen bestelling. Elise neemt contact met je op om je keuze te bespreken en de stalen samen te bekijken.":"This is not an order. Elise will contact you to discuss your choice and look at the swatches together."}</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><a download="elizian-afspraakkaart.png" href="${url}" style="background:#C3A367;color:#2E1D12;padding:12px 18px;font:500 13px Jost,Arial,sans-serif;letter-spacing:.12em;text-decoration:none">${nl?"BEWAAR KAART (PNG)":"SAVE CARD (PNG)"}</a>
+      <button type="button" data-c2req style="background:#692719;color:#F3EBDD;border:0;padding:12px 18px;font:500 13px Jost,Arial,sans-serif;letter-spacing:.12em;cursor:pointer">${nl?"VERSTUUR AANVRAAG":"SEND REQUEST"}</button></div></div>`;
+  ov.querySelector("[data-c2req]").onclick=()=>{ ov.remove(); c2Request(); }; }
+function c2Badge(g,n,x,y,r=.045){ g.fillStyle="#C3A367"; g.beginPath(); g.arc(x,y,r,0,7); g.fill(); g.fillStyle="#fff"; g.font=F(r*1.3,"sans"); g.textAlign="center"; g.fillText(String(n),x,y+r*.45); g.textAlign="left"; }
+function c2Head(g,n,t,sub,x,y){ c2Badge(g,n,x+.05,y-.032,.052); g.fillStyle="#692719"; g.font=F(.1); g.textAlign="left"; g.fillText(t,x+.125,y); if(sub){ g.fillStyle="#6b5536"; g.font=F(.034,"sans"); g.fillText(sub,x+.125,y+.055); } }
+// ---- ontwerpvitrine v4 (ChatGPT-advies): tas als hoofdrol, twee fasen, signaturen in één klik, materialen spreken,
+//      geen Vorige/Volgende, één hoofdknop, eigen telefoonpaneel, rustige atelier-modus
+const C4P=[ // signatuurcombinaties (voorlopig; Elise kiest de definitieve namen en kleuren)
+  {n:"L'Originale", body:/ivoir|ivoor|ivory/i, acc:/rouge|bord/i, thread:"bordeaux", hw:/gold|goud|^or/i},
+  {n:"Minuit",      body:/bleu|blauw|navy|blue/i, acc:/ivoir|ivoor|ivory/i, thread:"ivoor", hw:/gold|goud|^or/i},
+  {n:"Rouge Intense",body:/rouge|bord/i, acc:/rouge|bord/i, thread:"bordeaux", hw:/gold|goud|^or/i}];
+const c4find=(list,re)=>{ const x=(list||[]).find(y=>re.test(y[0]+" "+y[1]+" "+y[2])); return x?x[0]:null; };
+function c4Preset(i){ const P=C4P[i]; if(!P) return; const b=c4find(SW.body,P.body), a=c4find(SW.acc,P.acc), h=c4find(SW.hw,P.hw); if(b) cfg.body=b; if(a) cfg.acc=a; if(h) cfg.hw=h; cfg.thread=P.thread; C2.preset=i;
+  try{ cfgUI(); }catch(e){} renderCfg(); toast(P.n); c4Sheet(); }
+const c4nm=(g,k)=>{ const a=g==="thread"?THREADS:SW[g]; const x=(a||[]).find(y=>y[0]===k); return x?(c2nl()?x[1]:x[2]).replace(/\s*\(.*\)$/,""):""; };
+function c4Short(){ return [c4nm("body",cfg.body),c4nm("acc",cfg.acc),c4nm("hw",cfg.hw)].filter(Boolean).join(" · "); }
+{ const _p=c2Pick; c2Pick=function(g,k,l){ C2.preset=-1; _p(g,k,l); c4Sheet(); }; }
+
+OB.atelierwand=(o,G)=>{ const c=c2Mats(), W=C2.AW, H=C2.AH, TB=C2.TOP, D=.5, R=.95, nl=c2nl(), noop=()=>{};
+  C2.sel={model:{},body:{},acc:{},thread:{},hw:{}}; C2.redraw=[]; C2.phase=C2.phase||0; C2.preset=C2.preset??0;
+  if(!C2.init){ C2.init=1; c4Preset(0); }
+  const arch=(s,w,h,r)=>{ s.moveTo(-w/2,0); s.lineTo(w/2,0); s.lineTo(w/2,h-r); s.quadraticCurveTo(w/2,h,w/2-r,h); s.lineTo(-w/2+r,h); s.quadraticCurveTo(-w/2,h,-w/2,h-r); s.closePath(); return s; };
+  const fr=new THREE.Shape(); fr.moveTo(-W/2-.35,0); fr.lineTo(W/2+.35,0); fr.lineTo(W/2+.35,H+TB); fr.lineTo(-W/2-.35,H+TB); fr.closePath();
+  const hole=new THREE.Path(); arch(hole,W,H,R); fr.holes.push(hole);
+  qAdd(G,new THREE.ExtrudeGeometry(fr,{depth:D,bevelEnabled:true,bevelThickness:.015,bevelSize:.015,bevelSegments:2,curveSegments:24}),c.stone,0,0,0);
+  const bk=new THREE.ShapeGeometry(arch(new THREE.Shape(),W,H,R),24); { const uv=bk.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,(uv.getX(i)+W/2)/W,uv.getY(i)/H); }
+  qAdd(G,bk,c.niche,0,0,.02,{cast:false});
+  for(const s of [-1,1]) qAdd(G,new THREE.BoxGeometry(.012,H-R-.1,.02),c.led,s*(W/2-.02),(H-R)/2+.05,D-.04,{cast:false});
+  const txt=(par,w,h,x,y,draw,click=noop,z=.05)=>{ const p=makePanel(w,h,(g,ww,hh)=>{ g.clearRect(0,0,ww,hh); draw(g,ww,hh); },{x,y,z,ry:0,parent:par,transparent:true,emissive:.08,click}); p.mesh.userData.drawer=click; return p; };
+  const reg=(grp,key,m,pl,z0)=>{ pl.visible=false; const lab=grp==="model"?L(bagById(key)).t:c4nm(grp,key), fn=()=>c2Pick(grp,key,lab); [m,pl].forEach(q=>q.traverse(r=>{ r.userData.drawer=r.userData.click=fn; r.userData.root=G; clickables.push(r); })); C2.sel[grp][key]={m,plate:pl,z0}; };
+  const LX=-1.3, LW=2.3;  // linkerkolom: keuzes (45%)
+  // fase-tabs
+  const PH=[nl?"1 · Model & leer":"1 · Model & leather",nl?"2 · Verfijnen":"2 · Refine"];
+  const tabs=txt(G,LW,.2,LX,2.72,(g,ww,hh)=>{ PH.forEach((t,i)=>{ const x=i*ww/2, on=C2.phase===i; g.fillStyle=on?"#5a1e14":"#9C7E47"; g.font=F(.095); g.textAlign="center"; g.fillText(t,x+ww/4,.12);
+      if(on){ g.fillStyle="#C3A367"; g.fillRect(x+ww/4-.3,.15,.6,.008); } if(i===1){ g.fillStyle="#8c7350"; g.font=F(.032,"sans"); g.fillText(nl?"optioneel":"optional",x+ww/4,.195); } }); g.textAlign="left"; });
+  C2.redraw.push(tabs); [0,1].forEach(i=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(LW/2,.22),new THREE.MeshBasicMaterial({visible:false})); m.position.set(LX-LW/4+i*LW/2,2.72,.07); G.add(m); m.userData.drawer=m.userData.click=()=>c4Phase(i); m.userData.root=G; clickables.push(m); });
+  const PG=[new THREE.Group(),new THREE.Group()]; PG.forEach(g=>G.add(g)); C2.PG=PG;
+  // rij ronde stalen + één naamregel voor de gekozen kleur
+  const discs=(par,grp,list,y,cols,label)=>{ const r=.07, sp=Math.min(.19,(LW-.1)/cols); list.forEach((x,i)=>{ const row=(i/cols)|0, col=i%cols, n=Math.min(cols,list.length-row*cols), X=LX+(col-(n-1)/2)*sp, Y=y-row*.19;
+      let m; if(grp==="thread"){ m=new THREE.Group(); m.position.set(X,Y,.1); par.add(m); const tm=new THREE.MeshStandardMaterial({color:new THREE.Color(x[3]),roughness:.75,emissive:new THREE.Color(x[3]).convertSRGBToLinear().multiplyScalar(.45)});
+          qAdd(m,new THREE.CylinderGeometry(.045,.045,.11,24),tm,0,0,0,{rz:Math.PI/2}); qAdd(m,new THREE.CylinderGeometry(.056,.056,.01,24),c.stone,-.06,0,0,{rz:Math.PI/2}); qAdd(m,new THREE.CylinderGeometry(.056,.056,.01,24),c.stone,.06,0,0,{rz:Math.PI/2}); }
+        else if(grp==="hw"){ m=qAdd(par,new THREE.TorusGeometry(.055,.014,14,36),new THREE.MeshPhysicalMaterial({color:new THREE.Color(x[3]),metalness:1,roughness:.28,envMapIntensity:1.5,emissive:new THREE.Color(x[3]).convertSRGBToLinear().multiplyScalar(.25)}),X,Y,.1); }
+        else m=qAdd(par,new THREE.CylinderGeometry(r,r,.016,40),c2Sw(x[3]),X,Y,.085,{rx:Math.PI/2});
+        reg(grp,x[0],m,qAdd(par,new THREE.TorusGeometry(r+.014,.007,10,44),c.gold,X,Y,.08,{cast:false}),m.position.z); });
+    const rows=Math.ceil(list.length/cols), ly=y-(rows-1)*.19-.14;
+    const p=txt(par,LW,.11,LX,ly,(g,ww,hh)=>{ g.textAlign="center"; g.fillStyle="#7d6133"; g.font=F(.04,"sans"); g.fillText(label.toUpperCase(),ww/2-.02-g.measureText(label.toUpperCase()).width/2,.075); g.textAlign="left"; g.fillStyle="#2E1D12"; g.font=F(.062); g.fillText(c4nm(grp,cfg[grp]),ww/2+.02,.08); g.textAlign="left"; });
+    C2.redraw.push(p); };
+  // fase 1: signaturen, modellen, leer
+  { const par=PG[0], y=2.47, sw=(LW-.08)/3;
+    C4P.forEach((P,i)=>{ const X=LX-LW/2+.04+(i+.5)*sw, card=txt(par,sw-.04,.2,X,y,(g,ww,hh)=>{ const on=C2.preset===i; g.fillStyle=on?"#5a1e14":"rgba(251,247,240,.9)"; g.fillRect(0,0,ww,hh); g.strokeStyle="#C3A367"; g.lineWidth=.004; g.strokeRect(.003,.003,ww-.006,hh-.006);
+        g.fillStyle=on?"#F6EFE3":"#5a1e14"; g.font=F(.064); g.textAlign="center"; g.fillText(P.n,ww/2,.09);
+        const cols=[c4find(SW.body,P.body),c4find(SW.acc,P.acc),c4find(SW.hw,P.hw)].map((k,j)=>{ const a=[SW.body,SW.acc,SW.hw][j]; const x=(a||[]).find(y2=>y2[0]===k); return x?x[3]:"#ccc"; });
+        cols.forEach((hx,j)=>{ g.fillStyle=hx; g.beginPath(); g.arc(ww/2+(j-1)*.05,.145,.018,0,7); g.fill(); g.strokeStyle="rgba(0,0,0,.25)"; g.lineWidth=.002; g.stroke(); }); g.textAlign="left"; },()=>c4Preset(i),.06);
+      card.mesh.material.transparent=false; C2.redraw.push(card); }); }
+  { const par=PG[0], ms=custModels().slice(0,5), sp=(LW-.06)/Math.max(1,ms.length), Y=2.08;
+    ms.forEach((b,i)=>{ const X=LX-LW/2+.03+(i+.5)*sp, m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({alphaTest:.5,toneMapped:false})); m.position.set(X,Y,.075); par.add(m);
+      loader.load(b.img,t=>{ t.colorSpace=THREE.SRGBColorSpace; m.material.map=t; m.material.needsUpdate=true; const a=t.image.width/t.image.height, hh=Math.min(.3,(sp-.06)/a); m.scale.set(hh*a,hh,1); });
+      reg("model",b.id,m,qAdd(par,new THREE.TorusGeometry(sp/2-.02,.006,8,48),c.gold,X,Y,.06,{cast:false}),.075); });
+    const p=txt(par,LW,.07,LX,1.87,(g,ww)=>{ g.textAlign="center"; g.fillStyle="#2E1D12"; g.font=F(.06); const b=bagById(cfg.model); g.fillText(b?L(b).t:"",ww/2,.055); g.textAlign="left"; }); C2.redraw.push(p);
+    discs(par,"body",SW.body||[],1.64,6,nl?"Leer":"Leather"); }
+  // fase 2: details, garen, beslag
+  { const par=PG[1]; discs(par,"acc",SW.acc||[],2.47,6,"Details"); discs(par,"thread",THREADS,1.78,6,nl?"Garen":"Thread"); discs(par,"hw",SW.hw||[],1.43,4,nl?"Beslag":"Hardware"); }
+  // werkblad en de tas als hoofdrol (rechts, 55%)
+  const RX=1.25, CW=W-.4, CH=.92, CDp=.62; qAdd(G,rb(CW,CH-.05,CDp,.02),c.stone,0,(CH-.05)/2,.38); qAdd(G,rb(CW+.04,.05,CDp+.04,.012),c.ivory,0,CH-.025,.38);
+  qAdd(G,new THREE.BoxGeometry(CW-.1,.008,.01),c.led,0,CH-.06,.38+CDp/2+.012,{cast:false});
+  qAdd(G,c2UV(new THREE.CylinderGeometry(.5,.52,.07,64),3.2,.07),c.stone,RX,CH+.035,.34); qAdd(G,new THREE.TorusGeometry(.505,.007,8,64),c.gold,RX,CH+.07,.34,{rx:Math.PI/2,cast:false});
+  { const g=new THREE.PlaneGeometry(1,1); g.translate(0,.5,0); const p=new THREE.Mesh(g,new THREE.MeshBasicMaterial({alphaTest:.5,side:THREE.DoubleSide,color:0xffffff,toneMapped:false})); p.position.set(RX,CH+.075,.34); G.add(p);
+    cfgPlanes.push(p); C2.livePlane=p; p.onBeforeRender=()=>{ if(!cfgPlanes.includes(p)) cfgPlanes.push(p); if(p.scale.x>0){ const k=Math.min(1.3/p.scale.x,1.3/p.scale.y); if(Math.abs(k-1)>.01) p.scale.multiplyScalar(k); } };
+    p.userData.drawer=p.userData.click=()=>openCfg(); p.userData.root=G; clickables.push(p); setTimeout(()=>{ if(!cfgPlanes.includes(p)) cfgPlanes.push(p); showCfg3D(); },50); }
+  // jouw unieke Elizian + één hoofdknop en een rustige tweede
+  { const sum=txt(G,2.3,.3,RX,2.85,(g,ww)=>{ g.textAlign="center"; g.fillStyle="#7d6133"; g.font=F(.042,"sans"); g.fillText(c2nl()?"J O U W   U N I E K E   E L I Z I A N":"Y O U R   U N I Q U E   E L I Z I A N",ww/2,.05);
+        const b=bagById(cfg.model); g.fillStyle="#2E1D12"; g.font=F(.12); g.fillText(b?L(b).t:"",ww/2,.165); g.fillStyle="#3b2a1c"; g.font=F(.07); g.fillText(c4Short(),ww/2,.26); g.textAlign="left"; },()=>openCfg()); C2.redraw.push(sum);
+    const pr=makePanel(1.3,.16,(g,ww,hh)=>{ g.fillStyle="#5a1e14"; g.fillRect(0,0,ww,hh); g.fillStyle="#F6EFE3"; g.font=F(.06,"sans"); g.textAlign="center"; g.fillText((c2nl()?"VRAAG MIJN TAS AAN":"REQUEST MY BAG")+"  →",ww/2,.105); g.textAlign="left"; },
+      {x:RX,y:2.52,z:.06,ry:0,parent:G,emissive:.14,click:c2Request}); pr.mesh.userData.drawer=c2Request;
+    const sv=()=>c3Reveal().then(c2Download);
+    const se=txt(G,1.3,.08,RX,2.38,(g,ww)=>{ g.textAlign="center"; g.fillStyle="#5a1e14"; g.font=F(.05,"sans"); g.fillText((c2nl()?"Bewaar mijn ontwerp":"Save my design")+"  ↓",ww/2,.055); g.fillStyle="#C3A367"; g.fillRect(ww/2-.25,.066,.5,.004); g.textAlign="left"; },sv,.06); }
+  // gegraveerde titel in de travertijn lijst (leesbaar vanaf de ingang, zonder zware banner)
+  txt(G,W+.5,TB-.04,0,H+TB/2,(g,w)=>{ g.textAlign="center"; g.fillStyle="#7d6133"; g.font=F(.045,"sans"); g.fillText("E L I Z I A N   ·   A T E L I E R",w/2,.11); g.fillStyle="#3b2414"; g.font=F(.25); g.fillText(c2nl()?"Ontwerp je eigen tas":"Design your own bag",w/2,.4); g.textAlign="left"; },noop,D+.02);
+  G.traverse(m=>{ if(m.isMesh){ if(!m.userData.click) m.userData.click=noop; if(!m.userData.drawer) m.userData.drawer=m.userData.click; m.userData.root=G; if(!clickables.includes(m)) clickables.push(m); } });
+  C2.atG=G; setTimeout(()=>{ c4Phase(C2.phase); },60); c4Mode();
+  return {top:H+TB+.2,size:W}; };
+function c4Phase(i){ C2.phase=i?1:0; (C2.PG||[]).forEach((g,k)=>g.visible=k===C2.phase); c2Sync(); c4Sheet(); }
+function c2Step(i){ c4Phase(i); }
+
+// ---- atelier-modus: dichtbij de ontwerpvitrine verdwijnen plattegrond en routeknoppen; op de telefoon een eigen keuzepaneel
+function c4Mode(){ if(C2.modeOn) return; C2.modeOn=1; const st=document.createElement("style"); st.textContent=`
+  body.c4-atelier #map, body.c4-atelier .map-toggle, body.c4-atelier #mapToggle, body.c4-atelier .route-skip, body.c4-atelier .route-hint, body.c4-atelier #stepper, body.c4-atelier #infoPill{opacity:0!important;pointer-events:none!important;transition:opacity .4s}
+  .c4-sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(247,241,231,.97);border-top:1px solid #C3A367;box-shadow:0 -12px 40px rgba(40,20,10,.25);padding:10px 12px calc(12px + env(safe-area-inset-bottom));max-height:46vh;overflow:auto;font:14px/1.4 Jost,Arial,sans-serif;color:#2E1D12;transform:translateY(110%);transition:transform .35s}
+  body.c4-atelier.c4-small .c4-sheet{transform:none}
+  .c4-sheet .tb{display:flex;gap:6px;margin-bottom:8px}.c4-sheet .tb button{flex:1;min-height:44px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font:500 14px Jost,Arial,sans-serif}.c4-sheet .tb button.on{background:#5a1e14;color:#F6EFE3}
+  .c4-sheet h4{margin:8px 2px 4px;font:500 11px Jost,Arial,sans-serif;letter-spacing:.16em;color:#9C7E47}.c4-sheet .row{display:flex;flex-wrap:wrap;gap:8px}
+  .c4-sheet .sw{width:44px;height:44px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}.c4-sheet .sw.on{box-shadow:0 0 0 3px #C3A367}
+  .c4-sheet .pz{flex:1 1 30%;min-height:44px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font:16px 'Cormorant Garamond',serif}.c4-sheet .pz.on{background:#5a1e14;color:#F6EFE3}
+  .c4-sheet .md{width:64px;height:56px;border:1px solid #e2d5bb;background:#fff;padding:2px}.c4-sheet .md.on{border:2px solid #C3A367}.c4-sheet .md img{width:100%;height:100%;object-fit:contain}
+  .c4-sheet .acts{display:flex;gap:8px;margin-top:10px}.c4-sheet .acts button{min-height:46px;border:0;font:500 13px Jost,Arial,sans-serif;letter-spacing:.1em}.c4-sheet .acts .p{flex:2;background:#5a1e14;color:#F6EFE3}.c4-sheet .acts .s{flex:1;background:none;color:#5a1e14;text-decoration:underline}`;
+  document.head.appendChild(st); const sh=document.createElement("div"); sh.className="c4-sheet"; sh.id="c4Sheet"; document.body.appendChild(sh);
+  sh.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t) return; e.stopPropagation(); const d=t.dataset;
+    if(d.ph!==undefined) c4Phase(+d.ph); else if(d.pz!==undefined) c4Preset(+d.pz); else if(d.g) c2Pick(d.g,d.k,t.title||""); else if(d.req!==undefined) c2Request(); else if(d.save!==undefined) c3Reveal().then(c2Download); });
+  const v=new THREE.Vector3(), cp=new THREE.Vector3(); setInterval(()=>{ const G=C2.atG; let on=false; if(G&&typeof curRoomK!=="undefined"&&curRoomK==="coll"){ let q=G; while(q.parent) q=q.parent; if(q===S){ G.getWorldPosition(v); camera.getWorldPosition(cp); on=Math.hypot(v.x-cp.x,v.z-cp.z)<5.2; } }
+    document.body.classList.toggle("c4-atelier",on); document.body.classList.toggle("c4-small",innerWidth<820); },300); }
+function c4Sheet(){ const sh=document.getElementById("c4Sheet"); if(!sh) return; const nl=c2nl(), E2=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const sws=(g,list)=>`<div class="row">${(list||[]).map(x=>`<button type="button" class="sw${cfg[g]===x[0]?" on":""}" data-g="${g}" data-k="${E2(x[0])}" title="${E2(c4nm(g,x[0]))}" aria-label="${E2(c4nm(g,x[0]))}" style="background:${E2(x[3])}"></button>`).join("")}</div>`;
+  const b=bagById(cfg.model);
+  sh.innerHTML=`<div class="tb"><button type="button" data-ph="0" class="${C2.phase?"":"on"}">${nl?"Model & leer":"Model & leather"}</button><button type="button" data-ph="1" class="${C2.phase?"on":""}">${nl?"Verfijnen":"Refine"}</button></div>`+
+    (C2.phase?`<h4>DETAILS · ${E2(c4nm("acc",cfg.acc))}</h4>${sws("acc",SW.acc)}<h4>${nl?"GAREN":"THREAD"} · ${E2(c4nm("thread",cfg.thread))}</h4>${sws("thread",THREADS)}<h4>${nl?"BESLAG":"HARDWARE"} · ${E2(c4nm("hw",cfg.hw))}</h4>${sws("hw",SW.hw)}`
+      :`<div class="row">${C4P.map((P,i)=>`<button type="button" class="pz${C2.preset===i?" on":""}" data-pz="${i}">${E2(P.n)}</button>`).join("")}</div><h4>MODEL · ${E2(b?L(b).t:"")}</h4><div class="row">${custModels().slice(0,5).map(m=>`<button type="button" class="md${cfg.model===m.id?" on":""}" data-g="model" data-k="${E2(m.id)}" title="${E2(L(m).t)}"><img src="${E2(m.img)}" alt="${E2(L(m).t)}"></button>`).join("")}</div><h4>${nl?"LEER":"LEATHER"} · ${E2(c4nm("body",cfg.body))}</h4>${sws("body",SW.body)}`)+
+    `<div class="acts"><button type="button" class="p" data-req>${nl?"Vraag mijn tas aan →":"Request my bag →"}</button><button type="button" class="s" data-save>${nl?"Bewaar ontwerp":"Save design"}</button></div>`; }
+
+C2.hgt=1.72;
+function c2HeightUI(){ const nl=c2nl(); let el=document.getElementById("c2H"); if(el){ el.remove(); return; }
+  el=document.createElement("div"); el.id="c2H"; el.style.cssText="position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:9999;background:#F3EBDD;border:1px solid #C3A367;padding:14px 18px;box-shadow:0 18px 50px rgba(0,0,0,.35);font:14px/1.4 Jost,Arial,sans-serif;color:#2E1D12;min-width:300px";
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><b style="letter-spacing:.14em;font-weight:500;color:#5a1e14">${nl?"LENGTE VAN HET MODEL":"MODEL HEIGHT"}</b><button type="button" data-x aria-label="${nl?"Sluiten":"Close"}" style="background:none;border:0;font-size:22px;cursor:pointer;color:#5a1e14">×</button></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:8px"><button type="button" data-m style="width:34px;height:34px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font-size:18px;cursor:pointer">−</button><input type="range" min="145" max="200" step="1" value="${Math.round(C2.hgt*100)}" style="flex:1;-webkit-appearance:auto;appearance:auto;height:24px;accent-color:#5a1e14;background:transparent;border:0;padding:0;margin:0"><button type="button" data-p style="width:34px;height:34px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font-size:18px;cursor:pointer">+</button><span data-v style="min-width:64px;text-align:right;font-size:18px">${Math.round(C2.hgt*100)} cm</span></div>
+    <p style="margin:6px 0 0;color:#6b5536;font-size:12.5px">${nl?"Zet hem op je eigen lengte om te zien hoe de tas bij jou valt.":"Set it to your own height to see how the bag sits on you."}</p>`;
+  if(!document.getElementById("c2Hcss")){ const st=document.createElement("style"); st.id="c2Hcss"; st.textContent="#c2H input[type=range]::-webkit-slider-runnable-track{height:4px;background:#d6c39c;border-radius:2px}#c2H input[type=range]::-moz-range-track{height:4px;background:#d6c39c}#c2H input[type=range]::-webkit-slider-thumb{margin-top:-6px}"; document.head.appendChild(st); }
+  document.body.appendChild(el); const r=el.querySelector("input"), v=el.querySelector("[data-v]");
+  r.oninput=()=>{ C2.hgt=+r.value/100; v.textContent=r.value+" cm"; if(C2.applyH) C2.applyH(); }; el.querySelector("[data-m]").onclick=()=>{ r.value=+r.value-1; r.oninput(); }; el.querySelector("[data-p]").onclick=()=>{ r.value=+r.value+1; r.oninput(); }; el.querySelector("[data-x]").onclick=()=>el.remove(); }
+
+// ---- de nieuwe inrichting van de collectiekamer (eenmalig; daarna gewoon in Instellingen te verschuiven)
+const COLL2=[
+  {id:"c2_at",space:"coll",type:"atelierwand",mount:"floor",x:-15.0,z:-32.1,ry:Math.PI/2},
+  {id:"c2_v1",space:"coll",type:"rondvitrine",mount:"floor",x:-9.4,z:-29.6,ry:Math.PI,picks:["b1"],cols:[]},
+  {id:"c2_v2",space:"coll",type:"rondvitrine",mount:"floor",x:-11.5,z:-29.6,ry:Math.PI,picks:["b2"],cols:[]},
+  {id:"c2_v6",space:"coll",type:"rondvitrine",mount:"floor",x:-13.6,z:-29.6,ry:Math.PI,picks:["b4"],cols:[]},
+  {id:"c2_v4",space:"coll",type:"rondvitrine",mount:"floor",x:-10.0,z:-34.6,ry:0,picks:["b5"],cols:[]},
+  {id:"c2_v5",space:"coll",type:"rondvitrine",mount:"floor",x:-13.6,z:-34.6,ry:0,picks:["b3"],cols:[]},
+  {id:"c2_mz",space:"coll",type:"muze",mount:"floor",x:-12.0,z:-34.75,ry:1.12}];
+function coll2(list,d){ if((d&&d.coll2)||!ROOMKEYS.includes("coll")) return list; return list.filter(o=>o.space!=="coll").concat(COLL2.map(o=>_c(o))); }
+{ const _of=objsFrom; objsFrom=d=>coll2(_of(d),d); OBJS=objsFrom(EARLY); }
+{ const _cc=currentContent; currentContent=function(){ return {..._cc(),coll2:true}; }; }
+
+// =====================================================================================
+// C3 — ronde 2 met ChatGPT: strijklicht, champagnegoud, ware grootte met maatlijnen en spullen ter vergelijking,
+// vitrines die oplichten als je nadert, ademende tassen, gouden muze, onthulmoment, gouden draad, geheime nisjes
+// =====================================================================================
+C2.vits=[];
+const C3T={ nl:{ws:"WARE GROOTTE  ↔",big:"VERGROOT  ↔",cmp:"met telefoon, zonnebril en lippenstift ter vergelijking"}, en:{ws:"TRUE SIZE  ↔",big:"ENLARGED  ↔",cmp:"with phone, sunglasses and lipstick for comparison"} };
+const c3t=k=>(C3T[lang]||C3T.nl)[k];
+// spullen op ware grootte (meters)
+function c3Items(par,y){ const G=new THREE.Group(); G.position.y=y; par.add(G);
+  const blk=new THREE.MeshPhysicalMaterial({color:0x151515,roughness:.25,clearcoat:1,clearcoatRoughness:.1}), scr=new THREE.MeshBasicMaterial({color:0x0c1420}), gl=new THREE.MeshPhysicalMaterial({color:0x2a1d14,roughness:.15,transparent:true,opacity:.85,clearcoat:1});
+  const ph=new THREE.Group(); ph.position.set(-.13,.004,.06); ph.rotation.y=.35; G.add(ph); qAdd(ph,rb(.071,.008,.147,.004),blk,0,0,0); qAdd(ph,new THREE.PlaneGeometry(.064,.138),scr,0,.0042,0,{rx:-Math.PI/2,cast:false});
+  const sg=new THREE.Group(); sg.position.set(.11,.012,.07); sg.rotation.y=-.4; G.add(sg); const gm=C2.m.gold;
+  for(const s of [-1,1]){ qAdd(sg,new THREE.TorusGeometry(.026,.0035,8,32),gm,s*.033,0,0,{rx:Math.PI/2}); qAdd(sg,new THREE.CircleGeometry(.025,28),gl,s*.033,.0005,0,{rx:-Math.PI/2,cast:false}); qAdd(sg,new THREE.BoxGeometry(.003,.003,.13),gm,s*.058,.002,-.065); }
+  qAdd(sg,new THREE.BoxGeometry(.016,.003,.003),gm,0,.004,0);
+  const ls=new THREE.Group(); ls.position.set(.0,.01,-.13); ls.rotation.set(0,.9,Math.PI/2); G.add(ls); qAdd(ls,new THREE.CylinderGeometry(.0095,.0095,.055,20),gm,0,0,0); qAdd(ls,new THREE.CylinderGeometry(.0075,.0075,.022,20),new THREE.MeshStandardMaterial({color:0x8e1b22,roughness:.4}),0,.037,0);
+  G.visible=false; return G; }
+// maatlijnen met centimeters (draaien mee met de tas)
+function c3Dims(par){ const D=new THREE.Group(); par.add(D); const m=C2.m.gold, h=new THREE.Mesh(new THREE.BoxGeometry(1,.004,.004),m), v=new THREE.Mesh(new THREE.BoxGeometry(.004,1,.004),m); D.add(h,v);
+  const ticks=[0,1,2,3].map(()=>{ const t=new THREE.Mesh(new THREE.BoxGeometry(.004,.03,.004),m); D.add(t); return t; });
+  const lab=(w)=>makePanel(w,.06,(g,ww,hh)=>{ g.fillStyle="#FBF7F0"; g.fillRect(0,0,ww,hh); g.fillStyle="#5a1e14"; g.font=F(.034,"sans"); g.textAlign="center"; g.fillText(D.userData.txt?D.userData.txt[w>.3?1:0]:"",ww/2,.043); g.textAlign="left"; },{x:0,y:0,z:0,ry:0,parent:D,emissive:.12,click:()=>{}});
+  const lw=lab(.22), lh=lab(.22), cap=lab(.62); D.userData={lw,lh,cap};
+  D.set=(w,hh,y0,cmW,cmH)=>{ const yb=y0-.05; h.scale.x=w; h.position.set(0,yb,0); v.scale.y=hh; v.position.set(w/2+.05,y0+hh/2,0);
+    ticks[0].position.set(-w/2,yb,0); ticks[1].position.set(w/2,yb,0); ticks[2].rotation.z=ticks[3].rotation.z=Math.PI/2; ticks[2].position.set(w/2+.05,y0,0); ticks[3].position.set(w/2+.05,y0+hh,0);
+    lw.mesh.position.set(0,yb-.045,.003); lh.mesh.position.set(w/2+.05,y0+hh/2,.003); lh.mesh.rotation.z=Math.PI/2; cap.mesh.position.set(0,yb-.115,.003);
+    const nt=[cmW+" cm",cmH+" cm"]; D.userData.txt=null; lw.draw=(g,ww,hh2)=>{ g.fillStyle="#FBF7F0"; g.fillRect(0,0,ww,hh2); g.fillStyle="#5a1e14"; g.font=F(.034,"sans"); g.textAlign="center"; g.fillText(nt[0],ww/2,.043); g.textAlign="left"; };
+    lh.draw=(g,ww,hh2)=>{ g.fillStyle="#FBF7F0"; g.fillRect(0,0,ww,hh2); g.fillStyle="#5a1e14"; g.font=F(.034,"sans"); g.textAlign="center"; g.fillText(nt[1],ww/2,.043); g.textAlign="left"; };
+    cap.draw=(g,ww,hh2)=>{ g.clearRect(0,0,ww,hh2); g.fillStyle="rgba(251,247,240,.92)"; g.fillRect(0,0,ww,hh2); g.fillStyle="#6b5536"; g.font=F(.026,"sans"); g.textAlign="center"; g.fillText(c3t("cmp"),ww/2,.04); g.textAlign="left"; };
+    [lw,lh,cap].forEach(c2Redraw); };
+  D.visible=false; return D; }
+
+OB.rondvitrine=(o,G)=>{ const c=c2Mats(), b=bagById(objProducts(o)[0]), wr=c2RealW(b), w0=Math.min(.72,wr*1.7), R=.4, PH=.44, GH=1.46, CH=.2, top=PH+GH;
+  const up=c.up.clone(), down=c.down.clone(), beam=c.beam.clone();
+  const cyl=(r1,r2,h,mat,y,seg=72,open=false)=>{ const g=c2UV(new THREE.CylinderGeometry(r1,r2,h,seg,1,open),2*Math.PI*r1,h); return qAdd(G,g,mat,0,y,0); };
+  cyl(R+.02,R+.05,PH-.03,c.stone,(PH-.03)/2); qAdd(G,new THREE.TorusGeometry(R+.02,.008,8,96),c.gold,0,PH-.03,0,{rx:Math.PI/2,cast:false});
+  qAdd(G,new THREE.CircleGeometry(R-.01,72),up,0,PH-.028,0,{rx:-Math.PI/2,cast:false});
+  cyl(R,R,GH,c.glass,PH+GH/2,96,true).castShadow=false;
+  qAdd(G,new THREE.TorusGeometry(R,.006,8,96),c.gold,0,PH,0,{rx:Math.PI/2,cast:false}); qAdd(G,new THREE.TorusGeometry(R,.006,8,96),c.gold,0,top,0,{rx:Math.PI/2,cast:false});
+  cyl(R+.05,R+.05,CH,c.gold,top+CH/2); qAdd(G,new THREE.CircleGeometry(R-.04,72),down,0,top-.002,0,{rx:Math.PI/2,cast:false});
+  { const bm=new THREE.Mesh(new THREE.CylinderGeometry(R-.06,R-.02,GH-.02,48,1,true),beam); bm.position.y=PH+GH/2; bm.renderOrder=3; G.add(bm); }
+  { const pool=new THREE.Mesh(new THREE.PlaneGeometry(R*4,R*4),c.pool); pool.rotation.x=-Math.PI/2; pool.position.y=.006; pool.renderOrder=2; G.add(pool); }
+  const cy=PH+.98, wire=qAdd(G,new THREE.CylinderGeometry(.0012,.0012,1,6),c.wire,0,0,0,{cast:false});
+  const g=new THREE.PlaneGeometry(1,1); g.translate(0,.5,0);
+  const p=new THREE.Mesh(g,new THREE.MeshBasicMaterial({alphaTest:.5,side:THREE.DoubleSide,color:0xffffff,toneMapped:false})); p.castShadow=true; G.add(p); billboards.push(p);
+  if(!b||!b.img){ p.visible=false; return {top:top+CH+.4,size:R*2+.2}; }
+  const V={G,up,down,beam,p,wire,top,cy,w0,wr,asp:1,t:0,tgt:0,f:0,ph:Math.random()*6.28,pos:new THREE.Vector3(),items:c3Items(G,PH-.028),dims:c3Dims(G),btn:null};
+  V.lay=()=>{ const w=lerp(V.w0,V.wr,V.t), hh=Math.min(w/V.asp,V.t>.5?9:.9), ww=hh*V.asp; p.scale.set(ww,hh,1); const y0=V.t>.5?Math.max(PH+.32,cy-hh/2):cy-hh/2; p.position.y=y0;
+    const yt=y0+hh-.02; wire.scale.y=Math.max(.05,top-yt); wire.position.y=(top+yt)/2; V.y0=y0; V.hh=hh; V.ww=ww; };
+  p.userData.item=b.id; loader.load(b.img,t=>{ t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; p.material.map=t; p.material.needsUpdate=true; V.asp=t.image.width/t.image.height; V.lay();
+    V.dims.set(wr,wr/V.asp,0,Math.round(wr*100),Math.round(wr/V.asp*100)); });
+  c2Plaque(G,L(b).t,.26,R+.055);
+  // knopje: ware grootte ↔ vergroot
+  const btn=makePanel(.3,.065,(g2,w,h)=>{ const on=V.tgt===1; g2.fillStyle=on?"#5a1e14":"#C3A367"; g2.fillRect(0,0,w,h); g2.fillStyle=on?"#F6EFE3":"#2E1D12"; g2.font=F(.03,"sans"); g2.textAlign="center"; g2.fillText(on?c3t("big"):c3t("ws"),w/2,.044); g2.textAlign="left"; },
+    {x:0,y:.36,z:R+.058,ry:0,parent:G,emissive:.12,click:()=>{ V.tgt=V.tgt?0:1; c2Redraw(btn); }}); btn.mesh.userData.drawer=btn.mesh.userData.click; V.btn=btn;
+  G.traverse(m=>{ if(m.isMesh&&m!==btn.mesh&&!m.userData.click){ m.userData.item=b.id; m.userData.root=G; clickables.push(m); } });
+  C2.vits.push(V); c3Start(); return {top:top+CH+.4,size:R*2+.2}; };
+
+// één animatielus voor ademen, ware grootte en nader-licht
+function c3Start(){ if(C2.loop) return; C2.loop=1; const camP=new THREE.Vector3(); let last=performance.now();
+  const step=now=>{ const dt=Math.min(.05,(now-last)/1000); last=now; camera.getWorldPosition(camP); const rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+    C2.vits=C2.vits.filter(V=>{ let q=V.G; while(q.parent) q=q.parent; return q===S; });
+    for(const V of C2.vits){ if(!V.G.visible&&V.G.parent&&!V.G.parent.visible) continue;
+      if(Math.abs(V.t-V.tgt)>.001){ V.t+=(V.tgt-V.t)*Math.min(1,dt*4); if(Math.abs(V.t-V.tgt)<.002) V.t=V.tgt; V.lay(); }
+      const on=V.t>.97; V.dims.visible=on; V.items.visible=V.t>.5; if(on){ V.dims.rotation.y=V.p.rotation.y; V.dims.position.set(0,V.y0,0); }
+      V.p.rotation.z=rm?0:Math.sin(now/1000*2*Math.PI/12+V.ph)*.017*(1-V.t*.7);
+      V.G.getWorldPosition(V.pos); const d=Math.hypot(V.pos.x-camP.x,V.pos.z-camP.z), f=qCl(1-(d-1.8)/3.2); V.f+=(f-V.f)*Math.min(1,dt*1.6);
+      V.up.color.setRGB(1,.93,.82).multiplyScalar(.72+.5*V.f); V.down.color.setRGB(1,.9,.76).multiplyScalar(.75+.45*V.f); V.beam.opacity=.035+.075*V.f; }
+    requestAnimationFrame(step); };
+  requestAnimationFrame(step); }
+
+// ---- gouden muze: omtrek van een vrouw in dun champagnegoud, op ware grootte, met de ontworpen tas op ware grootte
+OBJ_TYPES.muze={l:"Gouden muze (ware grootte)",m:"floor",d:"Omtrek van een vrouw in dun goud, op ware grootte, met de tas die de bezoeker ontwerpt in haar hand. Klik op haar om de lengte aan te passen."};
+OBJ_NEW.muze={};
+OB.muze=(o,G)=>{ const c=c2Mats(), V2=(x,y)=>new THREE.Vector3(x,y,0), F2=new THREE.Group(); G.add(F2);
+  const tube=(pts,closed=false,r=.0055)=>{ const cu=new THREE.CatmullRomCurve3(pts,closed,"centripetal"); F2.add(new THREE.Mesh(new THREE.TubeGeometry(cu,Math.max(24,pts.length*14),r,8,closed),c.gold)); };
+  const ell=(cx,cy,rx,ry,n=28,a0=0,a1=Math.PI*2)=>Array.from({length:n},(_,i)=>{ const a=a0+(a1-a0)*i/(n-(a1-a0>6?0:1)); return V2(cx+Math.cos(a)*rx,cy+Math.sin(a)*ry); });
+  tube(ell(0,.928,.05,.064),true); tube(ell(-.016,.968,.03,.022,20),true,.0035);                                          // hoofd, knot
+  tube([V2(-.018,.865),V2(-.019,.845),V2(-.05,.842),V2(-.1,.83),V2(-.108,.8),V2(-.092,.72),V2(-.07,.63),V2(-.1,.5),V2(-.145,.36),V2(.145,.36),V2(.1,.5),V2(.07,.63),V2(.092,.72),V2(.108,.8),V2(.1,.83),V2(.05,.842),V2(.019,.845),V2(.018,.865)]); // jurk
+  tube([V2(-.07,.63),V2(0,.618),V2(.07,.63)],false,.003);                                                                  // taille
+  tube([V2(-.104,.8),V2(-.122,.7),V2(-.13,.6),V2(-.128,.47)]); tube([V2(.104,.8),V2(.12,.7),V2(.128,.6),V2(.132,.455)]);   // armen
+  for(const s of [-1,1]) tube([V2(s*.05,.36),V2(s*.047,.2),V2(s*.044,.035),V2(s*.06,.012)]);                              // benen
+  const base=qAdd(G,c2UV(new THREE.CylinderGeometry(.3,.32,.035,48),1.9,.035),c.stone,0,.0175,0); qAdd(G,new THREE.TorusGeometry(.305,.006,8,48),c.gold,0,.035,0,{rx:Math.PI/2,cast:false});
+  const gq=new THREE.PlaneGeometry(1,1); gq.translate(0,-.5,0); const bag=new THREE.Mesh(gq,new THREE.MeshBasicMaterial({alphaTest:.5,side:THREE.DoubleSide,color:0xffffff,toneMapped:false})); G.add(bag);
+  cfgPlanes.push(bag); bag.onBeforeRender=()=>{ if(!cfgPlanes.includes(bag)) cfgPlanes.push(bag); const tw=c2RealW(bagById(cfg.model)); if(bag.scale.x>0&&Math.abs(bag.scale.x-tw)>.003) bag.scale.multiplyScalar(tw/bag.scale.x); };
+  const lab=makePanel(.56,.075,(g,w,h)=>{ g.fillStyle="#C3A367"; g.fillRect(0,0,w,h); g.fillStyle="#2E1D12"; g.font=F(.028,"sans"); g.textAlign="center";
+      g.fillText((c2nl()?"WARE GROOTTE · ":"TRUE SIZE · ")+C2.hgt.toFixed(2).replace(".",c2nl()?",":".")+" M · "+(c2nl()?"KLIK VOOR LENGTE":"CLICK FOR HEIGHT"),w/2,.05); g.textAlign="left"; },
+    {x:0,y:.06,z:.33,ry:0,parent:G,emissive:.12,click:()=>c2HeightUI()}); lab.mesh.rotation.x=-.6; lab.mesh.userData.drawer=lab.mesh.userData.click;
+  const apply=()=>{ const H=C2.hgt; F2.scale.set(H,H,H); F2.position.set(0,.035,0); bag.position.set(.132*H,.035+.455*H+.015,.02); c2Redraw(lab); };
+  C2.applyH=apply; apply();
+  // klikvlak over de hele figuur (de draden zelf zijn te dun om te raken)
+  const hit=new THREE.Mesh(new THREE.PlaneGeometry(.45,1.9),new THREE.MeshBasicMaterial({visible:false})); hit.position.set(0,.95,0); G.add(hit);
+  G.traverse(m=>{ if(m.isMesh&&m!==lab.mesh){ m.userData.drawer=m.userData.click=()=>c2HeightUI(); m.userData.root=G; clickables.push(m); } });
+  setTimeout(()=>showCfg3D(),90); return {top:2.0,size:.7}; };
+
+// ---- onthulmoment na stap 5: de kamer dimt even, alleen jouw tas (en de lichtlijnen) blijven stralen
+function c3Reveal(){ return new Promise(res=>{ if(C2.rev){ res(); return; } C2.rev=1; const e0=renderer.toneMappingExposure, t0=performance.now(), T1=700, T2=2100, T3=2900;
+  const f=n=>{ const t=n-t0, k=t<T1?t/T1:t<T2?1:t<T3?1-(t-T2)/(T3-T2):0; renderer.toneMappingExposure=e0*(1-.6*k);
+    if(t<T3) requestAnimationFrame(f); else { renderer.toneMappingExposure=e0; C2.rev=0; res(); } }; requestAnimationFrame(f);
+  toast(c2nl()?"Jouw Elizian is klaar":"Your Elizian is ready"); }); }
+
+// ---- gouden draad in de vloer: van de deur langs de collectie naar het atelier
+function c2Thread(){ const c=c2Mats(), pts=[[-5.9,-32.1],[-7.6,-31.75],[-9.4,-32.35],[-11.0,-31.8],[-12.6,-32.4],[-13.95,-32.1]].map(([x,z])=>new THREE.Vector3(x,.0035,z));
+  const cu=new THREE.CatmullRomCurve3(pts,false,"centripetal"), m=new THREE.Mesh(new THREE.TubeGeometry(cu,220,.007,6,false),c.gold); m.scale.y=1; m.position.y=0; m.receiveShadow=true; ADD(m);
+  const end=new THREE.Mesh(new THREE.TorusGeometry(.06,.006,8,40),c.gold); end.rotation.x=Math.PI/2; end.position.set(-13.95,.004,-32.1); ADD(end); }
+
+// ---- geheime nisjes in de rotswand met een klein voorwerp en een kort verhaal
+C2.NICHES=[{side:"N",x:-11.5,k:"leer"},{side:"S",x:-8.9,k:"garen"},{side:"S",x:-11.1,k:"beslag"}];
+const C3S={ leer:{nl:["Odessa-kalfsleer","Shrunken kalfsleer van Weinheimer Leder: een zichtbare nerf, heel zacht en krasbestendig. Bij je afspraak zie en voel je de echte stalen."],en:["Odessa calfskin","Shrunken calfskin by Weinheimer Leder: a visible grain, very soft and scratch-resistant. At your appointment you see and feel the real swatches."]},
+  parel:{nl:["De parel","De parel op het sluitlipje is het kenmerk van de eerste lijn van Elizian: klein, rond en altijd met de hand vastgezet."],en:["The pearl","The pearl on the closure tab is the signature of Elizian's first line: small, round and always fixed by hand."]},
+  garen:{nl:["Met de hand gestikt","Elke steek wordt met de hand gezet, met gewaxt garen dat jaren meegaat. Kies zelf de kleur van het garen bij je ontwerp."],en:["Stitched by hand","Every stitch is set by hand with waxed thread that lasts for years. You choose the thread colour in your design."]},
+  beslag:{nl:["Het beslag","Goud, zilver, gunmetal of roségoud: ringen, gespen en sluitingen kies je bij je ontwerp, passend bij jouw leer."],en:["The hardware","Gold, silver, gunmetal or rose gold: you choose rings, buckles and clasps in your design, to match your leather."]} };
+function c3Story(k){ const nl=c2nl(), s=(C3S[k]||{})[nl?"nl":"en"]; if(!s) return; let ov=document.getElementById("c3Story"); if(ov) ov.remove();
+  ov=document.createElement("div"); ov.id="c3Story"; ov.style.cssText="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(30,18,12,.45);padding:5vw";
+  ov.innerHTML=`<div style="background:#F3EBDD;border:1px solid #C3A367;max-width:440px;padding:26px 28px;box-shadow:0 24px 70px rgba(0,0,0,.35);position:relative;font:15px/1.6 Jost,Arial,sans-serif;color:#2E1D12">
+    <button type="button" data-x aria-label="${nl?"Sluiten":"Close"}" style="position:absolute;top:6px;right:10px;background:none;border:0;font-size:26px;color:#5a1e14;cursor:pointer">×</button>
+    <div style="letter-spacing:.2em;font-size:11px;color:#9C7E47">${nl?"UIT HET ATELIER":"FROM THE ATELIER"}</div><h3 style="font:500 30px/1.2 'Cormorant Garamond',serif;color:#5a1e14;margin:6px 0 10px">${s[0]}</h3><p style="margin:0">${s[1]}</p></div>`;
+  ov.addEventListener("click",e=>{ if(e.target===ov||e.target.closest("[data-x]")) ov.remove(); }); document.body.appendChild(ov); }
+function c2Niche(n,i,zw){ const c=c2Mats(), Q=qBuildMaterials(), G=new THREE.Group(); G.position.set(n.x,0,zw); G.rotation.y=n.side==="N"?Math.PI:0; ADD(G);
+  const W=.68, y0=1.12, H=.66, D=.32;
+  qAdd(G,new THREE.PlaneGeometry(W,H),c.niche,0,y0+H/2,.004,{cast:false});
+  qAdd(G,rb(W,.035,D,.008),c.stone,0,y0+.0175,D/2); qAdd(G,rb(W,.035,D,.008),c.stone,0,y0+H-.0175,D/2);
+  qAdd(G,rb(.035,H,D,.008),c.stone,-W/2+.0175,y0+H/2,D/2); qAdd(G,rb(.035,H,D,.008),c.stone,W/2-.0175,y0+H/2,D/2);
+  qAdd(G,new THREE.BoxGeometry(W-.1,.008,.01),c.led,0,y0+H-.04,D-.03,{cast:false});
+  const y=y0+.035, O=new THREE.Group(); O.position.set(0,y,D*.45); G.add(O);
+  if(n.k==="leer"){ const m=qLeather(0x9a5b3b,{clear:.12}); qAdd(O,new THREE.CylinderGeometry(.055,.055,.32,32),m,0,.055,0,{rz:Math.PI/2}); qAdd(O,rb(.22,.004,.16,.002),m,.05,.002,.08); }
+  if(n.k==="parel"){ qAdd(O,new THREE.CylinderGeometry(.06,.07,.03,32),c.stone,0,.015,0); qAdd(O,new THREE.SphereGeometry(.026,28,20),c.pearl,0,.056,0); }
+  if(n.k==="garen"){ const tm=new THREE.MeshStandardMaterial({color:0x6b2026,roughness:.75}); qAdd(O,new THREE.CylinderGeometry(.04,.04,.09,24),tm,0,.06,0); qAdd(O,new THREE.CylinderGeometry(.05,.05,.012,24),c.stone,0,.009,0); qAdd(O,new THREE.CylinderGeometry(.05,.05,.012,24),c.stone,0,.111,0);
+    qAdd(O,new THREE.CylinderGeometry(.0015,.0015,.16,6),c.wire,.09,.06,0,{rz:.5}); }
+  if(n.k==="beslag"){ qAdd(O,new THREE.TorusGeometry(.045,.01,12,32),c.gold,-.06,.055,0); qAdd(O,rb(.07,.05,.012,.006),c.gold,.06,.03,0); qAdd(O,new THREE.BoxGeometry(.008,.05,.006),c.gold,.06,.03,.008); }
+  G.traverse(m=>{ if(m.isMesh){ m.userData.drawer=m.userData.click=()=>c3Story(n.k); m.userData.root=G; clickables.push(m); solids.push(m); } }); }
 
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
