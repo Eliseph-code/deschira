@@ -6087,8 +6087,8 @@ const c8Scan=()=>OBJS.forEach(o=>{ if(o.type==="rondvitrine"&&OBJ_REG[o.id]&&OBJ
 // C9 — telefoon: ontwerppaneel bij de vitrine in- en uitschuiven (knop + tik buiten het paneel)
 // =====================================================================================
 const c9Mob=()=>innerWidth<=760;
-const c9Btn=document.createElement("button"); c9Btn.type="button"; c9Btn.className="c9-grip"; c9Btn.innerHTML=`<i></i><span></span>`; siteEl.appendChild(c9Btn);
-function c9Label(){ const min=siteEl.classList.contains("po-min"), nl=lang!=="en"; c9Btn.querySelector("span").textContent=min?(nl?"▴  Ontwerp je tas":"▴  Design your bag"):(nl?"▾  Inschuiven":"▾  Slide down"); c9Btn.setAttribute("aria-expanded",String(!min)); }
+const c9Btn=document.createElement("button"); c9Btn.type="button"; c9Btn.className="c9-grip"; c9Btn.innerHTML=`<i></i>`; siteEl.appendChild(c9Btn);
+function c9Label(){ const min=siteEl.classList.contains("po-min"), nl=lang!=="en"; c9Btn.setAttribute("aria-label",min?(nl?"Ontwerppaneel openen":"Open design panel"):(nl?"Ontwerppaneel inschuiven":"Slide design panel down")); c9Btn.setAttribute("aria-expanded",String(!min)); }
 function c9Min(on){ siteEl.classList.toggle("po-min",!!on); c9Label(); c9Off(); }
 function c9Off(){ if(!C5.dock) return; if(c9Mob()&&siteEl.classList.contains("po-min")){ camera.clearViewOffset(); camera.updateProjectionMatrix(); } else c5Offset(); }
 ["pointerdown","mousedown","touchstart","wheel"].forEach(ev=>c9Btn.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
@@ -6106,9 +6106,9 @@ addEventListener("ep-lang",c9Label); c9Label();
   .c9-grip{display:none}
   @media (max-width:760px){
     .site-win.po-dock{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-    .site-win.po-dock .c9-grip{display:flex;position:absolute;left:50%;top:-44px;transform:translateX(-50%);height:44px;min-width:190px;padding:0 20px;align-items:center;justify-content:center;gap:8px;flex-direction:column;
-      background:var(--sw-brown);color:#F6EFE3;border:0;border-radius:14px 14px 0 0;font:500 12px/1 Jost,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 -8px 22px rgba(30,15,8,.28);cursor:pointer;pointer-events:auto}
-    .site-win.po-dock .c9-grip i{display:block;width:36px;height:4px;border-radius:2px;background:rgba(246,239,227,.55)}
+    .site-win.po-dock .c9-grip{display:flex;position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:84px;height:30px;padding:0;align-items:center;justify-content:center;
+      background:var(--sw-brown);border:0;border-radius:12px 12px 0 0;box-shadow:0 -6px 16px rgba(30,15,8,.25);cursor:pointer;pointer-events:auto;touch-action:none}
+    .site-win.po-dock .c9-grip i{display:block;width:40px;height:4px;border-radius:2px;background:rgba(246,239,227,.75)}
     .site-win.po-dock.open.po-min{transform:translateY(100%)}
     .site-win.po-dock .sw-handle{display:none}
     body.site-open .site-win.po-dock~#c8Nav{left:50%} }`; document.head.appendChild(st); }
@@ -6131,6 +6131,25 @@ setInterval(backSync,120);
   .route-back.show{opacity:1;pointer-events:auto} .route-back:hover{background:rgba(28,20,16,.8);color:var(--gold)}
   .route-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2}
   @media (max-width:760px){ .route-back{position:fixed} }`; document.head.appendChild(st); }
+
+// C9c — telefoon: panelen met de vinger wegschuiven (onderpaneel omlaag, zijpaneel naar rechts) zonder dat de ruimte erachter meeloopt
+{ let g=null; const scrollAnc=(el,dy)=>{ for(let n=el; n&&n!==siteEl; n=n.parentElement){ const cs=getComputedStyle(n); if(/(auto|scroll)/.test(cs.overflowY)&&n.scrollHeight>n.clientHeight+1){ if(dy<0&&n.scrollTop+n.clientHeight<n.scrollHeight-1) return n; if(dy>0&&n.scrollTop>0) return n; } } return null; };
+  siteEl.addEventListener("touchstart",e=>{ if(!c9Mob()||e.touches.length!==1) { g=null; return; } const t=e.touches[0]; g={x:t.clientX,y:t.clientY,m:null,dx:0,dy:0,onGrip:!!e.target.closest(".c9-grip,.sw-head")}; e.stopPropagation(); },{passive:true});
+  siteEl.addEventListener("touchmove",e=>{ e.stopPropagation(); if(!g) return; const t=e.touches[0]; g.dx=t.clientX-g.x; g.dy=t.clientY-g.y; const dock=siteEl.classList.contains("po-dock"), min=siteEl.classList.contains("po-min");
+    if(!g.m&&Math.hypot(g.dx,g.dy)>8){ const vert=Math.abs(g.dy)>Math.abs(g.dx);
+      if(dock&&vert&&(g.onGrip||min||(g.dy>0&&!scrollAnc(e.target,g.dy)))) g.m="sheet";
+      else if(!dock&&!vert&&g.dx>0&&!e.target.closest("input,select,textarea,.shop-bar,.c6-row")) g.m="side";
+      else g.m="none"; }
+    if(g.m==="sheet"){ e.preventDefault(); const base=min?siteEl.offsetHeight:0, y=Math.max(0,base+g.dy); siteEl.style.transition="none"; siteEl.style.transform=`translateY(${y}px)`; return; }
+    if(g.m==="side"){ e.preventDefault(); siteEl.style.transition="none"; siteEl.style.transform=`translateX(${Math.max(0,g.dx)}px)`; return; }
+    if(e.cancelable&&!scrollAnc(e.target,g.dy)&&Math.abs(g.dy)>=Math.abs(g.dx)) e.preventDefault(); // niet doorrollen naar de route
+  },{passive:false});
+  const end=()=>{ if(!g) return; const m=g.m, dx=g.dx, dy=g.dy; g=null; if(m!=="sheet"&&m!=="side") return; siteEl.style.transition=""; siteEl.style.transform="";
+    if(m==="sheet"){ const min=siteEl.classList.contains("po-min"); if(!min&&dy>60) c9Min(true); else if(min&&dy<-30) c9Min(false); }
+    else if(m==="side"&&dx>80) closeSite(); };
+  siteEl.addEventListener("touchend",e=>{ e.stopPropagation(); end(); },{passive:true}); siteEl.addEventListener("touchcancel",end,{passive:true});
+  ["pointerdown","pointermove","wheel"].forEach(ev=>siteEl.addEventListener(ev,e=>{ if(c9Mob()) e.stopPropagation(); },{passive:true}));
+  const st=document.createElement("style"); st.textContent=`@media (max-width:760px){ .site-win{overscroll-behavior:contain} .site-win .sw-head{touch-action:none} }`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
