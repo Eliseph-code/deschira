@@ -6165,7 +6165,26 @@ setInterval(backSync,120);
       background:rgba(28,20,16,.55);color:#F3E6C8;border:1px solid rgba(217,195,151,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:19px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
     .pen-master.vis{display:grid} .pen-master.on{background:#C4A46A;color:#3E1D14;border-color:#FFF8EC}
     body.site-open .pen-master{opacity:.0;pointer-events:none} body.c4-atelier .pen-master{bottom:calc(20px + env(safe-area-inset-bottom))}
-    @media (max-width:760px){ .pen-master{left:14px;bottom:calc(150px + env(safe-area-inset-bottom));width:40px;height:40px} }`; document.head.appendChild(st); }
+`; document.head.appendChild(st); }
+
+// C11 — telefoon: vaste, niet-overlappende indeling van de navigatieknoppen onderin
+{ const st=document.createElement("style"); st.textContent=`
+  @media (max-width:760px){
+    /* rij 1: ‹ terug + Volgende */
+    .route-hint{position:fixed!important;bottom:calc(16px + env(safe-area-inset-bottom))!important;left:calc(50% + 26px)!important;max-width:calc(100vw - 118px)!important}
+    .route-back{position:fixed!important}
+    /* rij 2: door naar de volgende ruimte */
+    .route-skip{position:fixed!important;bottom:calc(74px + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 32px)}
+    /* rij 3: kamerlabel links, pennetje rechts */
+    .info-pill{position:fixed!important;left:12px!important;bottom:calc(120px + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 84px)!important}
+    .pen-master{left:auto!important;right:12px!important;bottom:calc(120px + env(safe-area-inset-bottom))!important;width:40px;height:40px}
+    /* rij 4: pijlen tas voor tas / beide studies */
+    #c8Nav{bottom:calc(172px + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 20px)}
+    #c8Nav button{width:40px;height:40px;font-size:22px} #c8Nav .c8-mid{width:auto;min-width:0;flex:1 1 auto;max-width:calc(100vw - 130px)}
+    /* als de route-knoppen er niet zijn, zakken de andere niet door elkaar heen; in het ontwerp-atelier alleen het paneel */
+    body.c4-atelier .pen-master{bottom:calc(16px + env(safe-area-inset-bottom))!important}
+    body.site-open .info-pill,body.site-open #c8Nav,body.site-open .route-back{opacity:0!important;pointer-events:none!important}
+  }`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
