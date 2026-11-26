@@ -6255,11 +6255,11 @@ const c10t=k=>(C10T[lang]||C10T.nl)[k]??C10T.nl[k];
 const C10_BORD="#5b1f1c", C10_INK="#3A1A10", C10_GOLD="#B08D55", C10_CREAM="#F4EDE1";
 
 function c10Mats(){ if(C10.m) return C10.m; const Q=qBuildMaterials(), S2=studioMats(), m={};
-  { const p=qPlaster(171,{base:"#E6DACA",light:"#EFE7DA",dark:"#D6C8B3",contrast:.38}); m.wall=new THREE.MeshPhysicalMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.28,.28),envMapIntensity:.15}); }
-  { const f=qTravertine(207,{base:"#DED0BA",light:"#EBE2D3",dark:"#C8B79D",cool:"#D6CDBF"}); [f.map,f.normalMap,f.roughnessMap].forEach(t=>t.repeat.set(1/1.2,1/1.2));
+  { const p=qPlaster(171,{base:"#EADCC6",light:"#F2E8D8",dark:"#DACBB2",contrast:.38}); m.wall=new THREE.MeshPhysicalMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.28,.28),envMapIntensity:.15,emissive:0xfff0dc,emissiveMap:p.map,emissiveIntensity:.1}); }
+  { const f=qTravertine(207,{base:"#E0CFB3",light:"#ECE1CD",dark:"#CAB698",cool:"#D8CCB8"}); [f.map,f.normalMap,f.roughnessMap].forEach(t=>t.repeat.set(1/1.2,1/1.2));
     m.floor=new THREE.MeshPhysicalMaterial({...f,roughness:.62,clearcoat:.28,clearcoatRoughness:.22,normalScale:new THREE.Vector2(.25,.25),envMapIntensity:.18}); }
   { const p=qPlaster(181,{base:"#ECE4D7",light:"#F3EEE4",dark:"#E0D6C6",contrast:.25,size:512}); m.ceil=new THREE.MeshStandardMaterial({...p,roughness:1,normalScale:new THREE.Vector2(.2,.2),emissive:0xffe9cc,emissiveMap:p.map,emissiveIntensity:.22}); }
-  m.lea=SM.ode("#86302b"); m.lea.envMapIntensity=.3;
+  m.lea=SM.ode("#93362f"); m.lea.envMapIntensity=.3;
   { const t=qTravertine(219,{base:"#E2D6C3",light:"#EFE7DA",dark:"#CDBDA4",cool:"#DAD2C6",size:1024}); [t.map,t.normalMap,t.roughnessMap].forEach(x=>x.repeat.set(1/1.1,1/1.1));
     m.travL=new THREE.MeshPhysicalMaterial({...t,roughness:.7,clearcoat:.18,clearcoatRoughness:.3,normalScale:new THREE.Vector2(.45,.45),envMapIntensity:.25}); }
   m.back=new THREE.MeshStandardMaterial({color:0x22100d,roughness:.9});
@@ -6368,7 +6368,7 @@ OB.corrbureau=(o,G)=>{ const c=c10Mats(), W=2.1, D=1.05, H=.78, T=.045;
     qAdd(G,new THREE.TubeGeometry(new THREE.CatmullRomCurve3(c10Loop(inl,0),true),200,.0045,6,true),c.bord,0,H+.008,0,{cast:false}); }
   const y0=H+.008;
   // ---- visitekaartjes in een bordeaux leren houder; de blanco kaart ernaast opent het formulier
-  { const K=new THREE.Group(); K.position.set(-.6,y0,.16); K.rotation.y=.18; G.add(K);
+  { const K=new THREE.Group(); K.position.set(-.6,y0,.16); K.rotation.y=.18; K.scale.setScalar(1.4); G.add(K);
     sA(K,rb(.13,.04,.075,.01,3),c.bord,0,.02,0); qAdd(K,sbox(.105,.004,.012,.001),c.back,0,.0405,-.004,{cast:false});
     qAdd(K,new THREE.TubeGeometry(new THREE.CatmullRomCurve3([[-.065,.04,.0375],[.065,.04,.0375]].map(p=>new THREE.Vector3(...p))),8,.0025,6),c.bordD,0,0,0,{cast:false});
     const st=new THREE.Group(); st.position.set(0,.035,-.004); st.rotation.x=-.32; K.add(st);
@@ -6377,12 +6377,12 @@ OB.corrbureau=(o,G)=>{ const c=c10Mats(), W=2.1, D=1.05, H=.78, T=.045;
       c10Mono(g,w*.5,h*.25,u*15,C10_GOLD); g.textAlign="center"; g.fillStyle=C10_INK; g.font=F(u*9); g.fillText("Elise Philips",w/2,h*.56);
       g.font=F(u*3.2,"sans"); g.fillStyle="#8a6a3e"; g.fillText("ELIZIAN · MAISON DE MAROQUINERIE",w/2,h*.66); g.fillStyle=C10_INK; g.font=F(u*4.6,"sans"); g.fillText(SITE.phone||"",w/2,h*.79); g.fillText(SITE.email||"",w/2,h*.89); g.textAlign="left"; },{y:.0275,z:.0015});
     c10Click(G,K,()=>c10Card(),{hit:[.2,.12,.16,K.position.x,y0+.05,K.position.z]});
-    const B=new THREE.Group(); B.position.set(-.4,y0+.001,.27); B.rotation.y=-.22; G.add(B); qAdd(B,sbox(.09,.0012,.055,.0004),c.paper,0,.0006,0,{cast:false});
+    const B=new THREE.Group(); B.position.set(-.36,y0+.001,.27); B.rotation.y=-.22; B.scale.setScalar(1.4); G.add(B); qAdd(B,sbox(.09,.0012,.055,.0004),c.paper,0,.0006,0,{cast:false});
     c10Print(B,.09,.055,(g,w,h)=>{ const u=w/100; g.fillStyle=C10_CREAM; g.fillRect(0,0,w,h); g.strokeStyle=C10_GOLD; g.lineWidth=u*.6; g.strokeRect(u*4,u*4,w-u*8,h-u*8); g.textAlign="center"; g.fillStyle=C10_GOLD; g.font=F(u*13); g.fillText("+",w/2,h*.36);
       g.fillStyle=C10_BORD; g.font=F(u*8.5,"serif","italic"); c10t("blank").split("\n").forEach((l,i)=>g.fillText(l,w/2,h*.6+i*u*9.5)); g.textAlign="left"; },{y:.0013,rx:-Math.PI/2});
     c10Click(G,B,()=>openForm("other",""),{hit:[.13,.05,.09,B.position.x,y0+.02,B.position.z]}); }
   // ---- drie verzegelde brieven in een messing brievenrek: atelier, leveranciers, stage
-  { const R=new THREE.Group(); R.position.set(0,y0,-.18); G.add(R);
+  { const R=new THREE.Group(); R.position.set(0,y0,-.18); R.scale.setScalar(1.15); G.add(R);
     sA(R,rb(.5,.03,.16,.008,3),c.wal,0,.015,0); for(const x of [-.25,.25]) qAdd(R,sbox(.008,.11,.15,.002),c.brass,x*.98,.07,0);
     for(let i=0;i<4;i++) qAdd(R,new THREE.CylinderGeometry(.003,.003,.49,8),c.brass,0,.12,-.06+i*.04,{rz:Math.PI/2});
     const L=[["sv1.t","atelier",""],["sv2.t","supplier","coll"],["sv3.t","intern","study"]];
@@ -6397,7 +6397,7 @@ OB.corrbureau=(o,G)=>{ const c=c10Mats(), W=2.1, D=1.05, H=.78, T=.045;
       c10Print(S2,.026,.026,(g,w,h)=>{ g.clearRect(0,0,w,h); g.strokeStyle="rgba(40,0,0,.55)"; g.lineWidth=w*.04; g.beginPath(); g.arc(w/2,h/2,w*.4,0,7); g.stroke(); c10Mono(g,w*.52,h*.5,w*.62,"rgba(30,0,0,.6)"); },{z:.0056,mat:c.wax,transparent:true});
       c10Click(G,E,()=>openForm(topic,"",ctx||undefined),{hit:[.13,.16,.05,R.position.x+E.position.x,y0+.1+i*.012,R.position.z+E.position.z]}); }); }
   // ---- afsprakenboek: opengeslagen, bordeaux leren band, lint en een vulpen
-  { const A=new THREE.Group(); A.position.set(.58,y0,.1); A.rotation.y=-.2; G.add(A);
+  { const A=new THREE.Group(); A.position.set(.58,y0,.1); A.rotation.y=-.2; A.scale.setScalar(1.1); G.add(A);
     sA(A,rb(.4,.008,.27,.004,2),c.bord,0,.004,0);
     for(const s of [-1,1]){ const P=new THREE.Group(); P.position.set(s*.0985,.008,0); P.rotation.z=s*-.05; A.add(P); qAdd(P,sbox(.19,.014,.25,.003),c.paper,0,.007,0);
       c10Print(P,.185,.245,(g,w,h)=>{ const u=w/100; g.fillStyle="#F6F0E4"; g.fillRect(0,0,w,h); g.strokeStyle="rgba(150,120,90,.35)"; g.lineWidth=u*.4; for(let y=h*.22;y<h*.94;y+=h*.072){ g.beginPath(); g.moveTo(w*.08,y); g.lineTo(w*.92,y); g.stroke(); }
@@ -6433,7 +6433,7 @@ OB.bestelplateau=(o,G)=>{ const c=c10Mats(), W=2.6, D=.5, H=.74, y=H, xs=[-.96,-
   xs.forEach((x,i)=>{ const Rs=new THREE.Group(); G.add(Rs); qAdd(Rs,stUV(rb(.44,.05+i%2*.04,.34,.006,2),"x"),c.travL,x,y+(.05+i%2*.04)/2,-.03); qAdd(Rs,sbox(.4,.004,.3,.001),c.satin,x,y+.002,-.03,{cast:false});
     const S=new THREE.Group(); S.position.set(x,y+.05+i%2*.04,-.03); S.scale.setScalar(1.45); G.add(S); items[i](S);
     // tentkaartje: crème, bordeaux nummer en titel
-    const Pl=new THREE.Group(); Pl.position.set(x,y,D/2-.07); G.add(Pl); const cw=.17, ch=.06;
+    const Pl=new THREE.Group(); Pl.position.set(x,y,D/2-.08); G.add(Pl); const cw=.22, ch=.075;
     for(const s of [1,-1]) qAdd(Pl,sbox(cw,ch,.0015,.0004),c.paper,0,ch/2*Math.cos(.35),s*ch/2*Math.sin(.35),{rx:-s*.35});
     c10Print(Pl,cw,ch,(g,w,h)=>{ const u=w/100; g.fillStyle=C10_CREAM; g.fillRect(0,0,w,h); g.fillStyle=C10_GOLD; g.fillRect(u*4,h-u*3,w-u*8,u*.6); g.textAlign="center"; g.fillStyle=C10_BORD; g.font=F(u*17,"serif","italic"); g.fillText("0"+(i+1),w*.2,h*.66);
       g.fillStyle=C10_INK; g.font=F(u*8,"sans"); g.fillText((tr("w"+(i+1)+".t")||"").toUpperCase(),w*.62,h*.6); g.textAlign="left"; },{y:ch/2*Math.cos(.35),z:ch/2*Math.sin(.35)+.0012,rx:-.35});
@@ -6543,7 +6543,8 @@ const C10_TYPES=new Set(["corrbureau","bestelplateau","atelierkoffer","monogram"
 { const st=document.createElement("style"); st.textContent=`
   .c10-ov{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:rgba(20,10,8,.42);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s}
   .c10-ov.open{opacity:1;pointer-events:auto}
-  .c10-card{position:relative;width:min(560px,92vw);background:#F4EDE1;color:#3A1A10;padding:44px 48px 34px;box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(176,141,85,.5) inset,0 0 0 8px #F4EDE1 inset,0 0 0 9px rgba(176,141,85,.45) inset;
+  @media (max-width:560px){ .c10-card{padding:34px 22px 26px!important} .c10-card h3{font-size:28px!important} .c10-lines{font-size:18px!important} }
+  .c10-card{position:relative;width:min(560px,92vw);max-height:90vh;overflow:auto;background:#F4EDE1;color:#3A1A10;padding:44px 48px 34px;box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(176,141,85,.5) inset,0 0 0 8px #F4EDE1 inset,0 0 0 9px rgba(176,141,85,.45) inset;
     transform:translateY(18px) rotateX(8deg) scale(.97);transition:transform .45s cubic-bezier(.2,.8,.2,1);font-family:"Cormorant Garamond",Garamond,serif}
   .c10-ov.open .c10-card{transform:none}
   .c10-card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:#5b1f1c}
