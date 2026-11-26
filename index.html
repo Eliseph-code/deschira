@@ -2048,11 +2048,13 @@ const SPACE_TXT={about:{nl:{t:"Over mij",p:"Wie ik ben, wat ik geleerd heb en wa
   contact:{nl:{t:"Contact",p:"Ik ben op zoek naar een atelier, leveranciers van leer en beslag, en een stageplek in de architectuur. Of heeft u een vraag over de collectie?"},en:{t:"Contact",p:"I am looking for an atelier, suppliers of leather and hardware, and an internship in architecture. Or do you have a question about the collection?"}},
   coll:{nl:{t:"Collectie",p:"De eerste lijn van Elizian: crème genarft leer, bordeaux details, gouden beslag en parels. Op pre-order, met de hand gestikt."},en:{t:"Collection",p:"The first Elizian line: cream pebbled leather, burgundy details, gold hardware and pearls. On pre-order, stitched by hand."}}};
 const normSpace=s=>({id:s.id,on:!!s.on,theme:_s(s.theme),partner:_s(s.partner),imgA:_s(s.imgA),imgB:_s(s.imgB),pname:_s(s.pname),nl:{t:_s(s.nl&&s.nl.t)||"Ruimte",p:_s(s.nl&&s.nl.p)},en:{t:_s(s.en&&s.en.t)||_s(s.nl&&s.nl.t)||"Room",p:_s(s.en&&s.en.p)}});
-function spacesFrom(d){ d=d||{}; if(Array.isArray(d.spaces)&&d.spaces.length) return d.spaces.filter(x=>x&&typeof x.id==="string"&&/^[a-z0-9]+$/i.test(x.id)).map(normSpace);
+function spacesFrom(d){ d=d||{}; if(Array.isArray(d.spaces)&&d.spaces.length) return d.spaces.filter(x=>x&&typeof x.id==="string"&&/^[a-z0-9]+$/i.test(x.id)).map(normSpace).map(collabOff);
   const dn=d.doorsOn||{}, rm=Array.isArray(d.rooms)?d.rooms:[], lg=id=>normSpace({id,on:dn[id]!==false,..._c(SPACE_TXT[id])}), out=[lg("about")];
   for(let i=0;i<4;i++){ const r=rm[i]||{}; out.push(normSpace({id:"r"+i,on:!!r.on,partner:_s(r.partnerId),imgA:_s(r.imgA),imgB:_s(r.imgB),pname:_s(r.partner),
     nl:{t:_s(r.nl&&r.nl.t)||"Samenwerking "+(i+1),p:_s(r.nl&&r.nl.p)||"Binnenkort te zien: een samenwerking met een merk, maker of ontwerper."},en:{t:_s(r.en&&r.en.t)||"Collaboration "+(i+1),p:_s(r.en&&r.en.p)||"Coming soon: a collaboration with a brand, maker or designer."}})); }
-  out.push(lg("coll"),lg("contact")); return out; }
+  out.push(lg("coll"),lg("contact")); return out.map(collabOff); }
+// samenwerkingen staan voorlopig uit (zet COLLAB_ON op true om ze weer te tonen)
+const COLLAB_ON=false; function collabOff(s){ return (!COLLAB_ON&&/^r\d+$/.test(s.id))?{...s,on:false}:s; }
 const SPACES0=spacesFrom(EARLY); let SPACES=_c(SPACES0);
 const ROOMKEYS=SPACES0.map(s=>s.id).slice(0,24);
 const OPEN0=SPACES0.filter(s=>s.on).map(s=>s.id).slice(0,24);
@@ -6206,6 +6208,26 @@ async function hamAct(x){ if(x==="me"&&window.openAccount) openAccount("me"); el
     .nav-right .adm-btn:not(.pub-btn),.nav-right .acc-btn,.nav-right .lang{display:none!important}
     .nav-right .pub-btn{padding:8px!important;margin-left:0} .nav-right .pub-btn span{display:none} .nav-right .pub-btn svg{width:18px;height:18px}
   }`; document.head.appendChild(st); }
+
+// C14 — verlanglijstje en winkelwagen als icoontjes bovenaan; samenwerkingen uit de menu's
+{ const mk=(cls,svg,anchor,lab)=>{ const b=document.createElement("button"); b.type="button"; b.className="top-ico "+cls; b.innerHTML=svg+`<em></em>`;
+    b.addEventListener("click",e=>{ e.stopPropagation(); openSite("lijst",anchor); }); return b; };
+  const fav=mk("ti-fav",`<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>`,"favorieten");
+  const bag=mk("ti-bag",`<svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>`,"winkellijst");
+  const place=()=>{ const nr=document.querySelector(".nav-right"); if(!nr) return; const ham=nr.querySelector(".ham-btn"), acc=nr.querySelector(".acc-btn");
+    const ref=acc||ham||null; if(fav.parentNode!==nr){ nr.insertBefore(fav,ref); nr.insertBefore(bag,ref); } };
+  const upd=()=>{ const en=lang==="en", nf=USRL.favs.length, nb=USRL.list.length; fav.querySelector("em").textContent=nf||""; bag.querySelector("em").textContent=nb||"";
+    fav.title=en?"Wish list":"Verlanglijstje"; bag.title=en?"Shopping bag":"Winkelwagen"; fav.setAttribute("aria-label",fav.title+(nf?" ("+nf+")":"")); bag.setAttribute("aria-label",bag.title+(nb?" ("+nb+")":"")); };
+  place(); setTimeout(place,1500); setTimeout(place,4000); upd(); setInterval(upd,700); addEventListener("ep-lang",upd);
+  ["pointerdown","mousedown","touchstart"].forEach(ev=>[fav,bag].forEach(b=>b.addEventListener(ev,e=>e.stopPropagation(),{passive:true})));
+  const st=document.createElement("style"); st.textContent=`
+    .top-ico{position:relative;display:grid;place-items:center;width:38px;height:36px;margin-left:6px;background:none;border:1px solid rgba(239,230,218,.45);color:var(--cream,#F6EFE3);cursor:pointer}
+    .top-ico:hover{border-color:var(--gold,#C3A367);color:var(--gold,#C3A367)}
+    .top-ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+    .top-ico em{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--gold,#C3A367);color:#2b1a14;font:600 10px/17px Jost,Arial,sans-serif;font-style:normal;text-align:center}
+    .top-ico em:empty{display:none}
+    @media (max-width:760px){ .top-ico{width:34px;height:34px;margin-left:4px} }
+    ${COLLAB_ON?"":`[data-go="collab"],[data-sgo="collab"],[data-hgo="collab"]{display:none!important}`}`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
