@@ -940,7 +940,7 @@
         </div>
         <div><label for="f-item" data-i18n="f.item"></label><input id="f-item" name="item"></div>
       </div>
-      <div><label for="f-company" data-i18n="f.company"></label><input id="f-company" name="company" autocomplete="organization"></div>
+      <div class="row"><div><label for="f-company" data-i18n="f.company"></label><input id="f-company" name="company" autocomplete="organization"></div><div><label for="f-phone" id="f-phone-l">Telefoon (optioneel)</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div></div>
       <div><label for="f-msg" data-i18n="f.msg"></label><textarea id="f-msg" name="message"></textarea></div>
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn" type="submit" data-i18n="f.send"></button>
@@ -976,8 +976,8 @@ import {GTAOPass} from "three/addons/postprocessing/GTAOPass.js";
    FORM_ENDPOINT : plak hier later je Formspree-link; dan komen berichten direct binnen
    LOCATIE       : voor de stand van de zon (standaard Nederland)
    ===================================================================== */
-const CONTACT_EMAIL = "jouw-adres@voorbeeld.nl";
-const FORM_ENDPOINT = "";
+const CONTACT_EMAIL = "Elisephilips8@gmail.com";
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/Elisephilips8@gmail.com";
 const LAT = 52.1, LON = 5.3;
 
 /* =====================================================================
@@ -2543,14 +2543,14 @@ function makeRoute(){
   const out=[], C0=[ROT.x,ROT.z], R=ROT.R;
   // 1. de hal: start midden in de rotonde, dan alles wat er gepresenteerd staat, rondom
   out.push({id:"start",room:"hall",sec:"hall",eye:C0,look:P2(-2.5,R+40),cap:"hall"});
-  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
-  out.push({id:"vw",room:"hall",sec:"hall",eye:P2(-2.5,R-3.4),look:P2(-2.5,R+60),cap:"hall"});
+  OBJS.filter(o=>o.space==="hall"&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); return {a:normA(o.mount==="wall"?o.th:deg(Math.atan2(w.z-ROT.z,w.x-ROT.x))),o,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).filter((e,i,a)=>routeKeep("hall",e.o,i,a)).forEach(e=>out.push({...objNode(e.o),sec:"hall"}));
+  out.push({id:"vw",room:"hall",sec:"hall",eye:P2(-2.5,R-3.4),look:P2(-2.5,R+60),cap:"hall",transit:true});
   // 2. de ruimtes in vaste volgorde: over mij → samenwerkingen → collectie → contact (binnen een groep: volgorde uit Instellingen)
   OPEN0.map((k,i)=>({k,i})).sort((p,q)=>spaceRank(p.k)-spaceRank(q.k)||p.i-q.i).forEach(({k})=>{
     const th=DOOR_TH[k], X=XF[k], Lg=legOf(k), W=q=>X.toW(q[0],q[1]).map(v=>+v.toFixed(2)), cz=(Lg.zN+Lg.zS)/2;
-    out.push({id:"d_"+k,room:"hall",sec:k,eye:P2(th,R-5.2),look:P2(th,R-.2),door:k},{id:"t_"+k+"1",room:"hall",sec:k,eye:P2(th,R-1.5),look:P2(th,R+6),transit:true});
+    out.push({id:"d_"+k,room:"hall",sec:k,eye:P2(th,R-5.2),look:P2(th,R-.2),door:k,transit:true},{id:"t_"+k+"1",room:"hall",sec:k,eye:P2(th,R-1.5),look:P2(th,R+6),transit:true});
     out.push({id:"e_"+k,room:k,sec:k,eye:W([-6.4,Lg.dz]),look:W([-15,Lg.dz]),space:k});
-    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).forEach(p=>out.push({...objNode(p.o),sec:k}));
+    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).filter((e,i,a)=>routeKeep(k,e.o,i,a)).forEach(p=>out.push({...objNode(p.o),sec:k}));
     out.push({id:"t_"+k+"2",room:k,sec:k,eye:W([-6.4,Lg.dz]),look:C0,transit:true},{id:"t_"+k+"3",room:"hall",sec:k,eye:P2(th,R-1.7),look:C0,transit:true}); });
   // 3. via de bogen naar de tuin, eindigen bij de ingang met zicht op de rotonde
   // naar buiten lopen kan niet meer: de rondleiding eindigt weer midden in de rotonde
@@ -3312,7 +3312,7 @@ function applyContent(d){
   if(d.story){ ["nl","en"].forEach(l=>{ if(str(d.story[l])&&!(d.texts&&d.texts[l]&&d.texts[l]["ab.p"])) T[l]["ab.p"]=d.story[l]; }); }
   if(Array.isArray(d.rooms)) ROOMDATA=[0,1,2,3].map(i=>{ const r=d.rooms[i]||{}, def=DEF.ROOMS[i]; const pp=PARTNERS.find(p=>p.id===r.partnerId); return {on:!!r.on,partnerId:str(r.partnerId),partner:pp?pp.name:str(r.partner),imgA:str(r.imgA),imgB:str(r.imgB),nl:{t:str(r.nl&&r.nl.t)||def.nl.t,p:str(r.nl&&r.nl.p)||def.nl.p},en:{t:str(r.en&&r.en.t)||def.en.t,p:str(r.en&&r.en.p)||def.en.p}}; });
   applyRooms();
-  SITE.phone=str(d.phone)||"+31 6 20886526"; SITE.email=str(d.email)||CONTACT_EMAIL; ["wa","insta","linkedin","address","kvk","vat"].forEach(k=>{ SITE[k]=str(d[k]); }); MENU_OPTS=normOpts(d.menuOpts);
+  SITE.phone=str(d.phone)||"+31 6 20886526"; SITE.email=CONTACT_EMAIL; ["wa","insta","linkedin","address","kvk","vat"].forEach(k=>{ SITE[k]=str(d[k]); }); MENU_OPTS=normOpts(d.menuOpts);
   document.querySelectorAll(".mailLink").forEach(el=>{el.textContent=SITE.email;el.href="mailto:"+SITE.email;});
   document.querySelectorAll('a[href^="tel:"]').forEach(a=>{ a.textContent=SITE.phone; a.href="tel:"+SITE.phone.replace(/[^+0-9]/g,""); });
   applyLang(); if(panels.length) redrawPanels();
@@ -3696,7 +3696,7 @@ form.addEventListener("submit",async e=>{
   if(!(d.name||"").trim()||!okEmail||!(d.message||"").trim()){ note.textContent=tr("m.missing"); return; }
   const topicText=form.querySelector("#f-topic").selectedOptions[0].textContent;
   if(FORM_ENDPOINT){ note.textContent=tr("m.sending");
-    try{ const r=await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify({name:d.name,email:d.email,company:d.company,topic:topicText,item:d.item,message:d.message,_subject:tr("mail.subject")+" — "+topicText})});
+    try{ const r=await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify({name:d.name,email:d.email,phone:d.phone||"",company:d.company,topic:topicText,item:d.item,message:d.message,_subject:tr("mail.subject")+" — "+topicText,_template:"table",_captcha:"false"})});
       if(!r.ok) throw new Error(); note.textContent=tr("m.ok"); form.reset(); }catch(err){ note.textContent=tr("m.fail"); } return; }
   const body=`${d.message}\n\n—\n${tr("mail.from")}: ${d.name} <${d.email}>`+(d.company?`\n${tr("mail.company")}: ${d.company}`:"")+`\n${tr("mail.topic")}: ${topicText}`+(d.item?`\n${tr("mail.item")}: ${d.item}`:"");
   note.textContent=tr("m.mailto");
@@ -5966,6 +5966,60 @@ openPreorder=function(model){ c5Go(model); };
 C5.dockBase=c5Dock;
 c5Dock=function(){ C5.dockBase(); const i=nodes.findIndex(n=>n.obj==="c2_at"); if(i<0) return; const n=nodes[i]; if(Math.hypot(pose.x-n.x,pose.z-n.z)>1.2) goStation(i); };
 function poImg(g,k){ const x=SWLIB.find(y=>y.g===g&&(y.k===k||y.id===g+"_"+k||y.id===g+"_od_"+k)); return x&&x.img?x.img:""; }
+
+// =====================================================================================
+// C7 — korte route (max 3-4 stops per ruimte), terug in de route via een item, focus op het item, één formulier
+// =====================================================================================
+// welke items een vaste stop zijn; de rest is 'detail' (aanklikbaar, geen stop)
+function routeKeep(k,o,i,a){ const PRI={coll:["c2_at","dc3_co_kast"]}, max=3;
+  if(ROUTE.order&&ROUTE.order[k]&&ROUTE.order[k].length) return i<max;           // eigen volgorde uit Instellingen: de eerste drie
+  const pri=PRI[k]||[]; if(!pri.length) return i<max;
+  const keep=pri.filter(id=>a.some(e=>e.o.id===id)); const rest=a.filter(e=>!pri.includes(e.o.id)).map(e=>e.o.id).slice(0,Math.max(0,max-keep.length));
+  return keep.includes(o.id)||rest.includes(o.id); }
+// mail naar Elise (FormSubmit); bij de eerste aanvraag vraagt FormSubmit Elise één keer om te bevestigen
+function c7Mail(d,topicText){ return fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
+    body:JSON.stringify({name:d.name,email:d.email,phone:d.phone||"",company:d.company||"",topic:topicText,item:d.item||"",message:d.message,_subject:"Elizian — "+topicText+(d.item?" — "+d.item:""),_replyto:d.email,_template:"table",_captcha:"false"})})
+    .then(r=>r.ok).catch(()=>false); }
+{ const l=document.getElementById("f-phone-l"); const upd=()=>{ if(l) l.textContent=lang==="en"?"Phone (optional)":"Telefoon (optioneel)"; }; upd(); addEventListener("ep-lang",upd); }
+// formulier: onderwerp in de kop zodat duidelijk is waarover het gaat
+{ const _of=openForm; openForm=function(topic,item,ctx){ _of(topic,item,ctx); const it=document.getElementById("f-item"); if(it&&item&&!it.value) it.value=item; }; }
+
+// klik op een item dat geen vaste stop is: loop ernaartoe, focus erop, en 'Volgende'/scrollen stapt weer in de route
+const C7={focus:null};
+{ const _sh=siteFromHit; siteFromHit=function(u){ if(u&&u.objId){ const o=OBJS.find(x=>x.id===u.objId); if(o&&!nodes.some(n=>n.obj===o.id)){ try{ const st=objStation(o), yaw=deg(Math.atan2(st.look[0]-st.eye[0],-(st.look[1]-st.eye[1])));
+        startJump(st.eye[0],st.eye[1],o.space==="hall"?"hall":o.space,yaw,null,false); C7.focus={id:o.id,x:st.eye[0],z:st.eye[1]}; }catch(e){} } }
+    return _sh(u); }; }
+// focus: alles rond het item vervaagt en wordt donkerder (licht voor de telefoon: één masker, geen extra render)
+{ const st=document.createElement("style"); st.textContent=`
+  #focusVeil{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .45s ease;
+    -webkit-backdrop-filter:blur(4px) brightness(.5) saturate(.8);backdrop-filter:blur(4px) brightness(.5) saturate(.8);
+    -webkit-mask-image:var(--fm);mask-image:var(--fm)}
+  #focusVeil.on{opacity:1}
+  @media (prefers-reduced-motion:reduce){ #focusVeil{transition:none} }`; document.head.appendChild(st); }
+const veil=document.createElement("div"); veil.id="focusVeil"; renderer.domElement.after(veil);
+{ const box=new THREE.Box3(), v=new THREE.Vector3(), cache={}; let last="";
+  const bboxOf=id=>{ const r=OBJ_REG[id]; if(!r||!r.G) return null; if(!cache[id]){ box.setFromObject(r.G); if(box.isEmpty()) return null; cache[id]=box.clone(); } return cache[id]; };
+  function focusId(){ if(jump) return null; if(document.body.classList.contains("at-home")||document.querySelector(".modal.open")) return null;
+    if(mode==="route"){ const n=nodes.find(q=>q.obj&&!q.transit&&Math.hypot(pose.x-q.x,pose.z-q.z)<.3); return n?n.obj:null; }
+    if(C7.focus&&Math.hypot(pose.x-C7.focus.x,pose.z-C7.focus.z)<.35) return C7.focus.id; return null; }
+  function tick(){ requestAnimationFrame(tick); const id=focusId(); const b=id&&bboxOf(id);
+    if(!b){ if(last){ veil.classList.remove("on"); last=""; } return; }
+    const r=renderer.domElement.getBoundingClientRect(); let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    for(let i=0;i<8;i++){ v.set(i&1?b.max.x:b.min.x,i&2?b.max.y:b.min.y,i&4?b.max.z:b.min.z).project(camera); if(v.z>1) continue; const sx=(v.x*.5+.5)*r.width, sy=(-v.y*.5+.5)*r.height; x0=Math.min(x0,sx); x1=Math.max(x1,sx); y0=Math.min(y0,sy); y1=Math.max(y1,sy); }
+    if(x1<x0){ veil.classList.remove("on"); last=""; return; }
+    const cx=(x0+x1)/2, cy=(y0+y1)/2, rx=Math.max(90,(x1-x0)*.62), ry=Math.max(90,(y1-y0)*.62);
+    const key=[cx,cy,rx,ry].map(Math.round).join(","); if(key!==last){ veil.style.setProperty("--fm",`radial-gradient(ellipse ${Math.round(rx)}px ${Math.round(ry)}px at ${Math.round(cx)}px ${Math.round(cy)}px,transparent 78%,#000 118%)`); last=key; }
+    veil.classList.add("on"); }
+  requestAnimationFrame(tick);
+  addEventListener("ep-objects",()=>{ for(const k in cache) delete cache[k]; }); }
+
+// na het scrollen netjes op de dichtstbijzijnde stop (in de scrollrichting) uitkomen: elke scrollbeweging = één stop
+{ let tm=0, lastY=scrollY, dir=1;
+  addEventListener("scroll",()=>{ const y=scrollY; if(y!==lastY) dir=y>lastY?1:-1; lastY=y; clearTimeout(tm);
+    tm=setTimeout(()=>{ if(mode!=="route"||jump||document.body.classList.contains("at-home")) return; const t=scrollT(); const holds=nodes.filter(n=>!n.transit);
+      if(!holds.length) return; const ahead=holds.filter(n=>dir>0?n.t>=t-.01:n.t<=t+.01); let best=null, bd=1e9;
+      (ahead.length?ahead:holds).forEach(n=>{ const d=Math.abs(n.t-t); if(d<bd){ bd=d; best=n; } });
+      if(best&&bd>.02){ const span=tour.offsetHeight-innerHeight; scrollTo({top:tour.offsetTop+(best.t/totalT)*span,behavior:"smooth"}); } },420); },{passive:true}); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
@@ -6056,9 +6110,9 @@ if(SB){
   // aanvragen komen in de database terecht (en blijven in je account zichtbaar)
   form.addEventListener("submit",async e=>{ e.preventDefault(); e.stopImmediatePropagation(); const d=Object.fromEntries(new FormData(form)); if(d.website) return;
     const okEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email||""); if(!(d.name||"").trim()||!okEmail||!(d.message||"").trim()){ note.textContent=tr("m.missing"); return; }
-    note.textContent=tr("m.sending");
-    const {error}=await SB.from("requests").insert({user_id:SB_USER?SB_USER.id:null,kind:d.topic||"other",name:d.name,email:d.email,phone:"",message:d.message,data:{company:d.company||"",item:d.item||"",lang}});
-    if(error){ note.textContent=tr("m.fail"); return; } note.textContent=tr("m.ok"); form.reset(); },true);
+    note.textContent=tr("m.sending"); const topicText=(form.querySelector("#f-topic").selectedOptions[0]||{}).textContent||d.topic;
+    const [db,ml]=await Promise.all([SB.from("requests").insert({user_id:SB_USER?SB_USER.id:null,kind:d.topic||"other",name:d.name,email:d.email,phone:d.phone||"",message:d.message,data:{company:d.company||"",item:d.item||"",lang}}).then(r=>!r.error).catch(()=>false), c7Mail(d,topicText)]);
+    if(!db&&!ml){ note.textContent=tr("m.fail"); return; } note.textContent=tr("m.ok"); form.reset(); },true);
   if(SB_USER){ SB.from("profiles").select("id").eq("id",SB_USER.id).maybeSingle().then(({data})=>{ if(!data) SB.from("profiles").insert({id:SB_USER.id,name:(SB_USER.user_metadata&&SB_USER.user_metadata.name)||""}); }); }
   if(SB_RECOVERY) openAccount("reset");
   window.addEventListener("ep-lang",setAccBtn);
