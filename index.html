@@ -641,6 +641,7 @@
   .sw-dark{background:var(--sw-navy);color:var(--sw-bg)}.sw-dark h2,.sw-dark .sw-steps b{color:var(--sw-bg)}.sw-dark .sw-steps small,.sw-dark .sw-ey{color:var(--sw-gold)}
   .sw-box{background:#E9E2D6}
   .po-bar{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:18px 0 6px}.po-bar button{font:500 11px/1 var(--sans,'Jost',sans-serif);letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;border:1px solid #cdbf9f;background:transparent;color:#6b5a48;border-radius:20px;cursor:pointer}.po-bar .now button{background:#15283E;color:#F0EDE5;border-color:#15283E}.po-bar .done button{border-color:#C3A367;color:#692719}.po-bar button:disabled{opacity:.45;cursor:default}
+.po-dots{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 4px}.po-dot{width:52px;height:52px;padding:4px;border:1px solid transparent;border-radius:50%;background:none;cursor:pointer}.po-dot i{display:block;width:100%;height:100%;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}.po-dot:hover{border-color:#d9cfbd}.po-dot.on{border:2px solid #692719;padding:3px;box-shadow:0 0 0 2px #C3A367}.po-pick{margin:8px 0 4px;font:400 22px/1.3 'Cormorant Garamond',Georgia,serif;color:#2E1D12;min-height:30px}.po-pick span{font:500 11px/1 Jost,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8a7a66;margin-right:8px}
   .po-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px;margin:10px 0}.po-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #d9cfbd;background:#fbf9f5;border-radius:6px;cursor:pointer;text-align:left;font:400 14px/1.2 inherit;color:#2E1D12}.po-chip i{width:26px;height:26px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}.po-chip.on{border-color:#692719;box-shadow:0 0 0 2px #C3A367}
   .sw-card.on{outline:2px solid #C3A367}.po-prev canvas{width:100%;max-width:520px;height:auto;display:block;margin:8px auto 4px;background:radial-gradient(ellipse at 50% 60%,#fbf8f2,#ece5d8 70%);border-radius:8px}.po-card canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(21,40,62,.18);margin:12px 0}
   .sw-study .sw-years{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:22px 0 6px}
@@ -4806,9 +4807,9 @@ function qProductTone0(){ billboards.forEach(b=>{ if(b.material&&b.material.isMe
 // =====================================================================================
 // ---- Odessa shrunken calfskin (Weinheimer, via Leatherbox): de 11 kleuren voor personalisatie
 // kleurwaarden zijn benaderingen; per staal kan in Materialen & kleuren een echte foto worden gezet
-const ODESSA=[["vert","Vert (groen)","Vert (green)","#2f4a3b"],["jaune","Jaune (geel)","Jaune (yellow)","#d2a23e"],["rose","Rosé","Rosé","#d7a5a0"],["rouge","Rouge (rood)","Rouge (red)","#9a1f24"],
-  ["bleu","Bleu (blauw)","Bleu (blue)","#25375e"],["ivoire","Ivoire (ivoor)","Ivoire (ivory)","#ece2cf"],["goldcognac","Gold Cognac","Gold Cognac","#a8652f"],["etoupe","Étoupe","Étoupe","#8c7e6c"],
-  ["taupe","Taupe","Taupe","#6e6053"],["asphalt","Asphalt (antraciet)","Asphalt (charcoal)","#4a4a4d"],["noir","Noir (zwart)","Noir (black)","#1c1b1b"]];
+const ODESSA=[["vert","Vert (groen)","Vert (green)","#799370"],["jaune","Jaune (geel)","Jaune (yellow)","#f4de8d"],["rose","Rosé","Rosé","#e1aebb"],["rouge","Rouge (rood)","Rouge (red)","#a81e2b"],
+  ["bleu","Bleu (blauw)","Bleu (blue)","#0061ae"],["ivoire","Ivoire (ivoor)","Ivoire (ivory)","#e0dcd0"],["goldcognac","Gold Cognac","Gold Cognac","#c87344"],["etoupe","Étoupe","Étoupe","#7d6e5f"],
+  ["taupe","Taupe","Taupe","#7f7063"],["asphalt","Asphalt (antraciet)","Asphalt (charcoal)","#585753"],["noir","Noir (zwart)","Noir (black)","#2a272a"]];
 const ODESSA_P={nl:"Odessa shrunken kalfsleer van Weinheimer Leder: zichtbare nerf, zeer zacht, krasbestendig en makkelijk te onderhouden.",en:"Odessa shrunken calfskin by Weinheimer Leder: visible grain, very soft, scratch-resistant and easy to care for."};
 function odessaSet(){ const out=[]; for(const g of ["body","acc"]) ODESSA.forEach(([k,nl,en,hex])=>out.push({id:g+"_od_"+k,k,g,hex,img:"",nl:{t:nl,p:ODESSA_P.nl},en:{t:en,p:ODESSA_P.en}})); return out; }
 SWLIB_DEF.splice(0,SWLIB_DEF.length,...odessaSet(),...SWLIB_DEF.filter(x=>x.g==="hw"));
@@ -4889,18 +4890,18 @@ function poName(g,k){ const i=lang==="en"?2:1, a=g==="thread"?THREADS:SW[g]; con
 function poHex(g,k){ const a=g==="thread"?THREADS:SW[g]; const x=(a||[]).find(y=>y[0]===k); return x?x[3]:"#ccc"; }
 function poLines(){ const nl=nlL(), b=bagById(PO.model); return [[nl?"Model":"Model",b?L(ITEMS[b.id]||b).t:""],[nl?"Leer":"Leather",poName("body",PO.body)],[nl?"Details":"Details",poName("acc",PO.acc)],[nl?"Garen":"Thread",poName("thread",PO.thread)],[nl?"Beslag":"Hardware",poName("hw",PO.hw)]]; }
 PAGES.preorder=()=>{ const nl=nlL(), models=poModels(), s=PO_STEPS[PO.step], g=s[0], b=bagById(PO.model);
-  const bar=`<ol class="po-bar">${PO_STEPS.map((x,i)=>`<li class="${i<PO.step?"done":i===PO.step?"now":""}"><button type="button" data-po="${i}"${i>PO.step?" disabled":""}>${i+1}. ${E(nl?x[1]:x[2])}</button></li>`).join("")}</ol>`;
+  const bar=`<ol class="po-bar">${PO_STEPS.map((x,i)=>`<li class="${i<PO.step?"done":i===PO.step?"now":""}"><button type="button" data-po="${i}"${i>PO.step&&!(PO.model&&i<PO_STEPS.length-1)?" disabled":""}>${i+1}. ${E(nl?x[1]:x[2])}</button></li>`).join("")}</ol>`;
   let body="";
   if(g==="model") body=models.length?`<div class="sw-grid">${models.map(m=>`<button type="button" class="sw-card${PO.model===m.id?" on":""}" data-pom="${E(m.id)}"><span class="sw-cimg">${m.img?`<img src="${E(m.img)}" alt="" loading="lazy">`:""}</span><b>${E(L(ITEMS[m.id]||m).t)}</b><small>${E(m.price||tr("m.price"))}</small></button>`).join("")}</div>`
       :`<p class="sw-note">${nl?"Er zijn op dit moment geen modellen die je kunt personaliseren.":"There are no models to personalise right now."}</p>`;
   else if(g!=="card"){ const list=poAllowed(b,g);
-    body=`<div class="po-prev"><canvas id="poPrev" width="900" height="560"></canvas></div>`+`<div class="po-chips">${list.map(x=>`<button type="button" class="po-chip${PO[g]===x[0]?" on":""}" data-pok="${E(x[0])}"><i style="background:${E(x[3])}"></i><span>${E(lang==="en"?x[2]:x[1])}</span></button>`).join("")}</div>`
+    body=`<div class="po-prev"><canvas id="poPrev" width="900" height="560"></canvas></div>`+`<div class="po-dots">${list.map(x=>{ const nm=lang==="en"?x[2]:x[1], im=g!=="thread"&&typeof poImg==="function"?poImg(g,x[0]):""; return `<button type="button" class="po-dot${PO[g]===x[0]?" on":""}" data-pok="${E(x[0])}" title="${E(nm)}" aria-label="${E(nm)}"><i style="background:${E(x[3])}${im?` url('${E(im)}') center/cover`:""}"></i></button>`; }).join("")}</div><p class="po-pick">${PO[g]?`<span>${nl?"Gekozen":"Chosen"}</span> ${E(poName(g,PO[g]))}`:`<span>${nl?"Kies een kleur":"Choose a colour"}</span>`}</p>`
       +(g==="body"?`<p class="sw-note">${nl?"Odessa shrunken kalfsleer van Weinheimer Leder: zichtbare nerf, heel zacht en krasbestendig. Kleuren op een scherm wijken altijd iets af; bij de afspraak zie en voel je de echte stalen.":"Odessa shrunken calfskin by Weinheimer Leder: visible grain, very soft and scratch-resistant. Colours on screen always differ slightly; at the appointment you see and feel the real swatches."}</p>`:"")
       +(g==="thread"?`<p class="sw-note">${nl?"Alles wordt met de hand gestikt, met gewaxt garen.":"Everything is hand-stitched with waxed thread."}</p>`:""); }
   else body=`<div class="po-card"><canvas id="poCanvas" width="1200" height="760"></canvas></div><p class="sw-note">${nl?"Dit is geen bestelling. Elise neemt contact met je op om je keuze te bespreken en de stalen samen te bekijken.":"This is not an order. Elise will contact you to discuss your choice and look at the swatches together."}</p>
       <div class="sw-acts"><button type="button" class="sw-btn gold" data-posend>${nl?"Verstuur aanvraag":"Send request"}</button><button type="button" class="sw-btn ghost" data-podl>${nl?"Bewaar kaart (PNG)":"Save card (PNG)"}</button><button type="button" class="sw-btn ghost" data-po="0">${nl?"Opnieuw beginnen":"Start again"}</button></div>`;
   const ok=g==="card"||!!PO[g]||(g==="model"&&!models.length);
-  const nav=g==="card"?"":`<div class="sw-acts">${PO.step?`<button type="button" class="sw-btn ghost" data-po="${PO.step-1}">← ${nl?"Vorige":"Back"}</button>`:""}${models.length?`<button type="button" class="sw-btn gold" data-po="${PO.step+1}"${ok?"":" disabled"}>${nl?"Volgende":"Next"} →</button>`:""}</div>`;
+  const nav=g==="card"?"":`<div class="sw-acts">${PO.step?`<button type="button" class="sw-btn ghost" data-po="${PO.step-1}">← ${nl?"Vorige":"Back"}</button>`:""}<button type="button" class="sw-btn gold" data-po="${PO.step+1}"${ok?"":" disabled"}>${nl?"Volgende":"Next"} →</button></div>`;
   return sec("preorder","sw-first",`${eyeb(nl?"Pre-order · atelier":"Pre-order · atelier")}<h1>${nl?"Stel je tas samen":"Compose your bag"}</h1><p class="sw-lead">${nl?"Kies in vijf stappen je model, leer, details, garen en beslag. Je krijgt een afspraakkaart met jouw keuze.":"Choose your model, leather, details, thread and hardware in five steps. You receive an appointment card with your choice."}</p>${bar}<h2 class="sw-h3">${E(nl?s[1]:s[2])}</h2>${body}${nav}`); };
 function poDraw(){ const c=document.getElementById("poCanvas"); if(!c) return; const g=c.getContext("2d"), W=c.width, H=c.height, nl=nlL(), b=bagById(PO.model);
   g.fillStyle="#F0EDE5"; g.fillRect(0,0,W,H); g.strokeStyle="#C3A367"; g.lineWidth=3; g.strokeRect(28,28,W-56,H-56); g.lineWidth=1; g.strokeRect(40,40,W-80,H-80);
@@ -5600,10 +5601,10 @@ OB.atelierwand=(o,G)=>{ const c=c2Mats(), W=C2.AW, H=C2.AH, TB=C2.TOP, D=.5, R=.
   qAdd(G,c2UV(new THREE.CylinderGeometry(.5,.52,.07,64),3.2,.07),c.stone,RX,CH+.035,.34); qAdd(G,new THREE.TorusGeometry(.505,.007,8,64),c.gold,RX,CH+.07,.34,{rx:Math.PI/2,cast:false});
   { const g=new THREE.PlaneGeometry(1,1); g.translate(0,.5,0); const p=new THREE.Mesh(g,new THREE.MeshBasicMaterial({alphaTest:.5,side:THREE.DoubleSide,color:0xffffff,toneMapped:false})); p.position.set(RX,CH+.075,.34); G.add(p);
     cfgPlanes.push(p); C2.livePlane=p; p.onBeforeRender=()=>{ if(!cfgPlanes.includes(p)) cfgPlanes.push(p); if(p.scale.x>0){ const k=Math.min(1.3/p.scale.x,1.3/p.scale.y); if(Math.abs(k-1)>.01) p.scale.multiplyScalar(k); } };
-    p.userData.drawer=p.userData.click=()=>openCfg(); p.userData.root=G; clickables.push(p); setTimeout(()=>{ if(!cfgPlanes.includes(p)) cfgPlanes.push(p); showCfg3D(); },50); }
+    p.userData.drawer=p.userData.click=()=>c5Dock(); p.userData.root=G; clickables.push(p); setTimeout(()=>{ if(!cfgPlanes.includes(p)) cfgPlanes.push(p); showCfg3D(); },50); }
   // jouw unieke Elizian + één hoofdknop en een rustige tweede
   { const sum=txt(G,2.3,.3,RX,2.85,(g,ww)=>{ g.textAlign="center"; g.fillStyle="#7d6133"; g.font=F(.042,"sans"); g.fillText(c2nl()?"J O U W   U N I E K E   E L I Z I A N":"Y O U R   U N I Q U E   E L I Z I A N",ww/2,.05);
-        const b=bagById(cfg.model); g.fillStyle="#2E1D12"; g.font=F(.12); g.fillText(b?L(b).t:"",ww/2,.165); g.fillStyle="#3b2a1c"; g.font=F(.07); g.fillText(c4Short(),ww/2,.26); g.textAlign="left"; },()=>openCfg()); C2.redraw.push(sum);
+        const b=bagById(cfg.model); g.fillStyle="#2E1D12"; g.font=F(.12); g.fillText(b?L(b).t:"",ww/2,.165); g.fillStyle="#3b2a1c"; g.font=F(.07); g.fillText(c4Short(),ww/2,.26); g.textAlign="left"; },()=>c5Dock()); C2.redraw.push(sum);
     const pr=makePanel(1.3,.16,(g,ww,hh)=>{ g.fillStyle="#5a1e14"; g.fillRect(0,0,ww,hh); g.fillStyle="#F6EFE3"; g.font=F(.06,"sans"); g.textAlign="center"; g.fillText((c2nl()?"VRAAG MIJN TAS AAN":"REQUEST MY BAG")+"  →",ww/2,.105); g.textAlign="left"; },
       {x:RX,y:2.52,z:.06,ry:0,parent:G,emissive:.14,click:c2Request}); pr.mesh.userData.drawer=c2Request;
     const sv=()=>c3Reveal().then(c2Download);
@@ -5618,27 +5619,15 @@ function c2Step(i){ c4Phase(i); }
 
 // ---- atelier-modus: dichtbij de ontwerpvitrine verdwijnen plattegrond en routeknoppen; op de telefoon een eigen keuzepaneel
 function c4Mode(){ if(C2.modeOn) return; C2.modeOn=1; const st=document.createElement("style"); st.textContent=`
-  body.c4-atelier #map, body.c4-atelier .map-toggle, body.c4-atelier #mapToggle, body.c4-atelier .route-skip, body.c4-atelier .route-hint, body.c4-atelier #stepper, body.c4-atelier #infoPill{opacity:0!important;pointer-events:none!important;transition:opacity .4s}
-  .c4-sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(247,241,231,.97);border-top:1px solid #C3A367;box-shadow:0 -12px 40px rgba(40,20,10,.25);padding:10px 12px calc(12px + env(safe-area-inset-bottom));max-height:46vh;overflow:auto;font:14px/1.4 Jost,Arial,sans-serif;color:#2E1D12;transform:translateY(110%);transition:transform .35s}
-  body.c4-atelier.c4-small .c4-sheet{transform:none}
-  .c4-sheet .tb{display:flex;gap:6px;margin-bottom:8px}.c4-sheet .tb button{flex:1;min-height:44px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font:500 14px Jost,Arial,sans-serif}.c4-sheet .tb button.on{background:#5a1e14;color:#F6EFE3}
-  .c4-sheet h4{margin:8px 2px 4px;font:500 11px Jost,Arial,sans-serif;letter-spacing:.16em;color:#9C7E47}.c4-sheet .row{display:flex;flex-wrap:wrap;gap:8px}
-  .c4-sheet .sw{width:44px;height:44px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}.c4-sheet .sw.on{box-shadow:0 0 0 3px #C3A367}
-  .c4-sheet .pz{flex:1 1 30%;min-height:44px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font:16px 'Cormorant Garamond',serif}.c4-sheet .pz.on{background:#5a1e14;color:#F6EFE3}
-  .c4-sheet .md{width:64px;height:56px;border:1px solid #e2d5bb;background:#fff;padding:2px}.c4-sheet .md.on{border:2px solid #C3A367}.c4-sheet .md img{width:100%;height:100%;object-fit:contain}
-  .c4-sheet .acts{display:flex;gap:8px;margin-top:10px}.c4-sheet .acts button{min-height:46px;border:0;font:500 13px Jost,Arial,sans-serif;letter-spacing:.1em}.c4-sheet .acts .p{flex:2;background:#5a1e14;color:#F6EFE3}.c4-sheet .acts .s{flex:1;background:none;color:#5a1e14;text-decoration:underline}`;
-  document.head.appendChild(st); const sh=document.createElement("div"); sh.className="c4-sheet"; sh.id="c4Sheet"; document.body.appendChild(sh);
-  sh.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t) return; e.stopPropagation(); const d=t.dataset;
-    if(d.ph!==undefined) c4Phase(+d.ph); else if(d.pz!==undefined) c4Preset(+d.pz); else if(d.g) c2Pick(d.g,d.k,t.title||""); else if(d.req!==undefined) c2Request(); else if(d.save!==undefined) c3Reveal().then(c2Download); });
-  const v=new THREE.Vector3(), cp=new THREE.Vector3(); setInterval(()=>{ const G=C2.atG; let on=false; if(G&&typeof curRoomK!=="undefined"&&curRoomK==="coll"){ let q=G; while(q.parent) q=q.parent; if(q===S){ G.getWorldPosition(v); camera.getWorldPosition(cp); on=Math.hypot(v.x-cp.x,v.z-cp.z)<5.2; } }
-    document.body.classList.toggle("c4-atelier",on); document.body.classList.toggle("c4-small",innerWidth<820); },300); }
-function c4Sheet(){ const sh=document.getElementById("c4Sheet"); if(!sh) return; const nl=c2nl(), E2=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const sws=(g,list)=>`<div class="row">${(list||[]).map(x=>`<button type="button" class="sw${cfg[g]===x[0]?" on":""}" data-g="${g}" data-k="${E2(x[0])}" title="${E2(c4nm(g,x[0]))}" aria-label="${E2(c4nm(g,x[0]))}" style="background:${E2(x[3])}"></button>`).join("")}</div>`;
-  const b=bagById(cfg.model);
-  sh.innerHTML=`<div class="tb"><button type="button" data-ph="0" class="${C2.phase?"":"on"}">${nl?"Model & leer":"Model & leather"}</button><button type="button" data-ph="1" class="${C2.phase?"on":""}">${nl?"Verfijnen":"Refine"}</button></div>`+
-    (C2.phase?`<h4>DETAILS · ${E2(c4nm("acc",cfg.acc))}</h4>${sws("acc",SW.acc)}<h4>${nl?"GAREN":"THREAD"} · ${E2(c4nm("thread",cfg.thread))}</h4>${sws("thread",THREADS)}<h4>${nl?"BESLAG":"HARDWARE"} · ${E2(c4nm("hw",cfg.hw))}</h4>${sws("hw",SW.hw)}`
-      :`<div class="row">${C4P.map((P,i)=>`<button type="button" class="pz${C2.preset===i?" on":""}" data-pz="${i}">${E2(P.n)}</button>`).join("")}</div><h4>MODEL · ${E2(b?L(b).t:"")}</h4><div class="row">${custModels().slice(0,5).map(m=>`<button type="button" class="md${cfg.model===m.id?" on":""}" data-g="model" data-k="${E2(m.id)}" title="${E2(L(m).t)}"><img src="${E2(m.img)}" alt="${E2(L(m).t)}"></button>`).join("")}</div><h4>${nl?"LEER":"LEATHER"} · ${E2(c4nm("body",cfg.body))}</h4>${sws("body",SW.body)}`)+
-    `<div class="acts"><button type="button" class="p" data-req>${nl?"Vraag mijn tas aan →":"Request my bag →"}</button><button type="button" class="s" data-save>${nl?"Bewaar ontwerp":"Save design"}</button></div>`; }
+  body.c4-atelier #map, body.c4-atelier .map-toggle, body.c4-atelier #mapToggle, body.c4-atelier .route-skip, body.c4-atelier .route-hint, body.c4-atelier #stepper, body.c4-atelier #infoPill{opacity:0!important;pointer-events:none!important;transition:opacity .4s}`;
+  document.head.appendChild(st);
+  const v=new THREE.Vector3(), cp=new THREE.Vector3(), fw=new THREE.Vector3(), dir=new THREE.Vector3(), q=new THREE.Quaternion();
+  setInterval(()=>{ const G=C2.atG; let on=false;
+    if(G&&typeof curRoomK!=="undefined"&&curRoomK==="coll"){ let r=G; while(r.parent) r=r.parent; if(r===S){ G.getWorldPosition(v); G.getWorldQuaternion(q); fw.set(0,0,1).applyQuaternion(q); camera.getWorldPosition(cp); camera.getWorldDirection(dir);
+      const dx=cp.x-v.x, dz=cp.z-v.z, d=Math.hypot(dx,dz); on=d<5.8&&d>1.5&&(dx*fw.x+dz*fw.z)/d>.86&&(dir.x*fw.x+dir.z*fw.z)<-.55; } }
+    document.body.classList.toggle("c4-atelier",on);
+    if(on&&!C5.was&&!C5.closed&&!siteOpen) (C5.dockBase||c5Dock)(); if(!on&&C5.was){ if(C5.dock) c5Undock(true); C5.closed=false; } C5.was=on; },350); }
+function c4Sheet(){}
 
 C2.hgt=1.72;
 function c2HeightUI(){ const nl=c2nl(); let el=document.getElementById("c2H"); if(el){ el.remove(); return; }
@@ -5793,6 +5782,190 @@ function c2Niche(n,i,zw){ const c=c2Mats(), Q=qBuildMaterials(), G=new THREE.Gro
   if(n.k==="beslag"){ qAdd(O,new THREE.TorusGeometry(.045,.01,12,32),c.gold,-.06,.055,0); qAdd(O,rb(.07,.05,.012,.006),c.gold,.06,.03,0); qAdd(O,new THREE.BoxGeometry(.008,.05,.006),c.gold,.06,.03,.008); }
   G.traverse(m=>{ if(m.isMesh){ m.userData.drawer=m.userData.click=()=>c3Story(n.k); m.userData.root=G; clickables.push(m); solids.push(m); } }); }
 
+// =====================================================================================
+// C5 — webshop-functies en koppeling vitrine ↔ website
+//  · collectie in de website: zoeken op naam, filteren (collectie, personaliseerbaar, favorieten), sorteren
+//  · klik op een tas vouwt de info open (geen aparte pagina/tab)
+//  · favorieten en winkellijst (gasten: in de browser; met account: bij het account bewaard, op elk apparaat)
+//  · ontwerpvitrine en pre-orderpagina zijn één en hetzelfde ontwerp: keuzes lopen in beide tegelijk mee;
+//    bij de vitrine schuift de website als smalle kolom (telefoon: onderpaneel) in beeld, gewoon weg te klikken
+// =====================================================================================
+const C5T={nl:{q:"Zoek op naam",all:"Alle collecties",allk:"Alles",cust:"Personaliseerbaar",favs:"Favorieten",list:"Winkellijst",sort:"Sorteer",rec:"Aanbevolen",az:"Naam A–Z",za:"Naam Z–A",pu:"Prijs oplopend",pd:"Prijs aflopend",
+    n:x=>x===1?"1 product":x+" producten",none:"Geen producten gevonden. Probeer een andere zoekterm of filter.",fav:"Favoriet",unfav:"Uit favorieten",add:"Op mijn winkellijst",added:"Op je winkellijst gezet",close:"Sluiten",
+    pers:"Personaliseer",mylist:"Mijn lijst",mylistP:"Je favorieten en je winkellijst op één plek.",emptyF:"Nog geen favorieten. Klik op het hartje bij een tas.",emptyL:"Je winkellijst is nog leeg.",askAll:"Vraag alles aan",shop:"Verder kijken",
+    login:"Log in om je lijst op al je apparaten te bewaren.",loginB:"Inloggen of account maken",rm:"Verwijder",design:"Eigen ontwerp",msg:"Ik wil graag het volgende aanvragen:",poAdd:"Zet op mijn winkellijst",accH:"Favorieten & winkellijst",accOpen:"Open mijn lijst"},
+  en:{q:"Search by name",all:"All collections",allk:"All",cust:"Customisable",favs:"Favourites",list:"Shopping list",sort:"Sort",rec:"Recommended",az:"Name A–Z",za:"Name Z–A",pu:"Price low–high",pd:"Price high–low",
+    n:x=>x===1?"1 product":x+" products",none:"No products found. Try another search or filter.",fav:"Favourite",unfav:"Remove favourite",add:"Add to my list",added:"Added to your shopping list",close:"Close",
+    pers:"Personalise",mylist:"My list",mylistP:"Your favourites and shopping list in one place.",emptyF:"No favourites yet. Tap the heart on a bag.",emptyL:"Your shopping list is empty.",askAll:"Request everything",shop:"Keep browsing",
+    login:"Sign in to keep your list on all your devices.",loginB:"Sign in or create account",rm:"Remove",design:"Own design",msg:"I would like to request the following:",poAdd:"Add to my shopping list",accH:"Favourites & shopping list",accOpen:"Open my list"}};
+const c5t=k=>(C5T[lang]||C5T.nl)[k];
+const SHOPX={q:"",coll:"",cust:false,fav:false,sort:"rec",open:""};
+let USRL={favs:[],list:[]};
+try{ const j=JSON.parse(localStorage.getItem("ep_shop")||"null"); if(j) USRL={favs:Array.isArray(j.favs)?j.favs:[],list:Array.isArray(j.list)?j.list:[]}; }catch(e){}
+function usrSave(){ try{ localStorage.setItem("ep_shop",JSON.stringify(USRL)); }catch(e){} if(typeof SB!=="undefined"&&SB&&SB_USER) SB.auth.updateUser({data:{ep_shop:USRL}}).catch(()=>{}); }
+if(typeof SB!=="undefined"&&SB&&SB_USER){ const m=(SB_USER.user_metadata||{}).ep_shop; if(m){ const ids=new Set((m.list||[]).map(x=>x.k));
+    USRL={favs:[...new Set([...(m.favs||[]),...USRL.favs])],list:[...(m.list||[]),...USRL.list.filter(x=>!ids.has(x.k))]}; } if(USRL.favs.length||USRL.list.length) usrSave(); }
+const isFav=id=>USRL.favs.includes(id);
+function toggleFav(id){ USRL.favs=isFav(id)?USRL.favs.filter(x=>x!==id):[...USRL.favs,id]; usrSave(); }
+function addList(id,design){ const k=id+(design?"|"+[design.body,design.acc,design.thread,design.hw].join("."):""); if(!USRL.list.some(x=>x.k===k)) USRL.list.push({k,id,d:design||null,t:Date.now()}); usrSave(); toast(c5t("added")); }
+const c5price=b=>{ const m=/(\d+[\.,]?\d*)/.exec(String(b.price||"").replace(/\./g,"").replace(",",".")); return m?parseFloat(m[1]):NaN; };
+const c5name=b=>L(ITEMS[b.id]||b).t||"";
+function shopList(){ const q=SHOPX.q.trim().toLowerCase(); let l=COLL.filter(b=>!b.off&&(b.img||(b.nl&&b.nl.t)));
+  if(q) l=l.filter(b=>(c5name(b)+" "+(L(ITEMS[b.id]||b).p||"")).toLowerCase().includes(q));
+  if(SHOPX.coll) l=l.filter(b=>collOf(b)===SHOPX.coll); if(SHOPX.cust) l=l.filter(b=>cuOf(b)); if(SHOPX.fav) l=l.filter(b=>isFav(b.id));
+  const s=SHOPX.sort, cmp=(a,b)=>c5name(a).localeCompare(c5name(b),lang); if(s==="az") l.sort(cmp); else if(s==="za") l.sort((a,b)=>cmp(b,a));
+  else if(s==="pu"||s==="pd"){ const d=s==="pu"?1:-1; l.sort((a,b)=>{ const x=c5price(a), y=c5price(b); if(isNaN(x)&&isNaN(y)) return cmp(a,b); if(isNaN(x)) return 1; if(isNaN(y)) return -1; return (x-y)*d; }); }
+  return l; }
+function c5Exp(id){ let h=productHTML(id); h=h.replace(/data-scfg="/g,'data-spre="').replace(/<button type="button" class="sw-link" data-ssheet="[^"]*">[^<]*<\/button>/,"");
+  const fav=isFav(id), extra=`<div class="sw-acts shop-x">${btnS((fav?"♥ ":"♡ ")+(fav?c5t("unfav"):c5t("fav")),`data-fav="${E(id)}"`,"ghost")}${btnS("+ "+c5t("add"),`data-addlist="${E(id)}"`,"ghost")}</div>`;
+  h=h.replace('<div class="sw-small">',extra+'<div class="sw-small">');
+  return `<div class="shop-exp"><button type="button" class="shop-close" data-pexp="${E(id)}" aria-label="${c5t("close")}">×</button>${h}</div>`; }
+function shopGridHTML(){ const l=shopList(); if(!l.length) return `<p class="sw-note shop-none">${c5t("none")}</p>`;
+  return l.map(b=>{ const on=SHOPX.open===b.id, f=isFav(b.id);
+    return `<div class="shop-cell${on?" on":""}"><button type="button" class="sw-card" data-pexp="${E(b.id)}" aria-expanded="${on}"><span class="sw-cimg">${b.img?`<img src="${E(b.img)}" alt="" loading="lazy">`:""}</span><b>${E(c5name(b))}</b><small>${E(b.price||tr("m.price"))} · pre-order</small></button>
+      <button type="button" class="shop-heart${f?" on":""}" data-fav="${E(b.id)}" aria-pressed="${f}" aria-label="${f?c5t("unfav"):c5t("fav")}">${f?"♥":"♡"}</button></div>${on?c5Exp(b.id):""}`; }).join(""); }
+function shopBarHTML(){ const o=(v,t,cur)=>`<option value="${E(v)}"${cur===v?" selected":""}>${E(t)}</option>`;
+  return `<div class="shop-bar"><input type="search" id="shopQ" placeholder="${c5t("q")}" value="${E(SHOPX.q)}" aria-label="${c5t("q")}">
+    <select id="shopColl" aria-label="${c5t("all")}">${o("",c5t("all"),SHOPX.coll)}${COLLS.map(c=>o(c.id,L(c).t,SHOPX.coll)).join("")}</select>
+    <select id="shopSort" aria-label="${c5t("sort")}">${[["rec","rec"],["az","az"],["za","za"],["pu","pu"],["pd","pd"]].map(([v,k])=>o(v,c5t(k),SHOPX.sort)).join("")}</select>
+    <button type="button" class="shop-chip${SHOPX.cust?" on":""}" data-shopcust>${c5t("cust")}</button><button type="button" class="shop-chip${SHOPX.fav?" on":""}" data-shopfav>♥ ${c5t("favs")} (${USRL.favs.length})</button>
+    <button type="button" class="shop-chip" data-sgo="lijst">${c5t("list")} (${USRL.list.length})</button></div><p class="shop-count" id="shopCount">${c5t("n")(shopList().length)}</p>`; }
+function shopRefresh(keepFocus){ const g=swMain.querySelector("#shopGrid"), c=swMain.querySelector("#shopCount"); if(g) g.innerHTML=shopGridHTML(); if(c) c.textContent=c5t("n")(shopList().length);
+  swMain.querySelectorAll("[data-shopfav]").forEach(b=>{ b.textContent="♥ "+c5t("favs")+" ("+USRL.favs.length+")"; b.classList.toggle("on",SHOPX.fav); });
+  swMain.querySelectorAll('.shop-bar [data-sgo="lijst"]').forEach(b=>b.textContent=c5t("list")+" ("+USRL.list.length+")"); }
+PAGES.coll=()=>{ const nl=nlL(), sw=SWLIB.filter(x=>!x.off);
+  return sec("top","sw-first",`${eyeb(tr("col.ey"))}<h1>${E(tr("col.t"))}</h1>${paras(tr("col.p"))}<div class="sw-acts">${btnS(nl?"Stel je tas samen":"Compose your bag","data-spre","gold")}${btnS(nl?"Bekijk de stalen":"See the swatches",'data-sa="stalen"',"ghost")}</div>`)
+    +sec("producten","",shopBarHTML()+`<div class="sw-grid shop-grid" id="shopGrid">${shopGridHTML()}</div>`)
+    +sec("personaliseren","sw-box",`${eyeb(nl?"Atelier":"Atelier")}<h2>${E(tr("cfg.t"))}</h2>${paras(tr("cfg.p"))}${paras(L(ITEMS.h7||{nl:{}}).p)}<div class="sw-acts">${btnS(nl?"Stel je tas samen (pre-order)":"Compose your bag (pre-order)","data-spre","gold")}</div>`)
+    +sec("stalen","",`${eyeb(nl?"Materialen":"Materials")}<h2>${nl?"Stalen":"Swatches"}</h2><p class="sw-note">${nl?"Klik op een staal voor een grote foto.":"Click a swatch for a large photo."}</p>${["body","acc","hw"].map(g=>{ const l=sw.filter(x=>x.g===g); return l.length?`<h3 class="sw-h3">${E(SW_G[g][lang]||SW_G[g].nl)}</h3><div class="sw-swatches">${l.map(x=>`<div class="sw-swatch" id="w-staal-${E(x.id)}"><button type="button" class="sw-sw" style="background:${x.img?`url('${E(x.img)}') center/cover`:E(x.hex)}" ${x.img?`data-zoom="${E(x.img)}"`:""} aria-label="${E(L(x).t)}"></button><b>${E(L(x).t)}</b>${L(x).p?`<p>${E(L(x).p)}</p>`:""}</div>`).join("")}</div>`:""; }).join("")}`)
+    +sec("leveranciers","sw-box",`${eyeb(nl?"Gezocht":"Wanted")}<h3>${E(tr("sv2.t"))}</h3>${paras(tr("sv2.p"))}<div class="sw-acts">${btnS(nl?"Ik ben leverancier":"I am a supplier",'data-sform="supplier" data-sctx="coll"',"ghost")}${btnS(nl?"Vraag over de collectie":"Question about the collection",'data-sform="buy" data-sctx="coll"',"ghost")}</div>`)
+    +customHTML("coll"); };
+// mijn lijst: favorieten + winkellijst
+const c5DesignTxt=d=>d?[["body",d.body],["acc",d.acc],["thread",d.thread],["hw",d.hw]].map(([g,k])=>poName(g,k)).filter(Boolean).join(" · "):"";
+PAGES.lijst=()=>{ const favs=USRL.favs.map(id=>bagById(id)).filter(Boolean), list=USRL.list.filter(x=>bagById(x.id));
+  return sec("top","sw-first",`${eyeb("Elizian")}<h1>${c5t("mylist")}</h1><p class="sw-lead">${c5t("mylistP")}</p>${(typeof SB!=="undefined"&&SB&&!SB_USER)?`<p class="sw-note">${c5t("login")} <button type="button" class="sw-link" data-slogin>${c5t("loginB")}</button></p>`:""}`)
+    +sec("favorieten","",`<h2>♥ ${c5t("favs")}</h2>${favs.length?`<div class="sw-grid">${favs.map(b=>`<div class="shop-cell"><button type="button" class="sw-card" data-sgo="coll" data-sa="p-${E(b.id)}"><span class="sw-cimg">${b.img?`<img src="${E(b.img)}" alt="" loading="lazy">`:""}</span><b>${E(c5name(b))}</b><small>${E(b.price||tr("m.price"))}</small></button><button type="button" class="shop-heart on" data-fav="${E(b.id)}" aria-label="${c5t("unfav")}">♥</button></div>`).join("")}</div>`:`<p class="sw-note">${c5t("emptyF")}</p>`}`)
+    +sec("winkellijst","",`<h2>${c5t("list")}</h2>${list.length?`<div class="shop-rows">${list.map(x=>{ const b=bagById(x.id); return `<div class="shop-row"><img src="${E(b.img||"")}" alt=""><div><b>${E(c5name(b))}</b><small>${x.d?E(c5t("design")+" · "+c5DesignTxt(x.d)):E(b.price||tr("m.price"))}</small></div><button type="button" class="sw-link" data-lrm="${E(x.k)}">${c5t("rm")}</button></div>`; }).join("")}</div>
+      <div class="sw-acts">${btnS(c5t("askAll")+" →","data-lask","gold")}${btnS(c5t("shop"),'data-sgo="coll"',"ghost")}</div>`:`<p class="sw-note">${c5t("emptyL")}</p><div class="sw-acts">${btnS(c5t("shop"),'data-sgo="coll"',"ghost")}</div>`}`); };
+// pre-order kaart: ook op de winkellijst te zetten
+{ const _po=PAGES.preorder; PAGES.preorder=()=>_po().replace('<button type="button" class="sw-btn ghost" data-podl>',`<button type="button" class="sw-btn ghost" data-poadd>+ ${c5t("poAdd")}</button><button type="button" class="sw-btn ghost" data-podl>`); }
+// klik op een tas (website of 3D) opent de info uitgevouwen in de collectie
+{ const _os=openSite; openSite=function(page,anchor){ if(page==="coll"&&anchor&&/^p-/.test(anchor)) SHOPX.open=anchor.slice(2); if(page!=="preorder"&&C5.dock) c5Undock(false); return _os(page,anchor); }; }
+const C5={dock:false,closed:false,lock:false,was:false};
+siteEl.addEventListener("click",e=>{ const t=e.target.closest("button"); if(!t) return; const d=t.dataset;
+  if(!siteEl.contains(t)){ if(d.pom!==undefined||d.pok!==undefined||d.po!==undefined) c5FromPO(); return; } let hit=true;
+  if(d.pexp!==undefined){ SHOPX.open=SHOPX.open===d.pexp?"":d.pexp; shopRefresh(); if(SHOPX.open) requestAnimationFrame(()=>{ const el=swMain.querySelector("#w-p-"+CSS.escape(SHOPX.open)), ex=el&&el.closest(".shop-exp"), tg=(ex&&ex.previousElementSibling)||ex; if(tg) swMain.scrollTo({top:tg.getBoundingClientRect().top-swMain.getBoundingClientRect().top+swMain.scrollTop-12,behavior:"smooth"}); }); }
+  else if(d.fav!==undefined){ toggleFav(d.fav); if(sitePage==="lijst") renderSite(); else shopRefresh(); }
+  else if(d.addlist!==undefined){ addList(d.addlist); shopRefresh(); }
+  else if(d.shopfav!==undefined){ SHOPX.fav=!SHOPX.fav; shopRefresh(); }
+  else if(d.shopcust!==undefined){ SHOPX.cust=!SHOPX.cust; t.classList.toggle("on",SHOPX.cust); shopRefresh(); }
+  else if(d.lrm!==undefined){ USRL.list=USRL.list.filter(x=>x.k!==d.lrm); usrSave(); renderSite(); }
+  else if(d.lask!==undefined){ const lines=USRL.list.filter(x=>bagById(x.id)).map(x=>"- "+c5name(bagById(x.id))+(x.d?" ("+c5DesignTxt(x.d)+")":"")); openForm("buy",lines.length===1?c5name(bagById(USRL.list[0].id)):c5t("list"),"coll"); setTimeout(()=>{ const m=document.getElementById("f-msg"); if(m) m.value=c5t("msg")+"\n"+lines.join("\n"); },60); }
+  else if(d.slogin!==undefined){ if(window.openAccount) openAccount("login"); }
+  else if(d.poadd!==undefined){ if(PO.model) addList(PO.model,{body:PO.body,acc:PO.acc,thread:PO.thread,hw:PO.hw}); }
+  else hit=false;
+  if(hit){ e.stopPropagation(); return; }
+  // pre-order keuzes → ook in de 3D-vitrine
+  if(d.pom!==undefined||d.pok!==undefined||d.po!==undefined) c5FromPO(); },true);
+siteEl.addEventListener("input",e=>{ if(e.target.id==="shopQ"){ SHOPX.q=e.target.value; SHOPX.open=""; shopRefresh(); } });
+siteEl.addEventListener("change",e=>{ if(e.target.id==="shopColl"){ SHOPX.coll=e.target.value; shopRefresh(); } else if(e.target.id==="shopSort"){ SHOPX.sort=e.target.value; shopRefresh(); } });
+// account: favorieten & winkellijst tonen
+{ const mo=new MutationObserver(()=>{ const acc=document.getElementById("accModal"); if(!acc) return; const ds=acc.querySelector("#accDesigns"); if(!ds||acc.querySelector("#accShop")) return;
+    const h=document.createElement("div"); h.id="accShop"; h.innerHTML=`<h4 class="acc-h">${c5t("accH")}</h4><div class="acc-list"><div class="acc-item"><div><b>♥ ${USRL.favs.length} · ${c5t("list")}: ${USRL.list.length}</b><small>${USRL.favs.map(id=>bagById(id)).filter(Boolean).map(c5name).join(", ")}</small></div><button type="button" class="btn ghost-light" data-c5open>${c5t("accOpen")}</button></div></div>`;
+    ds.previousElementSibling.before(h); h.querySelector("[data-c5open]").onclick=()=>{ acc.classList.remove("open"); openSite("lijst"); }; });
+  mo.observe(document.body,{childList:true,subtree:true}); }
+// ---- koppeling: één ontwerp in vitrine én website
+function c5FromPO(){ C5.lock=true; if(PO.model) cfg.model=PO.model; ["body","acc","hw"].forEach(g=>{ if(PO[g]) cfg[g]=PO[g]; }); if(PO.thread) cfg.thread=PO.thread; C2.preset=-1;
+  try{ cfgUI(); }catch(e){} Promise.resolve(renderCfg()).finally(()=>{ C5.lock=false; }); }
+function c5ToSite(){ c2ToPO(); if(siteOpen&&sitePage==="preorder"){ if(!PO.step&&PO.model) PO.step=1; renderSite(); requestAnimationFrame(()=>{ poDraw(); poPreview(); }); } }
+{ const _rc=renderCfg; renderCfg=async function(){ await _rc(); if(!C5.lock) c5ToSite(); }; }
+function c5Offset(){ if(!C5.dock){ camera.clearViewOffset(); camera.updateProjectionMatrix(); return; } const w=innerWidth, h=innerHeight;
+  if(w<=760) camera.setViewOffset(w,h,0,Math.round(h*.56/2),w,h); else camera.setViewOffset(w,h,Math.round(Math.min(440,w*.36)/2),0,w,h); camera.updateProjectionMatrix(); }
+function c5Dock(){ c2ToPO(); if(PO.model&&!PO.step) PO.step=1; C5.dock=true; C5.closed=false; siteEl.classList.add("po-dock"); openSite("preorder"); requestAnimationFrame(()=>{ poDraw(); poPreview(); }); c5Offset(); }
+function c5Undock(close){ C5.dock=false; siteEl.classList.remove("po-dock"); c5Offset(); if(close) closeSite(); }
+{ const _cs=closeSite; closeSite=function(){ const was=C5.dock; _cs(); if(was){ C5.dock=false; siteEl.classList.remove("po-dock"); c5Offset(); if(document.body.classList.contains("c4-atelier")) C5.closed=true; } }; }
+addEventListener("resize",()=>{ if(C5.dock) c5Offset(); });
+{ const st=document.createElement("style"); st.textContent=`
+  .site-win.po-dock{width:min(440px,36vw)}
+  @media (max-width:760px){ .site-win.po-dock{top:auto;height:56vh;width:100vw;border-radius:14px 14px 0 0;box-shadow:0 -14px 40px rgba(30,15,8,.3)} }
+  .shop-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px}
+  .shop-bar input,.shop-bar select{min-height:42px;border:1px solid #d8c9ad;background:#fff;padding:0 12px;font:15px Jost,Arial,sans-serif;color:#2E1D12;border-radius:0}
+  .shop-bar input{flex:1 1 200px}.shop-bar select{flex:0 1 auto}
+  .shop-chip{min-height:42px;padding:0 14px;border:1px solid #C3A367;background:#FBF7F0;color:#5a1e14;font:500 13px Jost,Arial,sans-serif;letter-spacing:.06em;cursor:pointer}.shop-chip.on{background:#5a1e14;color:#F6EFE3}
+  .shop-count{font:13px Jost,Arial,sans-serif;color:#8a7a66;margin:2px 0 12px}
+  .shop-cell{position:relative}.shop-cell .sw-card{width:100%}.shop-cell.on .sw-card{outline:2px solid #C3A367;outline-offset:2px}
+  .shop-heart{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#5a1e14;font-size:20px;line-height:40px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}.shop-heart.on{color:#8e1b22}
+  .shop-exp{grid-column:1/-1;position:relative;border:1px solid #e2d5bb;background:#fffdf9;padding:4px 4px 0;animation:shopIn .35s ease}
+  .shop-exp .sw-sec{margin:0;padding-top:12px}.shop-close{position:absolute;top:6px;right:8px;z-index:2;background:none;border:0;font-size:28px;color:#5a1e14;cursor:pointer;width:44px;height:44px}
+  @keyframes shopIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .shop-rows{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}.shop-row{display:flex;align-items:center;gap:12px;border:1px solid #e2d5bb;background:#fffdf9;padding:8px 12px}
+  .shop-row img{width:64px;height:64px;object-fit:contain}.shop-row div{flex:1;display:flex;flex-direction:column}.shop-row small{color:#8a7a66}
+  @media (prefers-reduced-motion:reduce){ .shop-exp{animation:none} }`; document.head.appendChild(st); }
+
+// =====================================================================================
+// C6 — stalen in de website: filteren op soort, leercollectie, type leer en kleur; Chèvre Breteuil erbij
+// =====================================================================================
+const CHEVRE=[["bleudefrance","Bleu de France","#035e9b"],["givre","Givre","#5cb0dc"],["braise","Braise","#e31b29"],["fuchsia","Fuchsia","#f03367"],["sahara","Sahara","#e7d5c0"],["topaze","Topaze","#f7e19f"],
+  ["nuage","Nuage","#c9b093"],["miel","Miel","#f8a74e"],["soleil","Soleil","#f0c001"],["orange","Orange","#c95c2b"],["armagnac","Armagnac","#c35b32"],["regency","Regency","#874525"],
+  ["marron","Marron","#37221c"],["sapin","Sapin","#354634"],["saurin","Saurin","#645b50"],["grisacier","Gris Acier","#868887"],["noir","Noir","#2c282c"],["blanc","Blanc","#efefef"]];
+const C6IMG=new Set(["odessa_vert", "odessa_jaune", "odessa_rose", "odessa_rouge", "odessa_bleu", "odessa_ivoire", "odessa_goldcognac", "odessa_etoupe", "odessa_taupe", "odessa_asphalt", "odessa_noir", "chevre_bleudefrance", "chevre_givre", "chevre_braise", "chevre_fuchsia", "chevre_sahara", "chevre_topaze", "chevre_nuage", "chevre_miel", "chevre_soleil", "chevre_orange", "chevre_armagnac", "chevre_regency", "chevre_marron", "chevre_sapin", "chevre_saurin", "chevre_grisacier", "chevre_noir", "chevre_blanc"]);   // gerenderde leerfoto's in assets/leather/ (odessa_<k>.webp, chevre_<k>.webp)
+
+{ const _n2=normSw; normSw=function(a){ const r=_n2(a); r.forEach(x=>{ if(!/_od_/.test(x.id||"")) return; const k=x.k||x.id.replace(/^.*_od_/,""); const o=ODESSA.find(e=>e[0]===k); if(o) x.hex=o[3]; if(!x.img&&C6IMG.has("odessa_"+k)) x.img="assets/leather/odessa_"+k+".webp"; }); return r; }; SWLIB=normSw(SWLIB); syncSW(); }
+const C6T={nl:{kind:"Soort",all:"Alles",body:"Leer",acc:"Details",hw:"Beslag",coll:"Collectie",type:"Type leer",calf:"Kalfsleer",goat:"Geitenleer",colour:"Kleur",n:x=>x===1?"1 staal":x+" stalen",none:"Geen stalen met deze filters.",
+    od:"Odessa shrunken kalfsleer van Weinheimer Leder: zichtbare nerf, heel zacht, krasbestendig en makkelijk te onderhouden.",cb:"Chèvre Breteuil: geitenleer met natuurlijke nerf uit de looierij van Hermès (HCP), vegetabiel gelooid en metaalvrij. Op aanvraag.",
+    fam:{wit:"Wit & ivoor",beige:"Beige & bruin",geel:"Geel & oranje",rood:"Rood & roze",groen:"Groen",blauw:"Blauw",grijs:"Grijs & zwart",metaal:"Metaal"},est:"Kleuren op een scherm wijken altijd iets af; bij je afspraak zie en voel je de echte stalen."},
+  en:{kind:"Type",all:"All",body:"Leather",acc:"Details",hw:"Hardware",coll:"Collection",type:"Leather type",calf:"Calfskin",goat:"Goatskin",colour:"Colour",n:x=>x===1?"1 swatch":x+" swatches",none:"No swatches match these filters.",
+    od:"Odessa shrunken calfskin by Weinheimer Leder: visible grain, very soft, scratch-resistant and easy to care for.",cb:"Chèvre Breteuil: goatskin with a natural grain from the Hermès tannery (HCP), vegetable-tanned and metal-free. On request.",
+    fam:{wit:"White & ivory",beige:"Beige & brown",geel:"Yellow & orange",rood:"Red & pink",groen:"Green",blauw:"Blue",grijs:"Grey & black",metaal:"Metal"},est:"Colours on screen always differ slightly; at your appointment you see and feel the real swatches."}};
+const c6t=k=>(C6T[lang]||C6T.nl)[k];
+function c6Fam(hex,g){ if(g==="hw") return "metaal"; const c=new THREE.Color(hex), h={}; c.getHSL(h); const H=h.h*360, S=h.s, L=h.l;
+  if(L>.82&&S<.45) return "wit"; if(L<.17) return "grijs"; if(S<.12) return "grijs";
+  if(H<16||H>=330) return L>.6?"rood":(S<.35?"beige":"rood"); if(H<48) return (S<.55||L<.42)&&!(H>18&&S>.6&&L>.45)?"beige":"geel"; if(H<70) return "geel"; if(H<170) return "groen"; if(H<265) return "blauw"; return "rood"; }
+function c6All(){ const out=[];
+  SWLIB.filter(x=>!x.off).forEach(x=>{ const od=/_od_/.test(x.id||""), k=x.k||(x.id||"").replace(/^.*_od_/,""); const img=x.img||(od&&C6IMG.has("odessa_"+k)?"assets/leather/odessa_"+k+".webp":"");
+    out.push({id:x.id,g:x.g,name:L(x).t,p:L(x).p||"",hex:x.hex,img,lc:x.g==="hw"?"":(od?"odessa":""),lt:x.g==="hw"?"":(od?"kalf":""),fam:c6Fam(x.hex||"#888",x.g)}); });
+  CHEVRE.forEach(([k,n,hex])=>out.push({id:"chv_"+k,g:"body",name:n,p:"",hex,img:C6IMG.has("chevre_"+k)?"assets/leather/chevre_"+k+".webp":"",lc:"chevre",lt:"geit",fam:c6Fam(hex,"body")}));
+  return out; }
+const SWF={g:"",lc:"",lt:"",fam:""};
+function c6List(){ return c6All().filter(x=>(!SWF.g||x.g===SWF.g)&&(!SWF.lc||x.lc===SWF.lc)&&(!SWF.lt||x.lt===SWF.lt)&&(!SWF.fam||x.fam===SWF.fam)); }
+function c6Grid(){ const l=c6List(); if(!l.length) return `<p class="sw-note">${c6t("none")}</p>`;
+  const sub=x=>x.g==="hw"?c6t("hw"):(x.lc==="chevre"?"Chèvre Breteuil · "+c6t("goat"):x.lc==="odessa"?"Odessa · "+c6t("calf")+(x.g==="acc"?" · "+c6t("acc"):""):"");
+  return `<div class="sw-swatches c6-grid">${l.map(x=>`<div class="sw-swatch" id="w-staal-${E(x.id)}"><button type="button" class="sw-sw${x.img?" photo":""}" style="background:${x.img?`url('${E(x.img)}') center/cover`:E(x.hex)}" ${x.img?`data-zoom="${E(x.img)}"`:""} aria-label="${E(x.name)}"></button><b>${E(x.name)}</b><small class="c6-sub">${E(sub(x))}</small></div>`).join("")}</div>`; }
+function c6Bar(){ const all=c6All(), chip=(key,val,label,extra="")=>`<button type="button" class="shop-chip c6-chip${SWF[key]===val?" on":""}" data-swf="${key}" data-swv="${E(val)}"${extra}>${label}</button>`;
+  const fams=["wit","beige","geel","rood","groen","blauw","grijs","metaal"].filter(f=>all.some(x=>x.fam===f));
+  const famHex={wit:"#f1ece2",beige:"#b08b62",geel:"#dcae3c",rood:"#a8323a",groen:"#2f4a3b",blauw:"#2d4378",grijs:"#55575b",metaal:"linear-gradient(135deg,#e6cf8e,#a5824a)"};
+  return `<div class="c6-bar"><div class="c6-row"><span>${c6t("kind")}</span>${chip("g","",c6t("all"))}${chip("g","body",c6t("body"))}${chip("g","acc",c6t("acc"))}${chip("g","hw",c6t("hw"))}</div>
+    <div class="c6-row"><span>${c6t("coll")}</span>${chip("lc","",c6t("all"))}${chip("lc","odessa","Odessa")}${chip("lc","chevre","Chèvre Breteuil")}</div>
+    <div class="c6-row"><span>${c6t("type")}</span>${chip("lt","",c6t("all"))}${chip("lt","kalf",c6t("calf"))}${chip("lt","geit",c6t("goat"))}</div>
+    <div class="c6-row"><span>${c6t("colour")}</span>${chip("fam","",c6t("all"))}${fams.map(f=>`<button type="button" class="c6-dot${SWF.fam===f?" on":""}" data-swf="fam" data-swv="${f}" title="${E(c6t("fam")[f])}" aria-label="${E(c6t("fam")[f])}" style="background:${famHex[f]}"></button>`).join("")}</div></div>
+    <p class="shop-count" id="c6Count">${c6t("n")(c6List().length)}${SWF.fam?" · "+E(c6t("fam")[SWF.fam]):""}</p>`; }
+function c6Sec(){ const nl=nlL(); return sec("stalen","",`${eyeb(nl?"Materialen":"Materials")}<h2>${nl?"Stalen":"Swatches"}</h2>
+    <div class="c6-intro"><p><b>Odessa</b> — ${E(c6t("od"))}</p><p><b>Chèvre Breteuil</b> — ${E(c6t("cb"))}</p><p class="sw-note">${E(c6t("est"))}</p></div>
+    <div id="c6Box">${c6Bar()}<div id="c6Grid">${c6Grid()}</div></div>`); }
+// collectiepagina: Atelier-blok eruit, nieuwe stalen erin
+{ const _pc=PAGES.coll; PAGES.coll=()=>{ let h=_pc(); h=h.replace(/<section[^>]*id="w-personaliseren"[\s\S]*?<\/section>/,""); h=h.replace(/<section[^>]*id="w-stalen"[\s\S]*?<\/section>/,c6Sec()); return h; }; }
+siteEl.addEventListener("click",e=>{ const t=e.target.closest("[data-swf]"); if(!t||!siteEl.contains(t)) return; e.stopPropagation(); const k=t.dataset.swf, v=t.dataset.swv; SWF[k]=SWF[k]===v&&v?"":v;
+  if(k==="lt"&&v==="geit"&&SWF.lc==="odessa") SWF.lc=""; if(k==="lc"&&v==="chevre"&&SWF.lt==="kalf") SWF.lt=""; if(k==="lc"&&v==="odessa"&&SWF.lt==="geit") SWF.lt="";
+  const b=swMain.querySelector("#c6Box"); if(b) b.innerHTML=c6Bar()+`<div id="c6Grid">${c6Grid()}</div>`; },true);
+{ const st=document.createElement("style"); st.textContent=`
+  .c6-intro p{margin:4px 0;font-size:15px}.c6-bar{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px}
+  .c6-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.c6-row>span{min-width:92px;font:500 11px Jost,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9C7E47}
+  .c6-chip{min-height:38px;padding:0 12px}
+  .c6-dot{width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.18);cursor:pointer;padding:0}.c6-dot.on{box-shadow:0 0 0 3px #C3A367}
+  .c6-sub{display:block;font:12px Jost,Arial,sans-serif;color:#8a7a66;margin-top:2px}.c6-grid .sw-sw.photo{box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  @media (max-width:760px){ .c6-row>span{min-width:100%} }`; document.head.appendChild(st); }
+
+
+// C6b — "Stel je tas samen" in de website loopt naar de ontwerpvitrine en opent daar het gekoppelde paneel
+function c5Go(model){ const b=model&&bagById(model); if(b&&cuOf(b)){ cfg.model=model; C2.preset=-1; try{ cfgUI(); }catch(e){} try{ renderCfg(); }catch(e){} }
+  C5.closed=false; (C5.dockBase||c5Dock)();
+  const i=nodes.findIndex(n=>n.obj==="c2_at"); if(i>=0){ goStation(i); return; }
+  const o=(typeof OBJS!=="undefined"?OBJS:[]).find(x=>x.id==="c2_at"); if(o){ const st=objStation(o); goPoint(st.eye[0],st.eye[1]); } }
+openPreorder=function(model){ c5Go(model); };
+// klik op de ontwerpvitrine van veraf: eerst ernaartoe lopen, dan het paneel ernaast
+C5.dockBase=c5Dock;
+c5Dock=function(){ C5.dockBase(); const i=nodes.findIndex(n=>n.obj==="c2_at"); if(i<0) return; const n=nodes[i]; if(Math.hypot(pose.x-n.x,pose.z-n.z)>1.2) goStation(i); };
+function poImg(g,k){ const x=SWLIB.find(y=>y.g===g&&(y.k===k||y.id===g+"_"+k||y.id===g+"_od_"+k)); return x&&x.img?x.img:""; }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
