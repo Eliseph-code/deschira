@@ -5416,7 +5416,7 @@ function c2Mats(){ if(C2.m) return C2.m; const Q=qBuildMaterials(), m={};
   m.wall=new THREE.MeshStandardMaterial({...lit(tv,.3),roughness:1,normalScale:new THREE.Vector2(.9,.9),envMapIntensity:.1});
   m.skin=new THREE.MeshStandardMaterial({...lit(tv,.3),roughness:1,normalScale:new THREE.Vector2(1.2,1.2),envMapIntensity:.1,vertexColors:true});
   const fv=rep(qTravertine(83,{base:"#D6C9B4",light:"#E6DCCB",dark:"#C2B198",cool:"#D2CABE"}),1/1.8);
-  m.floor=new THREE.MeshPhysicalMaterial({...lit(fv,.12),roughness:.55,clearcoat:.45,clearcoatRoughness:.12,normalScale:new THREE.Vector2(.25,.25),envMapIntensity:.5});
+  m.floor=new THREE.MeshPhysicalMaterial({...lit(fv,.2),roughness:.6,clearcoat:.22,clearcoatRoughness:.2,normalScale:new THREE.Vector2(.25,.25),envMapIntensity:.12});
   { const p=qPlaster(61,{base:"#E2D7C5",light:"#ECE3D4",dark:"#CDBFA9",contrast:.45}); m.ceil=new THREE.MeshStandardMaterial({...lit(p,.34),color:0xfff1dc,roughness:1,normalScale:new THREE.Vector2(.35,.35)}); m.ceil.emissive.set(0xffe9cc); }
   const sv=rep(qTravertine(91,{base:"#DCCDB4",light:"#ECE2D0",dark:"#C5B296",cool:"#D5CCBF",size:512}),1/1.2);
   m.stone=new THREE.MeshPhysicalMaterial({...lit(sv,.16),roughness:.75,clearcoat:.15,clearcoatRoughness:.3,normalScale:new THREE.Vector2(.6,.6),envMapIntensity:.25});
@@ -5544,15 +5544,15 @@ const C4P=[ // signatuurcombinaties (voorlopig; Elise kiest de definitieve namen
   {n:"Minuit",      body:/bleu|blauw|navy|blue/i, acc:/ivoir|ivoor|ivory/i, thread:"ivoor", hw:/gold|goud|^or/i},
   {n:"Rouge Intense",body:/rouge|bord/i, acc:/rouge|bord/i, thread:"bordeaux", hw:/gold|goud|^or/i}];
 const c4find=(list,re)=>{ const x=(list||[]).find(y=>re.test(y[0]+" "+y[1]+" "+y[2])); return x?x[0]:null; };
-function c4Preset(i){ const P=C4P[i]; if(!P) return; const b=c4find(SW.body,P.body), a=c4find(SW.acc,P.acc), h=c4find(SW.hw,P.hw); if(b) cfg.body=b; if(a) cfg.acc=a; if(h) cfg.hw=h; cfg.thread=P.thread; C2.preset=i;
-  try{ cfgUI(); }catch(e){} renderCfg(); toast(P.n); c4Sheet(); }
+function c4Preset(i,quiet){ const P=C4P[i]; if(!P) return; const b=c4find(SW.body,P.body), a=c4find(SW.acc,P.acc), h=c4find(SW.hw,P.hw); if(b) cfg.body=b; if(a) cfg.acc=a; if(h) cfg.hw=h; cfg.thread=P.thread; C2.preset=i;
+  try{ cfgUI(); }catch(e){} renderCfg(); if(!quiet) toast(P.n); c4Sheet(); }
 const c4nm=(g,k)=>{ const a=g==="thread"?THREADS:SW[g]; const x=(a||[]).find(y=>y[0]===k); return x?(c2nl()?x[1]:x[2]).replace(/\s*\(.*\)$/,""):""; };
 function c4Short(){ return [c4nm("body",cfg.body),c4nm("acc",cfg.acc),c4nm("hw",cfg.hw)].filter(Boolean).join(" · "); }
 { const _p=c2Pick; c2Pick=function(g,k,l){ C2.preset=-1; _p(g,k,l); c4Sheet(); }; }
 
 OB.atelierwand=(o,G)=>{ const c=c2Mats(), W=C2.AW, H=C2.AH, TB=C2.TOP, D=.5, R=.95, nl=c2nl(), noop=()=>{};
   C2.sel={model:{},body:{},acc:{},thread:{},hw:{}}; C2.redraw=[]; C2.phase=C2.phase||0; C2.preset=C2.preset??0;
-  if(!C2.init){ C2.init=1; c4Preset(0); }
+  if(!C2.init){ C2.init=1; c4Preset(0,true); }
   const arch=(s,w,h,r)=>{ s.moveTo(-w/2,0); s.lineTo(w/2,0); s.lineTo(w/2,h-r); s.quadraticCurveTo(w/2,h,w/2-r,h); s.lineTo(-w/2+r,h); s.quadraticCurveTo(-w/2,h,-w/2,h-r); s.closePath(); return s; };
   const fr=new THREE.Shape(); fr.moveTo(-W/2-.35,0); fr.lineTo(W/2+.35,0); fr.lineTo(W/2+.35,H+TB); fr.lineTo(-W/2-.35,H+TB); fr.closePath();
   const hole=new THREE.Path(); arch(hole,W,H,R); fr.holes.push(hole);
