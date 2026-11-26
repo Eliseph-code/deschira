@@ -2549,8 +2549,8 @@ function makeRoute(){
   OPEN0.map((k,i)=>({k,i})).sort((p,q)=>spaceRank(p.k)-spaceRank(q.k)||p.i-q.i).forEach(({k})=>{
     const th=DOOR_TH[k], X=XF[k], Lg=legOf(k), W=q=>X.toW(q[0],q[1]).map(v=>+v.toFixed(2)), cz=(Lg.zN+Lg.zS)/2;
     out.push({id:"d_"+k,room:"hall",sec:k,eye:P2(th,R-5.2),look:P2(th,R-.2),door:k,transit:true},{id:"t_"+k+"1",room:"hall",sec:k,eye:P2(th,R-1.5),look:P2(th,R+6),transit:true});
-    out.push({id:"e_"+k,room:k,sec:k,eye:W([-6.4,Lg.dz]),look:W([-15,Lg.dz]),space:k});
-    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).filter((e,i,a)=>routeKeep(k,e.o,i,a)).forEach(p=>out.push({...objNode(p.o),sec:k}));
+    out.push({id:"e_"+k,room:k,sec:k,eye:W([-6.4,Lg.dz]),look:W([-15,Lg.dz]),space:k,transit:routeEntryTransit(k)});
+    OBJS.filter(o=>o.space===k&&o.type!=="bank"&&o.type!=="plant"&&o.type!=="fauteuil"&&o.type!=="vloerlamp"&&o.type!=="kruk"&&o.type!=="vloerkleed"&&o.type!=="werkstuk"&&!o.off).map(o=>{ const w=objWorld(o); let a=Math.atan2(-(w.lz-cz),-(w.lx+10.3)); if(a<-Math.PI/2) a+=Math.PI*2; return {o,a,r:routeRank(o)}; }).sort((p,q)=>p.r-q.r||p.a-q.a).filter(e=>!ROUTE.skip.includes(e.o.id)).sort(routeCmp).filter((e,i,a)=>routeKeep(k,e.o,i,a)).sort((p,q)=>routeOrd(k,p.o)-routeOrd(k,q.o)).forEach(p=>out.push({...objNode(p.o),sec:k}));
     out.push({id:"t_"+k+"2",room:k,sec:k,eye:W([-6.4,Lg.dz]),look:C0,transit:true},{id:"t_"+k+"3",room:"hall",sec:k,eye:P2(th,R-1.7),look:C0,transit:true}); });
   // 3. via de bogen naar de tuin, eindigen bij de ingang met zicht op de rotonde
   // naar buiten lopen kan niet meer: de rondleiding eindigt weer midden in de rotonde
@@ -5998,7 +5998,8 @@ const C7={focus:null};
   @media (prefers-reduced-motion:reduce){ #focusVeil{transition:none} }`; document.head.appendChild(st); }
 const veil=document.createElement("div"); veil.id="focusVeil"; renderer.domElement.after(veil);
 { const box=new THREE.Box3(), v=new THREE.Vector3(), cache={}; let last="";
-  const bboxOf=id=>{ const r=OBJ_REG[id]; if(!r||!r.G) return null; if(!cache[id]){ box.setFromObject(r.G); if(box.isEmpty()) return null; cache[id]=box.clone(); } return cache[id]; };
+  const GROUP={a_edu:["a_edu","a_a1","a_a2","a_study"]};
+  const bboxOf=id=>{ if(!cache[id]){ const ids=GROUP[id]||[id], bb=new THREE.Box3(); ids.forEach(k=>{ const r=OBJ_REG[k]; if(r&&r.G){ box.setFromObject(r.G); if(!box.isEmpty()) bb.union(box); } }); if(bb.isEmpty()) return null; cache[id]=bb; } return cache[id]; };
   function focusId(){ if(jump) return null; if(document.body.classList.contains("at-home")||document.querySelector(".modal.open")) return null;
     if(mode==="route"){ const n=nodes.find(q=>q.obj&&!q.transit&&Math.hypot(pose.x-q.x,pose.z-q.z)<.3); return n?n.obj:null; }
     if(C7.focus&&Math.hypot(pose.x-C7.focus.x,pose.z-C7.focus.z)<.35) return C7.focus.id; return null; }
@@ -6020,6 +6021,67 @@ const veil=document.createElement("div"); veil.id="focusVeil"; renderer.domEleme
       if(!holds.length) return; const ahead=holds.filter(n=>dir>0?n.t>=t-.01:n.t<=t+.01); let best=null, bd=1e9;
       (ahead.length?ahead:holds).forEach(n=>{ const d=Math.abs(n.t-t); if(d<bd){ bd=d; best=n; } });
       if(best&&bd>.02){ const span=tour.offsetHeight-innerHeight; scrollTo({top:tour.offsetTop+(best.t/totalT)*span,behavior:"smooth"}); } },420); },{passive:true}); }
+
+// =====================================================================================
+// C8 — Elise's vaste stops: Over mij = verhaal, visie, opleiding (met pijlen naar beide studies), werktafel;
+//      Collectie = de collectie (met pijlen tas voor tas) en 'customise bag'. Bordjes draaien naar de bezoeker.
+// =====================================================================================
+function routeStopsFor(k){ return ({about:["a_story","a_vision","a_edu","a2_bench"],coll:["c2_at"]})[k]||null; }
+function routeOrd(k,o){ const L=(ROUTE.order&&ROUTE.order[k]&&ROUTE.order[k].length)?null:routeStopsFor(k); if(!L) return 0; const i=L.indexOf(o.id); return i<0?99:i; }
+function routeEntryTransit(k){ return k==="about"; }   // in Over mij is het verhaal de eerste stop
+{ const _rk=routeKeep; routeKeep=function(k,o,i,a){ if(!(ROUTE.order&&ROUTE.order[k]&&ROUTE.order[k].length)){ const L=routeStopsFor(k); if(L) return L.includes(o.id); } return _rk(k,o,i,a); }; }
+// collectiekamer altijd als grot-atelier, ook als de opgeslagen inhoud nog een oud (leeg) thema heeft
+{ const _sf=spacesFrom; spacesFrom=function(d){ const r=_sf(d); const s=(r||[]).find(x=>x&&x.id==="coll"); if(s&&(!d||!d.coll2||!s.theme)) s.theme="grot"; return r; }; SPACES=spacesFrom(EARLY); }
+
+// ---- pijlen: één voor één langs de onderdelen van een stop
+const C8={sub:null, SUBS:{e_coll:["c2_v1","c2_v2","c2_v6","c2_v4","c2_v5"], o_a_edu:["a_a1","a_a2"]}};
+const c8nl=()=>lang!=="en";
+function c8Name(id){ const o=OBJS.find(x=>x.id===id); if(!o) return ""; if(o.item&&ITEMS[o.item]) return L(ITEMS[o.item]).t; const b=bagById(objProducts(o)[0]); return b?L(b).t:""; }
+function c8Here(){ if(jump) return null; if(C8.sub){ const o=OBJS.find(x=>x.id===C8.sub.list[C8.sub.i]); if(o&&C7.focus&&C7.focus.id===o.id&&Math.hypot(pose.x-C7.focus.x,pose.z-C7.focus.z)<.35) return C8.sub; }
+  if(mode!=="route") return null; const n=nodes.find(q=>!q.transit&&C8.SUBS[q.id]&&Math.hypot(pose.x-q.x,pose.z-q.z)<.3); if(!n) return null;
+  return {key:n.id,list:C8.SUBS[n.id].filter(id=>OBJS.some(o=>o.id===id&&!o.off)),i:-1,home:nodes.indexOf(n)}; }
+function c8Go(sub,i){ const L=sub.list; if(!L.length) return; i=(i+L.length)%L.length; const o=OBJS.find(x=>x.id===L[i]); if(!o) return;
+  const st=objStation(o), yaw=deg(Math.atan2(st.look[0]-st.eye[0],-(st.look[1]-st.eye[1])));
+  startJump(st.eye[0],st.eye[1],o.space==="hall"?"hall":o.space,yaw,null,false); C7.focus={id:o.id,x:st.eye[0],z:st.eye[1]}; C8.sub={...sub,i}; c8Draw(true); }
+const c8El=document.createElement("div"); c8El.id="c8Nav"; c8El.innerHTML=`<button type="button" data-d="-1" aria-label="Vorige">‹</button><div class="c8-mid"><small></small><b></b><button type="button" class="c8-x" data-home></button></div><button type="button" data-d="1" aria-label="Volgende">›</button>`;
+document.body.appendChild(c8El);
+["pointerdown","mousedown","click","dblclick","wheel","touchstart"].forEach(ev=>c8El.addEventListener(ev,e=>e.stopPropagation()));
+c8El.addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; const cur=c8Here()||C8.sub; if(!cur) return;
+  if(b.dataset.home!==undefined){ if(cur.i<0){ const o=OBJS.find(x=>x.id===cur.list[0]); if(o){ const nb=bagById(objProducts(o)[0]); if(nb){ openSite("coll","p-"+nb.id); return; } if(o.item){ const t=itemTarget(o.item); openSite(t[0],t[1]); return; } } return; }
+    C8.sub=null; C7.focus=null; if(cur.home>=0) goStation(cur.home); return; }
+  c8Go(cur,(cur.i<0?(+b.dataset.d>0?0:cur.list.length-1):cur.i+(+b.dataset.d))); });
+{ const st=document.createElement("style"); st.textContent=`
+  #c8Nav{position:fixed;left:50%;bottom:calc(128px + env(safe-area-inset-bottom));transform:translate(-50%,10px);z-index:30;display:flex;align-items:center;gap:8px;padding:6px;border-radius:40px;background:rgba(28,18,12,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(217,195,151,.7);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s}
+  #c8Nav.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+  #c8Nav button{width:46px;height:46px;border-radius:50%;border:1px solid rgba(217,195,151,.8);background:rgba(255,248,236,.08);color:#FFF8EC;font-size:26px;line-height:1;cursor:pointer}
+  #c8Nav button:hover{background:#C3A367;color:#2E1D12}
+  #c8Nav .c8-mid{display:flex;flex-direction:column;align-items:center;width:230px;max-width:52vw;color:#FFF8EC;text-align:center;padding:0 6px}
+  #c8Nav .c8-mid small{font:500 10px/1.2 Jost,Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D9C397}
+  #c8Nav .c8-mid b{font:400 19px/1.25 'Cormorant Garamond',Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  #c8Nav .c8-mid .c8-x{width:auto;height:auto;border:0;border-radius:0;background:none;padding:3px 6px 0;font:500 10px/1.2 Jost,Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#D9C397;text-decoration:underline;text-underline-offset:3px}#c8Nav .c8-mid .c8-x:hover{background:none;color:#fff}
+  body.site-open #c8Nav{left:calc((100vw - min(780px,54vw))/2)} body.site-open .site-win.po-dock~#c8Nav{left:calc((100vw - min(440px,36vw))/2)}
+  body.c4-atelier #c8Nav{display:none}
+  @media (max-width:760px){ #c8Nav{bottom:calc(150px + env(safe-area-inset-bottom))} #c8Nav .c8-mid{width:170px} #c8Nav .c8-mid b{font-size:17px} }`; document.head.appendChild(st); }
+let c8Key="";
+function c8Draw(force){ const cur=c8Here(); const on=!!cur&&!document.body.classList.contains("at-home")&&!document.querySelector(".modal.open");
+  c8El.classList.toggle("on",on); if(!on){ c8Key=""; if(C8.sub&&!jump&&!(C7.focus&&Math.hypot(pose.x-C7.focus.x,pose.z-C7.focus.z)<.35)) C8.sub=null; return; }
+  const k=cur.key+":"+cur.i+":"+lang; if(k===c8Key&&!force) return; c8Key=k; const nl=c8nl(), coll=cur.key==="e_coll";
+  c8El.querySelector("small").textContent=cur.i<0?(coll?(nl?"Tas voor tas":"Bag by bag"):(nl?"Beide studies":"Both studies")):`${cur.i+1} / ${cur.list.length}`;
+  c8El.querySelector("b").textContent=cur.i<0?(coll?(nl?"Bekijk de collectie":"See the collection"):(nl?"Bekijk mijn opleidingen":"See my studies")):c8Name(cur.list[cur.i]);
+  const x=c8El.querySelector(".c8-x"); x.textContent=cur.i<0?"":(nl?"Terug naar overzicht":"Back to overview"); x.style.display=cur.i<0?"none":""; }
+setInterval(()=>c8Draw(false),250);
+
+refreshRoute();
+// ---- bordjes onder de ronde vitrines draaien altijd naar de bezoeker
+const C8P=[];
+function c8Piv(G){ if(G.userData.c8piv) return; const piv=new THREE.Group(); G.add(piv); G.userData.c8piv=1;
+  G.children.slice().forEach(m=>{ if(m!==piv&&m.isMesh&&m.geometry&&m.geometry.type==="PlaneGeometry"&&m.position.z>.4&&m.position.y<.5){ piv.attach(m); } });
+  if(piv.children.length) C8P.push({G,piv}); }
+{ const _rv=OB.rondvitrine; OB.rondvitrine=(o,G)=>{ const r=_rv(o,G); c8Piv(G); return r; }; }
+const c8Scan=()=>OBJS.forEach(o=>{ if(o.type==="rondvitrine"&&OBJ_REG[o.id]&&OBJ_REG[o.id].G) c8Piv(OBJ_REG[o.id].G); }); c8Scan(); setTimeout(c8Scan,1500); setTimeout(c8Scan,5000);
+{ const v=new THREE.Vector3(), tick=()=>{ requestAnimationFrame(tick); if(!C8P.length) return; camera.getWorldPosition(v);
+    for(let i=C8P.length-1;i>=0;i--){ const {G,piv}=C8P[i]; if(!G.parent){ C8P.splice(i,1); continue; } const l=G.worldToLocal(v.clone()), a=Math.atan2(l.x,l.z), r=piv.rotation.y, d=Math.atan2(Math.sin(a-r),Math.cos(a-r)); piv.rotation.y=r+Math.max(-.12,Math.min(.12,d)); } };
+  requestAnimationFrame(tick); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
