@@ -6120,7 +6120,7 @@ const backEl=document.createElement("button"); backEl.type="button"; backEl.clas
 function prevHold(i){ let j=i-1; while(nodes[j]&&nodes[j].transit) j--; return nodes[j]?j:-1; }
 backEl.addEventListener("click",e=>{ e.stopPropagation(); if(C8&&C8.sub){ C8.sub=null; C7.focus=null; }
   if(mode==="free"&&typeof rjIdx!=="undefined"&&rjIdx>=0){ const j=prevHold(rjIdx+1); if(j>=0) goStation(j); return; } step(-1); });
-function backSync(){ const show=hint.classList.contains("show")&&!document.body.classList.contains("site-open")&&!document.body.classList.contains("c4-atelier");
+function backSync(){ const bc=document.body.classList, show=hint.classList.contains("show")&&(bc.contains("c9-nav")||(!bc.contains("site-open")&&!bc.contains("c4-atelier")));
   const ci=curIndex(), can=mode==="free"||prevHold(ci)>=0; backEl.classList.toggle("show",show&&can);
   if(show){ const r=hint.getBoundingClientRect(), fx=getComputedStyle(backEl).position==="fixed", pr=fx||!backEl.offsetParent?{left:0,top:0}:backEl.offsetParent.getBoundingClientRect(); backEl.style.left=(r.left-pr.left-54)+"px"; backEl.style.top=(r.top-pr.top+(r.height-44)/2)+"px"; }
   const t=lang==="en"?"Back":"Terug"; if(backEl.title!==t){ backEl.title=t; backEl.setAttribute("aria-label",t); } }
@@ -6171,13 +6171,13 @@ setInterval(backSync,120);
 { const st=document.createElement("style"); st.textContent=`
   @media (max-width:760px){
     /* rij 1: ‹ terug + Volgende */
-    .route-hint{position:fixed!important;bottom:calc(16px + env(safe-area-inset-bottom))!important;left:calc(50% + 26px)!important;max-width:calc(100vw - 118px)!important}
+    .route-hint{position:fixed!important;bottom:calc(16px + var(--nl,0px) + env(safe-area-inset-bottom))!important;left:calc(50% + 26px)!important;max-width:calc(100vw - 118px)!important}
     .route-back{position:fixed!important}
     /* rij 2: door naar de volgende ruimte */
-    .route-skip{position:fixed!important;bottom:calc(74px + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 32px)}
+    .route-skip{position:fixed!important;bottom:calc(74px + var(--nl,0px) + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 32px)}
     /* rij 3: kamerlabel links, pennetje rechts */
-    .info-pill{position:fixed!important;left:12px!important;bottom:calc(120px + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 84px)!important}
-    .pen-master{left:auto!important;right:12px!important;bottom:calc(120px + env(safe-area-inset-bottom))!important;width:40px;height:40px}
+    .info-pill:not(.anchored){position:fixed!important;left:12px!important;bottom:calc(120px + var(--nl,0px) + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 84px)!important} .info-pill.anchored{max-width:62vw}
+    .pen-master{left:auto!important;right:12px!important;bottom:calc(120px + var(--nl,0px) + env(safe-area-inset-bottom))!important;width:40px;height:40px}
     /* rij 4: pijlen tas voor tas / beide studies */
     #c8Nav{bottom:calc(172px + env(safe-area-inset-bottom))!important;max-width:calc(100vw - 20px)}
     #c8Nav button{width:40px;height:40px;font-size:22px} #c8Nav .c8-mid{width:auto;min-width:0;flex:1 1 auto;max-width:calc(100vw - 130px)}
@@ -6185,6 +6185,13 @@ setInterval(backSync,120);
     body.c4-atelier .pen-master{bottom:calc(16px + env(safe-area-inset-bottom))!important}
     body.site-open .info-pill,body.site-open #c8Nav,body.site-open .route-back{opacity:0!important;pointer-events:none!important}
   }`; document.head.appendChild(st); }
+
+// C12 — bij de ontwerpvitrine: is het paneel ingeschoven of dicht, dan komen de routeknoppen terug
+setInterval(()=>{ const bc=document.body.classList, dockMin=C5.dock&&siteEl.classList.contains("po-min"), atNoPanel=bc.contains("c4-atelier")&&!siteOpen;
+  const on=dockMin||atNoPanel; if(bc.contains("c9-nav")!==on) bc.toggle("c9-nav",on); const lift=dockMin&&c9Mob(); if(bc.contains("c9-lift")!==lift) bc.toggle("c9-lift",lift); },150);
+{ const st=document.createElement("style"); st.textContent=`
+  body.c9-nav .route-hint.show, body.c9-nav .route-skip.show{opacity:1!important;pointer-events:auto!important}
+  body.c9-lift{--nl:40px}`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
