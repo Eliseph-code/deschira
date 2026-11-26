@@ -6384,10 +6384,10 @@ OB.corrbureau=(o,G)=>{ const c=c10Mats(), W=2.1, D=1.05, H=.78, T=.045;
     const st=new THREE.Group(); st.position.set(0,.035,-.004); st.rotation.x=-.32; K.add(st);
     for(let i=0;i<6;i++) qAdd(st,sbox(.085,.058,.0012,.0004),i<5?c.paper:c.inlay,0,.029,-.006+i*.0012,{cast:false});
     { const fm=new THREE.MeshStandardMaterial({roughness:.75}); loader.load(C10_FRONT,t=>{ t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=maxAniso; fm.map=t; fm.needsUpdate=true; }); const fp=new THREE.Mesh(new THREE.PlaneGeometry(.085,.058),fm); fp.position.set(0,.029,.0006); st.add(fp); }
-    const FB=new THREE.Group(); FB.position.set(-.13,.001,.14); FB.rotation.y=.12; K.add(FB); qAdd(FB,sbox(.085,.0012,.058,.0004),c.paper,0,.0006,0,{cast:false});
+    const FB=new THREE.Group(); FB.position.set(.1,.001,.115); FB.rotation.y=.12; K.add(FB); qAdd(FB,sbox(.085,.0012,.058,.0004),c.paper,0,.0006,0,{cast:false});
     c10Print(FB,.085,.058,(g,w,h)=>c10Back(g,w,h,c10Lines()),{y:.0013,rx:-Math.PI/2});
     c10Click(G,K,()=>c10Card(),{hit:[.2,.12,.16,K.position.x,y0+.05,K.position.z]});
-    const B=new THREE.Group(); B.position.set(-.33,y0+.001,.28); B.rotation.y=-.22; B.scale.setScalar(1.4); G.add(B); qAdd(B,sbox(.085,.0012,.058,.0004),c.paper,0,.0006,0,{cast:false});
+    const B=new THREE.Group(); B.position.set(-.2,y0+.001,.3); B.rotation.y=-.22; B.scale.setScalar(1.4); G.add(B); qAdd(B,sbox(.085,.0012,.058,.0004),c.paper,0,.0006,0,{cast:false});
     c10Print(B,.085,.058,(g,w,h)=>{ const u=w/100; c10Back(g,w,h,c10t("leave").toUpperCase()); g.textAlign="center"; g.fillStyle="#52281C"; g.font=`500 ${u*9}px "Cormorant Garamond", serif`; g.fillText("+",w/2,h*.8); g.textAlign="left"; },{y:.0013,rx:-Math.PI/2});
     c10Click(G,B,()=>openForm("other",""),{hit:[.13,.05,.09,B.position.x,y0+.02,B.position.z]}); }
   // ---- drie verzegelde brieven in een messing brievenrek: atelier, leveranciers, stage
@@ -6501,9 +6501,9 @@ OB.monogram=(o,G)=>{ const c=c10Mats(), w=clamp(+o.w||1.0,.5,2), h=clamp(+o.h||1
   const LS=.66, lx=(Wc,Hc)=>[(Wc-Wc*LS)/2,(Hc-Wc*LS)/2];
   const bmp=canvasTex(512,640,(g,W,H)=>{ g.fillStyle="#000"; g.fillRect(0,0,W,H); try{ g.filter="blur(2px)"; }catch(e){} const [x,y]=lx(W,H); monoLogo(g,x,y,W*LS,"#fff");
       g.strokeStyle="#fff"; g.lineWidth=6; g.strokeRect(W*.08,H*.07,W*.84,H*.86); },{srgb:false});
-  const col=canvasTex(512,640,(g,W,H)=>{ g.fillStyle="#E8DCC7"; g.fillRect(0,0,W,H); const [x,y]=lx(W,H); monoLogo(g,x+4,y+5,W*LS,"rgba(160,120,70,.22)"); monoLogo(g,x,y,W*LS,"#EFE5D3");
+  const col=canvasTex(512,640,(g,W,H)=>{ g.fillStyle="#E2D3BA"; g.fillRect(0,0,W,H); const [x,y]=lx(W,H); monoLogo(g,x+5,y+6,W*LS,"rgba(120,80,40,.38)"); monoLogo(g,x-2,y-2,W*LS,"rgba(255,250,240,.6)"); monoLogo(g,x,y,W*LS,"#F1E8D8");
       g.strokeStyle="rgba(150,110,60,.35)"; g.lineWidth=3; g.strokeRect(W*.08,H*.07,W*.84,H*.86); });
-  const fm=c.cream.clone(); fm.map=col; fm.bumpMap=bmp; fm.bumpScale=6; fm.normalMap=null; fm.needsUpdate=true;
+  const fm=c.cream.clone(); fm.map=col; fm.bumpMap=bmp; fm.bumpScale=10; fm.normalMap=null; fm.needsUpdate=true;
   qAdd(S,rb(w,h,.02,.006,2),c.cream,0,0,.04,{cast:false});
   { const p=new THREE.Mesh(new THREE.PlaneGeometry(w-.01,h-.01),fm); p.position.set(0,0,.0505); S.add(p); }
   studioMats(); washPlane(S,w*1.2,h*.9,0,h/2+.12,.012,.32);
