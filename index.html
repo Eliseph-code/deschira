@@ -6150,6 +6150,22 @@ setInterval(backSync,120);
   siteEl.addEventListener("touchend",e=>{ e.stopPropagation(); end(); },{passive:true}); siteEl.addEventListener("touchcancel",end,{passive:true});
   ["pointerdown","pointermove","wheel"].forEach(ev=>siteEl.addEventListener(ev,e=>{ if(c9Mob()) e.stopPropagation(); },{passive:true}));
   const st=document.createElement("style"); st.textContent=`@media (max-width:760px){ .site-win{overscroll-behavior:contain} .site-win .sw-head{touch-action:none} }`; document.head.appendChild(st); }
+
+// C10 — beheer: één pennetje in de hoek; de bewerk-pennetjes in de ruimte verschijnen pas als je daarop klikt
+{ const KEY="ep-pens"; let show=false; try{ show=localStorage.getItem(KEY)==="1"; }catch(e){}
+  const btn=document.createElement("button"); btn.type="button"; btn.className="pen-master"; btn.innerHTML="✎"; document.body.appendChild(btn);
+  ["pointerdown","mousedown","dblclick","wheel","touchstart"].forEach(ev=>btn.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+  const apply=()=>{ document.body.classList.toggle("pens-hidden",!show); btn.classList.toggle("on",show); const t=show?(lang==="en"?"Hide edit pencils":"Bewerkpennetjes verbergen"):(lang==="en"?"Show edit pencils":"Bewerkpennetjes tonen"); btn.title=t; btn.setAttribute("aria-label",t); btn.setAttribute("aria-pressed",String(show)); };
+  btn.addEventListener("click",e=>{ e.stopPropagation(); show=!show; try{ localStorage.setItem(KEY,show?"1":"0"); }catch(er){} apply(); });
+  setInterval(()=>{ const owner=pensOn; if(btn._o!==owner){ btn._o=owner; btn.classList.toggle("vis",owner); } },500);
+  addEventListener("ep-lang",apply); apply();
+  const st=document.createElement("style"); st.textContent=`
+    body.pens-hidden .pens{display:none}
+    .pen-master{position:fixed;left:22px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:46;width:44px;height:44px;border-radius:50%;display:none;place-items:center;
+      background:rgba(28,20,16,.55);color:#F3E6C8;border:1px solid rgba(217,195,151,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:19px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+    .pen-master.vis{display:grid} .pen-master.on{background:#C4A46A;color:#3E1D14;border-color:#FFF8EC}
+    body.site-open .pen-master{opacity:.0;pointer-events:none} body.c4-atelier .pen-master{bottom:calc(20px + env(safe-area-inset-bottom))}
+    @media (max-width:760px){ .pen-master{left:14px;bottom:calc(150px + env(safe-area-inset-bottom));width:40px;height:40px} }`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
