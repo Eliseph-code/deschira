@@ -5406,7 +5406,7 @@ function about2(list,d){ if((d&&d.about2)||!ROOMKEYS.includes("about")) return l
 // die live meekleurt met wat de bezoeker kiest.
 // =====================================================================================
 THEMES.grot={l:"Grot-atelier: gebeeldhouwd travertijn met warm lijnlicht (collectie)"};
-{ const fix=a=>{ const s=(a||[]).find(s=>s.id==="coll"); if(s&&!(EARLY&&EARLY.coll2)) s.theme="grot"; }; fix(SPACES0); fix(SPACES); }
+{ const fix=a=>{ const s=(a||[]).find(s=>s.id==="coll"); if(s&&(!(EARLY&&EARLY.coll2)||!s.theme)) s.theme="grot"; }; fix(SPACES0); fix(SPACES); }
 const C2={ noise:new ImprovedNoise(), mob:isMobile() };
 // meters als UV, zodat foto-texturen met stMat op ware schaal liggen
 function c2UV(geo,sx,sy){ const uv=geo.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,uv.getX(i)*sx,uv.getY(i)*sy); uv.needsUpdate=true; return geo; }
@@ -6112,6 +6112,25 @@ addEventListener("ep-lang",c9Label); c9Label();
     .site-win.po-dock.open.po-min{transform:translateY(100%)}
     .site-win.po-dock .sw-handle{display:none}
     body.site-open .site-win.po-dock~#c8Nav{left:50%} }`; document.head.appendChild(st); }
+
+// C9b — terugpijl naast de 'Volgende'-knop: één stop terug op de route
+const backEl=document.createElement("button"); backEl.type="button"; backEl.className="route-back"; backEl.innerHTML=`<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>`;
+(document.getElementById("scene")||document.body).appendChild(backEl);
+["pointerdown","mousedown","touchstart","wheel","dblclick"].forEach(ev=>backEl.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+function prevHold(i){ let j=i-1; while(nodes[j]&&nodes[j].transit) j--; return nodes[j]?j:-1; }
+backEl.addEventListener("click",e=>{ e.stopPropagation(); if(C8&&C8.sub){ C8.sub=null; C7.focus=null; }
+  if(mode==="free"&&typeof rjIdx!=="undefined"&&rjIdx>=0){ const j=prevHold(rjIdx+1); if(j>=0) goStation(j); return; } step(-1); });
+function backSync(){ const show=hint.classList.contains("show")&&!document.body.classList.contains("site-open")&&!document.body.classList.contains("c4-atelier");
+  const ci=curIndex(), can=mode==="free"||prevHold(ci)>=0; backEl.classList.toggle("show",show&&can);
+  if(show){ const r=hint.getBoundingClientRect(), fx=getComputedStyle(backEl).position==="fixed", pr=fx||!backEl.offsetParent?{left:0,top:0}:backEl.offsetParent.getBoundingClientRect(); backEl.style.left=(r.left-pr.left-54)+"px"; backEl.style.top=(r.top-pr.top+(r.height-44)/2)+"px"; }
+  const t=lang==="en"?"Back":"Terug"; if(backEl.title!==t){ backEl.title=t; backEl.setAttribute("aria-label",t); } }
+setInterval(backSync,120);
+{ const st=document.createElement("style"); st.textContent=`
+  .route-back{position:absolute;z-index:18;width:44px;height:44px;border-radius:50%;border:1px solid rgba(217,195,151,.7);background:rgba(28,20,16,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    color:#F3E6C8;display:grid;place-items:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s,background .2s}
+  .route-back.show{opacity:1;pointer-events:auto} .route-back:hover{background:rgba(28,20,16,.8);color:var(--gold)}
+  .route-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2}
+  @media (max-width:760px){ .route-back{position:fixed} }`; document.head.appendChild(st); }
 /* ---------- start ---------- */
 function resize(){ const w=scene.clientWidth, h=scene.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w/h<0.8?84:(h<520?66:58); camera.updateProjectionMatrix(); if(composer){ composer.setSize(w,h); if(ao) ao.setSize(w,h); if(outline) outline.setSize(w,h); } }
 let saved=null; try{saved=localStorage.getItem("ep-lang");}catch(e){}
